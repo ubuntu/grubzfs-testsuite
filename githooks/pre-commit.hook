@@ -1,0 +1,72 @@
+#!/bin/bash -eu
+
+# Redirect output to stderr.
+exec 1>&2
+
+set -x
+
+#####################################################
+# Prepare tree content to match only what we commit #
+#####################################################
+
+## Reformat all files so that unstash will work later on after we reformat new chunks.
+gofmt -w -s .
+
+## Temporary commit that we'll reset later. git stash doesn't support only stashing chunks
+## but will stash the whole file (with the option to keep the indexed chunks still index).
+## However, as we'll then reformat the files, unshashing already committed chunks won't
+## transparently apply. So, we do a temporary commit and we'll reset then.
+git commit --no-verify -m "Temporary commit, should be reset"
+
+## Stash current untracled changes to not pollute with below automated perform
+nb_stash_before=$(git stash list | wc -l)
+git stash push --include-untracked
+need_unstash="true"
+if [ "$nb_stash_before" = "$(git stash list | wc -l)" ]; then
+  need_unstash="false"
+fi
+function unstash() {
+  if [ "$need_unstash" = "false" ]; then
+    return
+  fi
+
+  unstash_worked=true
+  git stash pop || unstash_worked=false
+  if [ "$unstash_worked" = false ]; then
+    #git stash drop
+    echo "W: Unstash after commit didn't work successfully (probably changes not committed in a file which got reformatted)"
+    echo "Please resolve the conflicts before continuing your work".
+  fi
+}
+trap unstash EXIT INT QUIT ABRT PIPE TERM
+
+## Reset the head and tree now that we only stashed the unstaged chunks. No formatting is now applied
+git reset HEAD^
+git add .
+
+## Ensure we are in the root directory of this project
+root="$(dirname "$(readlink -f "$0")")/.."
+cd $root
+
+########################################
+# Start of pre-commit checks treatment #
+########################################
+
+# Format and simplify all go files and display diff if any changes are needed
+gofmt -w -s -d .
+
+# Add those chunks
+git add -u
+
+# Static analysis (safe ones)
+go vet ./...
+
+# Tidying and verifying our dependencies
+# prune all unused deps, and ensure that all tags/os/builds combination deps are listed
+go mod tidy
+# check our local mod cache wasn't tempered and thus, we tested the real deps
+go mod verify
+git add -u
+
+# Run tests
+go test ./...
