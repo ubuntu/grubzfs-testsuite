@@ -14,16 +14,45 @@ if [ -n "${conflicts}" ]; then
   exit 1
 fi
 
+###########################################
+# Ensure we rollback any unstaged changes #
+###########################################
+
+## Git stash/unstash doesn't handle chunks, but commit the whole file. Doing a 2 commits stage
+## won't prevent, even if we reformat before stashing, keeping the index, conflicts while unstashing
+## (as it's only the diff which is popped). We thus need to save the tree state itself and restore it.
+## git commit + git checkout <sha> -- . would be a possibility, unfortunately checkout will add any content
+## to the staging area, which we don't want before this commit (as those were unstaged changes).
+## The only solution is to temporary tar the file tree before restoring it.
+
+## Reformat all files so that unstash will work later on after we reformat new chunks.
+gofmt -w -s .
+## Prune all unused deps, and ensure that all tags/os/builds combination deps are listed
+go mod tidy
+
+## Save current tree structure
+tar cf ${root}/.git/temp_stash.tar --exclude .git .
+function restore() {
+  ## Checkout so that tree == committed or staged changes only
+  git checkout -- .
+  git clean -xdf
+
+  tar xf ${root}/.git/temp_stash.tar
+}
+trap restore EXIT INT QUIT ABRT PIPE TERM
+
+## Checkout so that tree == committed or staged changes only
+git checkout -- .
+git clean -xdf
+
+
 ########################################
 # Start of pre-commit checks treatment #
 ########################################
 
 # Format and simplify all go files and display diff if any changes are needed
-output=$(gofmt -w -s -d .)
-if [ -n "${output}" ]; then
-  echo -e "E: Some files were reformatted. Please git add them in before committing again:\n${output}"
-  exit 1
-fi
+gofmt -w -s -d .
+git add -u
 
 # Static analysis (safe ones)
 go vet ./...
@@ -33,7 +62,7 @@ go vet ./...
 go mod tidy
 # check our local mod cache wasn't tempered and thus, we tested the real deps
 go mod verify
-git add go.mod go.sum 2>/dev/null || true # go.sum may not exists until we have our first dep
+git add -u
 
 # Run tests
 go test ./...
