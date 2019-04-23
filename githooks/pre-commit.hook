@@ -14,18 +14,28 @@ gofmt -w -s .
 
 ## Temporary commit that we'll reset later. git stash doesn't support only stashing chunks
 ## but will stash the whole file (with the option to keep the indexed chunks still index).
-## However, as we'll then reformat the files, unshashing already committed chunks won't
+## However, as we'll then reformat  the files, unshashing already committed chunks won't
 ## transparently apply. So, we do a temporary commit and we'll reset then.
-git commit --no-verify -m "Temporary commit, should be reset"
+git commit --no-verify -m "Temporary commit, will become the definitive one after reformatting"
 
-## Stash current untracled changes to not pollute with below automated perform
+## Stash current untracked changes to not pollute with below automated tasks.
+## Same than before: unfortunately, apart from untracked files, stash will conflicts in
+## applying twice the same diff. So, we'll need another commit to save the state rather than
+## just stashing.
+### Commit next tree state
+git commit --no-verify --allow-empty -am "Temporary commit, will become the new unstaged changes after this commit"
+new_tree_sha=$(git rev-parse HEAD)
+
+### Stash untracked files
 nb_stash_before=$(git stash list | wc -l)
 git stash push --include-untracked
 need_unstash="true"
 if [ "$nb_stash_before" = "$(git stash list | wc -l)" ]; then
   need_unstash="false"
 fi
-function unstash() {
+function restore() {
+  git checkout "${new_tree_sha}" -- .
+
   if [ "$need_unstash" = "false" ]; then
     return
   fi
@@ -38,9 +48,10 @@ function unstash() {
     echo "Please resolve the conflicts before continuing your work".
   fi
 }
-trap unstash EXIT INT QUIT ABRT PIPE TERM
+trap restore EXIT INT QUIT ABRT PIPE TERM
 
-## Reset the head and tree now that we only stashed the unstaged chunks. No formatting is now applied
+## Reset the head and tree now that we only stashe  d the unstaged chunks. No formatting is now applied
+git reset --hard HEAD^
 git reset HEAD^
 git add .
 
