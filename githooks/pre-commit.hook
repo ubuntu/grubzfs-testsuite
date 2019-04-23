@@ -3,71 +3,20 @@
 # Redirect output to stderr.
 exec 1>&2
 
-set -x
-
-#####################################################
-# Prepare tree content to match only what we commit #
-#####################################################
-
-## Reformat all files so that unstash will work later on after we reformat new chunks.
-gofmt -w -s .
-
-## Temporary commit that we'll reset later. git stash doesn't support only stashing chunks
-## but will stash the whole file (with the option to keep the indexed chunks still index).
-## However, as we'll then reformat  the files, unshashing already committed chunks won't
-## transparently apply. So, we do a temporary commit and we'll reset then.
-git commit --no-verify -m "Temporary commit, will become the definitive one after reformatting"
-
-## Stash current untracked changes to not pollute with below automated tasks.
-## Same than before: unfortunately, apart from untracked files, stash will conflicts in
-## applying twice the same diff. So, we'll need another commit to save the state rather than
-## just stashing.
-### Commit next tree state
-git commit --no-verify --allow-empty -am "Temporary commit, will become the new unstaged changes after this commit"
-new_tree_sha=$(git rev-parse HEAD)
-
-### Stash untracked files
-nb_stash_before=$(git stash list | wc -l)
-git stash push --include-untracked
-need_unstash="true"
-if [ "$nb_stash_before" = "$(git stash list | wc -l)" ]; then
-  need_unstash="false"
-fi
-function restore() {
-  git checkout "${new_tree_sha}" -- .
-
-  if [ "$need_unstash" = "false" ]; then
-    return
-  fi
-
-  unstash_worked=true
-  git stash pop || unstash_worked=false
-  if [ "$unstash_worked" = false ]; then
-    #git stash drop
-    echo "W: Unstash after commit didn't work successfully (probably changes not committed in a file which got reformatted)"
-    echo "Please resolve the conflicts before continuing your work".
-  fi
-}
-trap restore EXIT INT QUIT ABRT PIPE TERM
-
-## Reset the head and tree now that we only stashe  d the unstaged chunks. No formatting is now applied
-git reset --hard HEAD^
-git reset HEAD^
-git add .
-
 ## Ensure we are in the root directory of this project
 root="$(dirname "$(readlink -f "$0")")/.."
-cd $root
+cd "${root}"
 
 ########################################
 # Start of pre-commit checks treatment #
 ########################################
 
 # Format and simplify all go files and display diff if any changes are needed
-gofmt -w -s -d .
-
-# Add those chunks
-git add -u
+output=$(gofmt -w -s -d .)
+if [ -n "${output}" ]; then
+  echo -e "E: Some files were reformatted. Please git add them in before committing again:\n${output}"
+  exit 1
+fi
 
 # Static analysis (safe ones)
 go vet ./...
@@ -77,7 +26,7 @@ go vet ./...
 go mod tidy
 # check our local mod cache wasn't tempered and thus, we tested the real deps
 go mod verify
-git add -u
+git add go.mod go.sum 2>/dev/null || true # go.sum may not exists until we have our first dep
 
 # Run tests
 go test ./...
