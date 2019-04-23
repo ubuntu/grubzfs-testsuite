@@ -34,16 +34,16 @@ go mod tidy
 tar cf ${root}/.git/temp_stash.tar --exclude .git .
 function restore() {
   ## Checkout so that tree == committed or staged changes only
-  git checkout -- .
-  git clean -xdf
+  git checkout -q -- .
+  git clean -xdfq
 
   tar xf ${root}/.git/temp_stash.tar
 }
 trap restore EXIT INT QUIT ABRT PIPE TERM
 
 ## Checkout so that tree == committed or staged changes only
-git checkout -- .
-git clean -xdf
+git checkout -q -- .
+git clean -xdfq
 
 
 ########################################
