@@ -7,6 +7,13 @@ exec 1>&2
 root="$(dirname "$(readlink -f "$0")")/.."
 cd "${root}"
 
+## Check for conflicts marker
+conflicts="$(git diff --cached --name-only -S '<<<<<< HEAD')"
+if [ -n "${conflicts}" ]; then
+  echo -e "E: You have merge conflicts in the following file(s):\n${conflicts}"
+  exit 1
+fi
+
 ########################################
 # Start of pre-commit checks treatment #
 ########################################
