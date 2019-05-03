@@ -31,13 +31,14 @@ gofmt -w -s .
 go mod tidy
 
 ## Save current tree structure
-tar cf ${root}/.git/temp_stash.tar --exclude .git .
+temp_archive=${root}/.git/temp_stash.tar
+tar cf ${temp_archive} --exclude .git .
 function restore() {
   ## Checkout so that tree == committed or staged changes only
   git checkout -q -- .
   git clean -xdfq
 
-  tar xf ${root}/.git/temp_stash.tar
+  tar xf ${temp_archive}
 }
 trap restore EXIT INT QUIT ABRT PIPE TERM
 
