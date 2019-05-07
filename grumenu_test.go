@@ -35,13 +35,6 @@ func TestMenuMetaData(t *testing.T) {
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
-			for _, path := range []string{
-				"/etc/grub.d/15_linux_zfs", "/etc/grub.d/00_header", "/etc/default/grub", "/usr/sbin/grub-mkconfig"} {
-				copyFile(t, path, filepath.Join(testDir, path))
-			}
-			grubMkConfig := filepath.Join(testDir, "/usr/sbin/grub-mkconfig")
-			updateMkConfig(t, grubMkConfig, testDir)
-
 			out := getTempOrReferenceFile(t, *update,
 				filepath.Join(testDir, "out.bootlist"),
 				tc.bootlist+".golden")
@@ -50,18 +43,30 @@ func TestMenuMetaData(t *testing.T) {
 				"GRUB_LINUX_ZFS_TEST_INPUT="+tc.bootlist,
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out)
 
-			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-			defer cancel()
-			cmd := exec.CommandContext(ctx, "fakeroot", grubMkConfig, "-o", filepath.Join(testDir, "grub.cfg"))
-			cmd.Env = env
-
-			if err := cmd.Run(); err != nil {
+			if err := runGrubMkConfig(t, env, testDir); err != nil {
 				t.Fatal("got error, expected none", err)
 			}
 
 			assertFileContentEquals(t, out, tc.bootlist+".golden", "generated and reference files are different.")
 		})
 	}
+}
+
+// runGrubMkConfig setup and runs grubMkConfig
+func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
+	for _, path := range []string{
+		"/etc/grub.d/15_linux_zfs", "/etc/grub.d/00_header", "/etc/default/grub", "/usr/sbin/grub-mkconfig"} {
+		copyFile(t, path, filepath.Join(testDir, path))
+	}
+	grubMkConfig := filepath.Join(testDir, "/usr/sbin/grub-mkconfig")
+	updateMkConfig(t, grubMkConfig, testDir)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, "fakeroot", grubMkConfig, "-o", filepath.Join(testDir, "grub.cfg"))
+	cmd.Env = env
+
+	return cmd.Run()
 }
 
 // assertFileContentEquals between generated and expected file path.
