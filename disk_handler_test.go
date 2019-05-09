@@ -173,6 +173,10 @@ func (fdevice FakeDevices) create(path string) {
 			if err := cmd.Run(); err != nil {
 				fdevice.Fatal("got error, expected none", err)
 			}
+
+		case "":
+			// do nothing for "no pool, no partition" (empty disk)
+
 		default:
 			fdevice.Fatalf("unknown type: %s", device.Type)
 		}
