@@ -6,6 +6,6 @@ require (
 	github.com/bicomsystems/go-libzfs v0.2.1
 	github.com/otiai10/copy v1.0.1
 	github.com/otiai10/curr v0.0.0-20150429015615-9b4961190c95 // indirect
-	github.com/stretchr/testify v1.3.0 // indirect
+	github.com/stretchr/testify v1.3.0
 	gopkg.in/yaml.v2 v2.2.2
 )

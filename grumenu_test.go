@@ -47,7 +47,7 @@ func TestMenuMetaData(t *testing.T) {
 				t.Fatal("got error, expected none", err)
 			}
 
-			assertFileContentEquals(t, out, tc.bootlist+".golden", "generated and reference files are different.")
+			assertFileContentAlmostEquals(t, out, tc.bootlist+".golden", "generated and reference files are different.")
 		})
 	}
 }
@@ -71,19 +71,41 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	return cmd.Run()
 }
 
-// assertFileContentEquals between generated and expected file path.
-func assertFileContentEquals(t *testing.T, generatedF, expectedF, msg string) {
+// anonymizeTempDirNames ununiquifies the name of the temporary directory, so
+// we can compare the content generated with update to the content generated
+// during the test.
+func anonymizeTempDirNames(t *testing.T, path string) string {
 	t.Helper()
 
-	generated, err := ioutil.ReadFile(generatedF)
+	f, err := os.Open(path)
 	if err != nil {
-		t.Fatal("couldn't open generated file", err)
+		t.Fatal("couldn't open file to anonymize", err)
 	}
+	defer f.Close()
+
+	re := regexp.MustCompile("/tmp/grubtests-[[:alnum:]]+/")
+	s := bufio.NewScanner(f)
+	var out string
+	for s.Scan() {
+		out = out + re.ReplaceAllString(s.Text(), "") + "\n"
+	}
+	if err := s.Err(); err != nil {
+		t.Fatalf("can't anynomize file %q: %v", path, err)
+	}
+
+	return out
+}
+
+// assertFileContentAlmostEquals between generated and expected file path.
+// It strips temporary directory with special name.
+func assertFileContentAlmostEquals(t *testing.T, generatedF, expectedF, msg string) {
+	t.Helper()
+
 	expected, err := ioutil.ReadFile(expectedF)
 	if err != nil {
 		t.Fatal("couldn't open reference file", err)
 	}
-	assert.Equal(t, string(expected), string(generated), "generated and reference files are different.")
+	assert.Equal(t, string(expected), anonymizeTempDirNames(t, generatedF), "generated and reference files are different.")
 }
 
 // getTempOrReferenceFile returns the tempFile path.
