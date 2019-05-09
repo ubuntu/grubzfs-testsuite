@@ -32,7 +32,7 @@ type FakeDevice struct {
 		Datasets []struct {
 			Name             string
 			Content          string
-			ZsysBootfs       bool
+			ZsysBootfs       bool      `yaml:"zsys_bootfs"`
 			LastUsed         time.Time `yaml:"last_used"`
 			LastBootedKernel string    `yaml:"last_booted_kernel"`
 			Mountpoint       string
