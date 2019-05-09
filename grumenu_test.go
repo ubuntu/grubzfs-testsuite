@@ -32,6 +32,11 @@ func TestFromZFStoBootlist(t *testing.T) {
 		secureBootState string
 	}{
 		{"one zsys", "onezsys", "efi-nosb"},
+		{"secure boot", "sb", "efi-sb"},
+		{"filter kernel in secure boot", "filterkernel-sb", "efi-sb"},
+		{"filter kernel in non secure boot", "filterkernel", "efi-nosb"},
+		{"no pool", "nopool", "efi-nosb"},
+		{"one zfs", "onezfs", "efi-nosb"},
 	}
 
 	for _, tc := range testCases {

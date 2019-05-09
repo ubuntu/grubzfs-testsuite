@@ -1,0 +1,13 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content: testdata/content/rootsimple
+          zsys_bootfs: false
+          mountpoint: /
+          canmount: on
