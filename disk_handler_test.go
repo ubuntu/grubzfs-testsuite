@@ -62,7 +62,7 @@ func newFakeDevices(t *testing.T, path string) FakeDevices {
 }
 
 // create on disk mock devices as files
-func (fdevice FakeDevices) create(path string) {
+func (fdevice FakeDevices) create(path, testName string) {
 	for _, device := range fdevice.Devices {
 
 		// Create file on disk
@@ -79,6 +79,11 @@ func (fdevice FakeDevices) create(path string) {
 
 		switch strings.ToLower(device.Type) {
 		case "zfs":
+			// WORKAROUND: we need to use dirname of path as creating 2 consecutives pools with similar dataset name
+			// will make the second dataset from the second pool returning as parent pool the first one.
+			// Of course, the resulting mountpoint will be wrong.
+			poolName := testName + "-" + device.ZFS.PoolName
+
 			poolMountPath := filepath.Join(path, device.Name)
 			if err := os.MkdirAll(poolMountPath, os.ModeDir); err != nil {
 				fdevice.Fatal("couldn't create directory for pool", err)
@@ -96,7 +101,7 @@ func (fdevice FakeDevices) create(path string) {
 			fsprops[zfs.DatasetPropMountpoint] = "/"
 			fsprops[zfs.DatasetPropCanmount] = "off"
 
-			pool, err := zfs.PoolCreate(device.ZFS.PoolName, vdev, features, props, fsprops)
+			pool, err := zfs.PoolCreate(poolName, vdev, features, props, fsprops)
 			if err != nil {
 				fdevice.Fatalf("couldn't create pool %q: %v", device.ZFS.PoolName, err)
 			}
@@ -105,7 +110,7 @@ func (fdevice FakeDevices) create(path string) {
 
 			for _, dataset := range device.ZFS.Datasets {
 				func() {
-					datasetName := device.ZFS.PoolName + "/" + dataset.Name
+					datasetName := poolName + "/" + dataset.Name
 					datasetPath := ""
 					shouldMount := false
 					props := make(map[zfs.Prop]zfs.Property)

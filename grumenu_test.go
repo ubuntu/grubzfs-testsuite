@@ -56,7 +56,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 
 			basePath := filepath.Join("testdata", tc.diskStruct)
 			devices := newFakeDevices(t, filepath.Join(basePath, "definition.yaml"))
-			devices.create(testDir)
+			devices.create(testDir, tc.diskStruct)
 
 			out := filepath.Join(testDir, "bootlist")
 			path := "PATH=mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
