@@ -31,7 +31,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 		diskStruct      string
 		secureBootState string
 	}{
-		{"simple", "testdata/bootlist/onezsys", "efi-nosb"},
+		{"simple", "testdata/onezsys", "efi-nosb"},
 	}
 
 	for _, tc := range testCases {
@@ -95,7 +95,7 @@ func TestMenuMetaData(t *testing.T) {
 
 		bootlist string
 	}{
-		{"simple", "testdata/metamenu/onezsys"},
+		{"simple", "testdata/onezsys"},
 	}
 
 	for _, tc := range testCases {
@@ -106,18 +106,18 @@ func TestMenuMetaData(t *testing.T) {
 			defer cleanUp()
 
 			out := getTempOrReferenceFile(t, *update,
-				filepath.Join(testDir, "out.bootlist"),
-				tc.bootlist+".golden")
+				filepath.Join(testDir, "out.menumeta"),
+				tc.bootlist+".menumeta")
 			env := append(os.Environ(),
 				"GRUB_LINUX_ZFS_TEST=metamenu",
-				"GRUB_LINUX_ZFS_TEST_INPUT="+tc.bootlist,
+				"GRUB_LINUX_ZFS_TEST_INPUT="+tc.bootlist+".bootlist",
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out)
 
 			if err := runGrubMkConfig(t, env, testDir); err != nil {
 				t.Fatal("got error, expected none", err)
 			}
 
-			assertFileContentAlmostEquals(t, out, tc.bootlist+".golden", "generated and reference files are different.")
+			assertFileContentAlmostEquals(t, out, tc.bootlist+".menumeta", "generated and reference files are different.")
 		})
 	}
 }
