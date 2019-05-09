@@ -52,7 +52,7 @@ func TestMenuMetaData(t *testing.T) {
 	}
 }
 
-// runGrubMkConfig setup and runs grubMkConfig
+// runGrubMkConfig setup and runs grubMkConfig.
 func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	for _, path := range []string{
 		"/etc/grub.d/15_linux_zfs", "/etc/grub.d/00_header", "/etc/default/grub", "/usr/sbin/grub-mkconfig"} {
@@ -64,6 +64,8 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, "fakeroot", grubMkConfig, "-o", filepath.Join(testDir, "grub.cfg"))
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	cmd.Env = env
 
 	return cmd.Run()
