@@ -31,7 +31,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 		diskStruct      string
 		secureBootState string
 	}{
-		{"simple", "testdata/onezsys", "efi-nosb"},
+		{"simple", "onezsys", "efi-nosb"},
 	}
 
 	for _, tc := range testCases {
@@ -54,7 +54,8 @@ func TestFromZFStoBootlist(t *testing.T) {
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
-			devices := newFakeDevices(t, tc.diskStruct+".yaml")
+			baseFilePath := filepath.Join("testdata", tc.diskStruct, tc.diskStruct)
+			devices := newFakeDevices(t, baseFilePath+".yaml")
 			devices.create(testDir)
 
 			out := filepath.Join(testDir, "out.bootlist")
@@ -75,7 +76,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 				t.Fatal("got error, expected none", err)
 			}
 
-			reference := tc.diskStruct + ".bootlist"
+			reference := baseFilePath + ".bootlist"
 			if *update {
 				if err := ioutil.WriteFile(reference, []byte(anonymizeTempDirNames(t, out)), 0644); err != nil {
 					t.Fatal("couldn't update reference file", err)
@@ -95,7 +96,7 @@ func TestMenuMetaData(t *testing.T) {
 
 		bootlist string
 	}{
-		{"simple", "testdata/onezsys"},
+		{"simple", "onezsys"},
 	}
 
 	for _, tc := range testCases {
@@ -105,19 +106,20 @@ func TestMenuMetaData(t *testing.T) {
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
+			baseFilePath := filepath.Join("testdata", tc.bootlist, tc.bootlist)
 			out := getTempOrReferenceFile(t, *update,
 				filepath.Join(testDir, "out.menumeta"),
-				tc.bootlist+".menumeta")
+				baseFilePath+".menumeta")
 			env := append(os.Environ(),
 				"GRUB_LINUX_ZFS_TEST=metamenu",
-				"GRUB_LINUX_ZFS_TEST_INPUT="+tc.bootlist+".bootlist",
+				"GRUB_LINUX_ZFS_TEST_INPUT="+baseFilePath+".bootlist",
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out)
 
 			if err := runGrubMkConfig(t, env, testDir); err != nil {
 				t.Fatal("got error, expected none", err)
 			}
 
-			assertFileContentAlmostEquals(t, out, tc.bootlist+".menumeta", "generated and reference files are different.")
+			assertFileContentAlmostEquals(t, out, baseFilePath+".menumeta", "generated and reference files are different.")
 		})
 	}
 }
