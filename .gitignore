@@ -1,0 +1,3 @@
+cmd/zfs/zfs
+cmd/zpool/zpool
+cmd/mokutil/mokutil
