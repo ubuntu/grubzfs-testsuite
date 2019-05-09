@@ -8,14 +8,84 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
+var dangerous = flag.Bool("dangerous", false, "execute dangerous tests which may alter the system state")
 var update = flag.Bool("update", false, "update golden files")
+
+func TestFromZFStoBootlist(t *testing.T) {
+	t.Parallel()
+
+	ensureBinaryMocks(t)
+
+	testCases := []struct {
+		name string
+
+		diskStruct      string
+		secureBootState string
+	}{
+		{"simple", "testdata/bootlist/onezsys", "efi-nosb"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.secureBootState == "no-mokutil" {
+				if !*dangerous {
+					t.Skipf("don't run %q: dangerous is not set", tc.name)
+				}
+
+				// remove mokutil from PATH
+				if _, err := os.Stat("/usr/bin/mokutil"); os.IsExist(err) {
+					if err := os.Rename("/usr/bin/mokutil", "/usr/bin/mokutil.bak"); err != nil {
+						t.Fatal("couldn't rename mokutil to its backup", err)
+					}
+					defer os.Rename("/usr/bin/mokutil.bak", "/usr/bin/mokutil")
+				}
+			}
+
+			testDir, cleanUp := tempDir(t)
+			defer cleanUp()
+
+			devices := newFakeDevices(t, tc.diskStruct+".yaml")
+			devices.create(testDir)
+
+			out := filepath.Join(testDir, "out.bootlist")
+			path := "PATH=mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
+			securebootEnv := ""
+			if tc.secureBootState != "no-mokutil" {
+				path = "PATH=mocks/mokutil:mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
+				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + tc.secureBootState
+			}
+			env := append(os.Environ(),
+				path,
+				"TEST_POOL_DIR="+testDir,
+				"GRUB_LINUX_ZFS_TEST=bootlist",
+				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out,
+				securebootEnv)
+
+			if err := runGrubMkConfig(t, env, testDir); err != nil {
+				t.Fatal("got error, expected none", err)
+			}
+
+			reference := tc.diskStruct + ".bootlist"
+			if *update {
+				if err := ioutil.WriteFile(reference, []byte(anonymizeTempDirNames(t, out)), 0644); err != nil {
+					t.Fatal("couldn't update reference file", err)
+				}
+			}
+
+			assertFileContentAlmostEquals(t, out, reference, "generated and reference files are different.")
+		})
+	}
+}
 
 func TestMenuMetaData(t *testing.T) {
 	t.Parallel()
@@ -69,6 +139,27 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	cmd.Env = env
 
 	return cmd.Run()
+}
+
+var compileMocksOnce sync.Once
+
+// ensureBinayMocks creates our mocks, ensuring we compile them when running go test
+func ensureBinaryMocks(t *testing.T) {
+	t.Helper()
+
+	compileMocksOnce.Do(func() {
+		for _, mock := range []string{"mokutil", "zfs", "zpool"} {
+			if _, err := os.Stat(filepath.Join("mocks", mock)); os.IsExist(err) {
+				continue
+			}
+			cmd := exec.Command("go", "build", "-o", filepath.Join("mocks", mock, mock), "github.com/ubuntu/grubmenugen-zfs-tests/cmd/"+mock)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			if err := cmd.Run(); err != nil {
+				t.Fatalf("couldn't compile mock %q binaries: %v", mock, err)
+			}
+		}
+	})
 }
 
 // anonymizeTempDirNames ununiquifies the name of the temporary directory, so
@@ -178,7 +269,7 @@ func updateMkConfig(t *testing.T, path, tmpdir string) {
 			strings.ReplaceAll(s.Text(),
 				`sysconfdir="/etc"`,
 				`sysconfdir="`+tmpdir+`/etc"`+
-					"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT")+"\n")...)
+					"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT")+"\n")...)
 	}
 	if err := s.Err(); err != nil {
 		t.Fatalf("can't replace sysconfigdir in %q: %v", path, err)
