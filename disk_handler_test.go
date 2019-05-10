@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"syscall"
 	"testing"
 	"time"
 
@@ -144,9 +145,18 @@ func (fdevice FakeDevices) create(path, testName string) {
 							fdevice.Fatalf("couldn't get mount point for %q: %v", datasetName, err)
 						}
 						datasetPath = mountProp.Value
-						if err := d.Mount("", 0); err != nil {
-							fdevice.Fatalf("couldn't mount dataset: %q: %v", datasetName, err)
+						if datasetPath != "legacy" {
+							if err := d.Mount("", 0); err != nil {
+								fdevice.Fatalf("couldn't mount dataset: %q: %v", datasetName, err)
+							}
+							// Mount manually datasetPath if set to legacy to "/" (poolMountPath)
+						} else {
+							datasetPath = poolMountPath
+							if err := syscall.Mount(datasetName, datasetPath, "zfs", 0, ""); err != nil {
+								fdevice.Fatalf("couldn't manually mount dataset: %q: %v", datasetName, err)
+							}
 						}
+
 						defer os.RemoveAll(datasetPath)
 						defer d.UnmountAll(0)
 					}
