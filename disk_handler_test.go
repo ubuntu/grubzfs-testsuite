@@ -116,7 +116,6 @@ func (fdevice FakeDevices) create(path, testName string) {
 					props := make(map[zfs.Prop]zfs.Property)
 					if dataset.Mountpoint != "" {
 						props[zfs.DatasetPropMountpoint] = zfs.Property{Value: dataset.Mountpoint}
-						datasetPath = filepath.Join(poolMountPath, dataset.Mountpoint)
 					}
 					if dataset.CanMount != "" {
 						props[zfs.DatasetPropCanmount] = zfs.Property{Value: dataset.CanMount}
@@ -139,6 +138,12 @@ func (fdevice FakeDevices) create(path, testName string) {
 						d.SetUserProperty("org.zsys:last-used", strconv.FormatInt(dataset.LastUsed.Unix(), 10))
 					}
 					if shouldMount {
+						// get potentially inherited mountpoint path
+						mountProp, err := d.GetProperty(zfs.DatasetPropMountpoint)
+						if err != nil {
+							fdevice.Fatalf("couldn't get mount point for %q: %v", datasetName, err)
+						}
+						datasetPath = mountProp.Value
 						if err := d.Mount("", 0); err != nil {
 							fdevice.Fatalf("couldn't mount dataset: %q: %v", datasetName, err)
 						}
