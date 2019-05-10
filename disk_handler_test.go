@@ -44,6 +44,11 @@ type FakeDevice struct {
 				CreationDate     time.Time `yaml:"creation_date"`
 				LastBootedKernel string    `yaml:"last_booted_kernel"`
 			}
+			Fstab []struct {
+				Filesystem string
+				Mountpoint string
+				Type       string
+			}
 		}
 	}
 }
@@ -185,6 +190,33 @@ func (fdevice FakeDevices) create(path, testName string) {
 						if dataset.Mountpoint == "/" {
 							for _, p := range []string{"/boot", "/etc"} {
 								os.MkdirAll(filepath.Join(datasetPath, p), os.ModeDir)
+							}
+						}
+						// Generate a fstab if there is some needs as pool and disk names are dynamic
+						fstabPath := filepath.Join(datasetPath, "etc", "fstab")
+						if dataset.Mountpoint == "/etc" {
+							fstabPath = filepath.Join(datasetPath, "fstab")
+						}
+						for _, fstabEntry := range dataset.Fstab {
+							f, err := os.OpenFile(fstabPath, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660)
+							if err != nil {
+								fdevice.Fatal("couldn't append to fstab", err)
+							}
+							defer f.Close()
+
+							var filesystem string
+							switch fstabEntry.Type {
+							case "zfs":
+								filesystem = testName + "-" + fstabEntry.Filesystem
+							case "ext4":
+								filesystem = filepath.Join(path, fstabEntry.Filesystem+".disk")
+							default:
+								fdevice.Fatalf("invalid filesystem type: %s", fstabEntry.Type)
+							}
+							if _, err := f.Write([]byte(
+								fmt.Sprintf("%s\t%s\t%s\tdefaults\t0\t0\n",
+									filesystem, fstabEntry.Mountpoint, fstabEntry.Type))); err != nil {
+								fdevice.Fatal("couldn't write to fstab", err)
 							}
 						}
 					}
