@@ -7,7 +7,9 @@ devices:
         - name: ROOT
           mountpoint: none
         - name: ROOT/ubuntu
-          content: testdata/content/rootsimple
+          content:
+            /boot: boot/one-kernel
+            /etc: etc/machine1-19.04
           zsys_bootfs: false
           mountpoint: /
           canmount: on

@@ -31,7 +31,7 @@ type FakeDevice struct {
 		PoolName string `yaml:"pool_name"`
 		Datasets []struct {
 			Name             string
-			Content          string
+			Content          map[string]string
 			ZsysBootfs       bool      `yaml:"zsys_bootfs"`
 			LastUsed         time.Time `yaml:"last_used"`
 			LastBootedKernel string    `yaml:"last_booted_kernel"`
@@ -39,7 +39,7 @@ type FakeDevice struct {
 			CanMount         string
 			Snapshots        []struct {
 				Name             string
-				Content          string
+				Content          map[string]string
 				CreationDate     time.Time `yaml:"creation_date"`
 				LastBootedKernel string    `yaml:"last_booted_kernel"`
 			}
@@ -118,7 +118,7 @@ func (fdevice FakeDevices) create(path, testName string) {
 						props[zfs.DatasetPropMountpoint] = zfs.Property{Value: dataset.Mountpoint}
 						datasetPath = filepath.Join(poolMountPath, dataset.Mountpoint)
 					}
-					if dataset.CanMount != "" && dataset.Content != "" {
+					if dataset.CanMount != "" {
 						props[zfs.DatasetPropCanmount] = zfs.Property{Value: dataset.CanMount}
 						if dataset.CanMount == "noauto" || dataset.CanMount == "on" {
 							shouldMount = true
@@ -189,8 +189,8 @@ func (fdevice FakeDevices) create(path, testName string) {
 
 }
 
-// replaceContent replaces content in dst from src content (preserving src)
-func replaceContent(t *testing.T, src, dst string) {
+// replaceContent replaces content (map) in dst from src content (preserving src)
+func replaceContent(t *testing.T, sources map[string]string, dst string) {
 	entries, err := ioutil.ReadDir(dst)
 	if err != nil {
 		t.Fatalf("couldn't read directory content for %q: %v", dst, err)
@@ -202,7 +202,9 @@ func replaceContent(t *testing.T, src, dst string) {
 		}
 	}
 
-	if err := copy.Copy(src, dst); err != nil {
-		t.Fatalf("couldn't copy %q to %q: %v", src, dst, err)
+	for p, src := range sources {
+		if err := copy.Copy(filepath.Join("testdata", "content", src), filepath.Join(dst, p)); err != nil {
+			t.Fatalf("couldn't copy %q to %q: %v", src, dst, err)
+		}
 	}
 }
