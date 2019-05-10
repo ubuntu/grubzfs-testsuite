@@ -25,34 +25,35 @@ func TestFromZFStoBootlist(t *testing.T) {
 
 	ensureBinaryMocks(t)
 
-	testCases := map[string]struct {
+	type TestCase struct {
 		diskStruct      string
 		secureBootState string
-	}{
-		"one zsys":                                    {"onezsys", ""},
-		"secure boot":                                 {"sb", "efi-sb"},
-		"filter kernel in secure boot":                {"filterkernel-sb", "efi-sb"},
-		"filter kernel in non secure boot":            {"filterkernel", ""},
-		"filter kernel without mokutil":               {"filterkernel", "no-mokutil"},
-		"multiple kernels":                            {"multiplekernels", ""},
-		"vmlinuz and initrd don't match":              {"vmlinuz-initrd-dont-match", ""},
-		"no /etc":                                     {"no-etc", ""},
-		"no /boot":                                    {"no-boot", ""},
-		"no last used":                                {"no-last-used", ""},
-		"no last booted kernel":                       {"no-last-booted-kernel", ""},
-		"one with canmount off":                       {"one-with-canmount-off", ""},
-		"one with canmount noauto":                    {"one-with-canmount-noauto", ""},
-		"last booted kernel is not the last one":      {"last-booted-kernel-not-last", ""},
-		"last booted kernel doesn't match any kernel": {"last-booted-kernel-doesnt-match", ""},
-		"no pool":                                     {"nopool", ""},
-		"one zfs":                                     {"onezfs", ""},
-		"separated /etc persistent":                   {"separated-etc-persistent", ""},
-		"separated /etc persistent noautomount":       {"separated-etc-persistent-noautomount", ""},
-		"separated /etc persistent separate pools":    {"separated-etc-persistent-separate-pools", ""},
-		"separated /etc persistent 2 pools same base dataset": {"separated-etc-separate-pools-samebasedataset", ""},
-		"separated /etc sub dataset":                          {"separated-etc-subdataset", ""},
-		"separated /etc sub dataset noauto":                   {"separated-etc-subdataset-noauto", ""},
-		"separated /etc sub dataset priority":                 {"separated-etc-subdataset-priority", ""},
+	}
+	testCases := make(map[string]TestCase)
+
+	bootListsDir := "testdata/bootlists"
+	dirs, err := ioutil.ReadDir(bootListsDir)
+	if err != nil {
+		t.Fatal("couldn't read bootlists modes", err)
+	}
+	for _, d := range dirs {
+		tcDirs, err := ioutil.ReadDir(filepath.Join(bootListsDir, d.Name()))
+		if err != nil {
+			t.Fatal("couldn't read bootlists test cases", err)
+		}
+
+		for _, tcd := range tcDirs {
+			tcName := filepath.Join(d.Name(), tcd.Name())
+			tcPath := filepath.Join(bootListsDir, tcName)
+			if err != nil {
+				t.Fatal("couldn't read test case", err)
+			}
+
+			testCases[tcName] = TestCase{
+				diskStruct:      tcPath,
+				secureBootState: d.Name(),
+			}
+		}
 	}
 
 	for name, tc := range testCases {
@@ -71,16 +72,13 @@ func TestFromZFStoBootlist(t *testing.T) {
 					}
 					defer os.Rename("/usr/bin/mokutil.bak", "/usr/bin/mokutil")
 				}
-			} else if tc.secureBootState == "" {
-				tc.secureBootState = "efi-nosb"
 			}
 
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
-			basePath := filepath.Join("testdata", tc.diskStruct)
-			devices := newFakeDevices(t, filepath.Join(basePath, "definition.yaml"))
-			devices.create(testDir, tc.diskStruct)
+			devices := newFakeDevices(t, filepath.Join(tc.diskStruct, "definition.yaml"))
+			devices.create(testDir, strings.ReplaceAll(strings.Replace(tc.diskStruct, bootListsDir+"/", "", 1), "/", "_"))
 
 			out := filepath.Join(testDir, "bootlist")
 			path := "PATH=mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
@@ -100,7 +98,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 				t.Fatal("got error, expected none", err)
 			}
 
-			reference := filepath.Join(basePath, "bootlist")
+			reference := filepath.Join(tc.diskStruct, "bootlist")
 			if *update {
 				if err := ioutil.WriteFile(reference, []byte(anonymizeTempDirNames(t, out)), 0644); err != nil {
 					t.Fatal("couldn't update reference file", err)
@@ -118,7 +116,7 @@ func TestMenuMetaData(t *testing.T) {
 	testCases := map[string]struct {
 		bootlist string
 	}{
-		"one zsys": {"onezsys"},
+		"one zsys": {"bootlists/efi-nosb/onezsys"},
 	}
 
 	for name, tc := range testCases {
