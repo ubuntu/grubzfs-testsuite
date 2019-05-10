@@ -25,36 +25,35 @@ func TestFromZFStoBootlist(t *testing.T) {
 
 	ensureBinaryMocks(t)
 
-	testCases := []struct {
-		name string
-
+	testCases := map[string]struct {
 		diskStruct      string
 		secureBootState string
 	}{
-		{"one zsys", "onezsys", "efi-nosb"},
-		{"secure boot", "sb", "efi-sb"},
-		{"filter kernel in secure boot", "filterkernel-sb", "efi-sb"},
-		{"filter kernel in non secure boot", "filterkernel", "efi-nosb"},
-		{"multiple kernels", "multiplekernels", "efi-nosb"},
-		{"vmlinuz and initrd don't match", "vmlinuz-initrd-dont-match", "efi-nosb"},
-		{"no /etc", "no-etc", "efi-nosb"},
-		{"no /boot", "no-boot", "efi-nosb"},
-		{"no last used", "no-last-used", "efi-nosb"},
-		{"no last booted kernel", "no-last-booted-kernel", "efi-nosb"},
-		{"one with canmount off", "one-with-canmount-off", "efi-nosb"},
-		{"one with canmount noauto", "one-with-canmount-noauto", "efi-nosb"},
-		{"last booted kernel is not the last one", "last-booted-kernel-not-last", "efi-nosb"},
-		{"last booted kernel doesn't match any kernel", "last-booted-kernel-doesnt-match", "efi-nosb"},
-		{"no pool", "nopool", "efi-nosb"},
-		{"one zfs", "onezfs", "efi-nosb"},
+		"one zsys":                                    {"onezsys", "efi-nosb"},
+		"secure boot":                                 {"sb", "efi-sb"},
+		"filter kernel in secure boot":                {"filterkernel-sb", "efi-sb"},
+		"filter kernel in non secure boot":            {"filterkernel", "efi-nosb"},
+		"multiple kernels":                            {"multiplekernels", "efi-nosb"},
+		"vmlinuz and initrd don't match":              {"vmlinuz-initrd-dont-match", "efi-nosb"},
+		"no /etc":                                     {"no-etc", "efi-nosb"},
+		"no /boot":                                    {"no-boot", "efi-nosb"},
+		"no last used":                                {"no-last-used", "efi-nosb"},
+		"no last booted kernel":                       {"no-last-booted-kernel", "efi-nosb"},
+		"one with canmount off":                       {"one-with-canmount-off", "efi-nosb"},
+		"one with canmount noauto":                    {"one-with-canmount-noauto", "efi-nosb"},
+		"last booted kernel is not the last one":      {"last-booted-kernel-not-last", "efi-nosb"},
+		"last booted kernel doesn't match any kernel": {"last-booted-kernel-doesnt-match", "efi-nosb"},
+		"no pool":                                     {"nopool", "efi-nosb"},
+		"one zfs":                                     {"onezfs", "efi-nosb"},
 	}
 
-	for _, tc := range testCases {
+	for name, tc := range testCases {
 		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+		name := name
+		t.Run(name, func(t *testing.T) {
 			if tc.secureBootState == "no-mokutil" {
 				if !*dangerous {
-					t.Skipf("don't run %q: dangerous is not set", tc.name)
+					t.Skipf("don't run %q: dangerous is not set", name)
 				}
 
 				// remove mokutil from PATH
@@ -106,17 +105,15 @@ func TestFromZFStoBootlist(t *testing.T) {
 func TestMenuMetaData(t *testing.T) {
 	t.Parallel()
 
-	testCases := []struct {
-		name string
-
+	testCases := map[string]struct {
 		bootlist string
 	}{
-		{"one zsys", "onezsys"},
+		"one zsys": {"onezsys"},
 	}
 
-	for _, tc := range testCases {
+	for name, tc := range testCases {
 		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
