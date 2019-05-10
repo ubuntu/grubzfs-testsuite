@@ -33,6 +33,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 		"secure boot":                                 {"sb", "efi-sb"},
 		"filter kernel in secure boot":                {"filterkernel-sb", "efi-sb"},
 		"filter kernel in non secure boot":            {"filterkernel", ""},
+		"filter kernel without mokutil":               {"filterkernel", "no-mokutil"},
 		"multiple kernels":                            {"multiplekernels", ""},
 		"vmlinuz and initrd don't match":              {"vmlinuz-initrd-dont-match", ""},
 		"no /etc":                                     {"no-etc", ""},
@@ -45,6 +46,13 @@ func TestFromZFStoBootlist(t *testing.T) {
 		"last booted kernel doesn't match any kernel": {"last-booted-kernel-doesnt-match", ""},
 		"no pool":                                     {"nopool", ""},
 		"one zfs":                                     {"onezfs", ""},
+		"separated /etc persistent":                   {"separated-etc-persistent", ""},
+		"separated /etc persistent noautomount":       {"separated-etc-persistent-noautomount", ""},
+		"separated /etc persistent separate pools":    {"separated-etc-persistent-separate-pools", ""},
+		"separated /etc persistent 2 pools same base dataset": {"separated-etc-separate-pools-samebasedataset", ""},
+		"separated /etc sub dataset":                          {"separated-etc-subdataset", ""},
+		"separated /etc sub dataset noauto":                   {"separated-etc-subdataset-noauto", ""},
+		"separated /etc sub dataset priority":                 {"separated-etc-subdataset-priority", ""},
 	}
 
 	for name, tc := range testCases {
