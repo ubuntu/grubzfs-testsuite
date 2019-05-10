@@ -170,6 +170,13 @@ func (fdevice FakeDevices) create(path, testName string) {
 
 					if shouldMount {
 						replaceContent(fdevice.T, dataset.Content, datasetPath)
+						// We need to ensure that / has at least empty /boot and /etc mountpoint to mount parent
+						// dataset or file system
+						if dataset.Mountpoint == "/" {
+							for _, p := range []string{"/boot", "/etc"} {
+								os.MkdirAll(filepath.Join(datasetPath, p), os.ModeDir)
+							}
+						}
 					}
 				}()
 
