@@ -184,9 +184,9 @@ func ensureBinaryMocks(t *testing.T) {
 	})
 }
 
-// anonymizeTempDirNames ununiquifies the name of the temporary directory, so
-// we can compare the content generated with update to the content generated
-// during the test.
+// anonymizeTempDirNames ununiquifies the name of the temporary directory, or
+// loop devices so that we can compare the content generated with update
+// to the content generated during the test.
 func anonymizeTempDirNames(t *testing.T, path string) string {
 	t.Helper()
 
@@ -196,11 +196,15 @@ func anonymizeTempDirNames(t *testing.T, path string) string {
 	}
 	defer f.Close()
 
-	re := regexp.MustCompile("/tmp/grubtests-[[:alnum:]]+/")
+	filere := regexp.MustCompile("/tmp/grubtests-[[:alnum:]]+/")
+	devloopre := regexp.MustCompile("/dev/loop[[:digit:]]+")
 	s := bufio.NewScanner(f)
 	var out string
 	for s.Scan() {
-		out = out + re.ReplaceAllString(s.Text(), "") + "\n"
+		out = out +
+			devloopre.ReplaceAllString(
+				filere.ReplaceAllString(s.Text(), ""),
+				"/dev/loop00") + "\n"
 	}
 	if err := s.Err(); err != nil {
 		t.Fatalf("can't anynomize file %q: %v", path, err)

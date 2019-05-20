@@ -26,9 +26,10 @@ type FakeDevices struct {
 }
 
 type FakeDevice struct {
-	Name string
-	Type string
-	ZFS  struct {
+	Name    string
+	Type    string
+	Content map[string]string
+	ZFS     struct {
 		PoolName string `yaml:"pool_name"`
 		Datasets []struct {
 			Name             string
@@ -83,6 +84,11 @@ func (fdevice FakeDevices) create(path, testName string) {
 		}
 		f.Close()
 
+		deviceMountPath := filepath.Join(path, device.Name)
+		if err := os.MkdirAll(deviceMountPath, os.ModeDir); err != nil {
+			fdevice.Fatal("couldn't create directory for pool", err)
+		}
+
 		switch strings.ToLower(device.Type) {
 		case "zfs":
 			// WORKAROUND: we need to use dirname of path as creating 2 consecutives pools with similar dataset name
@@ -90,10 +96,6 @@ func (fdevice FakeDevices) create(path, testName string) {
 			// Of course, the resulting mountpoint will be wrong.
 			poolName := testName + "-" + device.ZFS.PoolName
 
-			poolMountPath := filepath.Join(path, device.Name)
-			if err := os.MkdirAll(poolMountPath, os.ModeDir); err != nil {
-				fdevice.Fatal("couldn't create directory for pool", err)
-			}
 			vdev := zfs.VDevTree{
 				Type:    zfs.VDevTypeFile,
 				Path:    p,
@@ -102,7 +104,7 @@ func (fdevice FakeDevices) create(path, testName string) {
 
 			features := make(map[string]string)
 			props := make(map[zfs.Prop]string)
-			props[zfs.PoolPropAltroot] = poolMountPath
+			props[zfs.PoolPropAltroot] = deviceMountPath
 			fsprops := make(map[zfs.Prop]string)
 			fsprops[zfs.DatasetPropMountpoint] = "/"
 			fsprops[zfs.DatasetPropCanmount] = "off"
@@ -154,9 +156,9 @@ func (fdevice FakeDevices) create(path, testName string) {
 							if err := d.Mount("", 0); err != nil {
 								fdevice.Fatalf("couldn't mount dataset: %q: %v", datasetName, err)
 							}
-							// Mount manually datasetPath if set to legacy to "/" (poolMountPath)
+							// Mount manually datasetPath if set to legacy to "/" (deviceMountPath)
 						} else {
-							datasetPath = poolMountPath
+							datasetPath = deviceMountPath
 							if err := syscall.Mount(datasetName, datasetPath, "zfs", 0, ""); err != nil {
 								fdevice.Fatalf("couldn't manually mount dataset: %q: %v", datasetName, err)
 							}
@@ -225,13 +227,22 @@ func (fdevice FakeDevices) create(path, testName string) {
 			}
 
 		case "ext4":
-			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-			defer cancel()
-			cmd := exec.CommandContext(ctx, "mkfs.ext4", "-q", "-F", p)
+			go func() {
+				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+				defer cancel()
+				cmd := exec.CommandContext(ctx, "mkfs.ext4", "-q", "-F", p)
+				if err := cmd.Run(); err != nil {
+					fdevice.Fatalf("couldn't format %q to ext4: %v", p, err)
+				}
 
-			if err := cmd.Run(); err != nil {
-				fdevice.Fatal("got error, expected none", err)
-			}
+				cmd = exec.CommandContext(ctx, "mount", "-t", "ext4", p, deviceMountPath)
+				if err := cmd.Run(); err != nil {
+					fdevice.Fatalf("couldn't mount ext4 partition: %v", err)
+				}
+				defer syscall.Unmount(deviceMountPath, 0)
+
+				replaceContent(fdevice.T, device.Content, deviceMountPath)
+			}()
 
 		case "":
 			// do nothing for "no pool, no partition" (empty disk)
@@ -240,7 +251,6 @@ func (fdevice FakeDevices) create(path, testName string) {
 			fdevice.Fatalf("unknown type: %s", device.Type)
 		}
 	}
-
 }
 
 // replaceContent replaces content (map) in dst from src content (preserving src)
