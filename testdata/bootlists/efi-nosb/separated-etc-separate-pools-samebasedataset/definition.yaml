@@ -24,10 +24,7 @@ devices:
         - name: ROOT
           mountpoint: none
         - name: ROOT/ubuntu
-          canmount: noauto
-          mountpoint: /
-        - name: ROOT/ubuntu/etc
           content:
             /: etc/machine1-19.04
-          zsys_bootfs: true
+          mountpoint: /etc
           canmount: on
