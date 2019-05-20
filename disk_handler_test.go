@@ -25,6 +25,12 @@ type FakeDevices struct {
 	*testing.T
 }
 
+type FstabEntry struct {
+	Filesystem string
+	Mountpoint string
+	Type       string
+}
+
 type FakeDevice struct {
 	Name    string
 	Type    string
@@ -42,14 +48,11 @@ type FakeDevice struct {
 			Snapshots        []struct {
 				Name             string
 				Content          map[string]string
+				Fstab            []FstabEntry
 				CreationDate     time.Time `yaml:"creation_date"`
 				LastBootedKernel string    `yaml:"last_booted_kernel"`
 			}
-			Fstab []struct {
-				Filesystem string
-				Mountpoint string
-				Type       string
-			}
+			Fstab []FstabEntry
 		}
 	}
 }
