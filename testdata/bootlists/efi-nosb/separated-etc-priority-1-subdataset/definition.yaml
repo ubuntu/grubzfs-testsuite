@@ -1,0 +1,47 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content:
+            /boot: boot/one-kernel
+            /etc: etc/machine2-18.10
+          zsys_bootfs: true
+          last_used: 2019-05-02T16:20:55+00:00
+          last_booted_kernel: /boot/vmlinuz-5.0.0-13-generic
+          mountpoint: /
+          canmount: on
+        # This one has priority
+        - name: ROOT/ubuntu/etc
+          content:
+            /etc: etc/machine1-19.04
+          zsys_bootfs: true
+          canmount: on
+        - name: etc
+          content:
+            /: etc/machine2-18.10
+          zsys_bootfs: true
+          mountpoint: /etc
+          canmount: on
+  - name: secondary
+    type: zfs
+    zfs:
+      pool_name: etcpool
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content:
+            /: etc/machine2-18.10
+          mountpoint: /etc
+          canmount: on
+        - name: etc
+          content:
+            /: etc/machine2-18.10
+          zsys_bootfs: true
+          mountpoint: /etc
+          canmount: on
