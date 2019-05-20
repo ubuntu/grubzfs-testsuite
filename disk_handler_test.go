@@ -174,6 +174,7 @@ func (fdevice FakeDevices) create(path, testName string) {
 					for _, s := range dataset.Snapshots {
 						func() {
 							replaceContent(fdevice.T, s.Content, datasetPath)
+							completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, s.Fstab)
 							props := make(map[zfs.Prop]zfs.Property)
 							d, err := zfs.DatasetSnapshot(datasetName+"@"+s.Name, false, props)
 							if err != nil {
@@ -190,43 +191,9 @@ func (fdevice FakeDevices) create(path, testName string) {
 
 					if shouldMount {
 						replaceContent(fdevice.T, dataset.Content, datasetPath)
-						// We need to ensure that / has at least empty /boot and /etc mountpoint to mount parent
-						// dataset or file system
-						if dataset.Mountpoint == "/" {
-							for _, p := range []string{"/boot", "/etc"} {
-								os.MkdirAll(filepath.Join(datasetPath, p), os.ModeDir)
-							}
-						}
-						// Generate a fstab if there is some needs as pool and disk names are dynamic
-						fstabPath := filepath.Join(datasetPath, "etc", "fstab")
-						if dataset.Mountpoint == "/etc" {
-							fstabPath = filepath.Join(datasetPath, "fstab")
-						}
-						for _, fstabEntry := range dataset.Fstab {
-							f, err := os.OpenFile(fstabPath, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660)
-							if err != nil {
-								fdevice.Fatal("couldn't append to fstab", err)
-							}
-							defer f.Close()
-
-							var filesystem string
-							switch fstabEntry.Type {
-							case "zfs":
-								filesystem = testName + "-" + fstabEntry.Filesystem
-							case "ext4":
-								filesystem = filepath.Join(path, fstabEntry.Filesystem+".disk")
-							default:
-								fdevice.Fatalf("invalid filesystem type: %s", fstabEntry.Type)
-							}
-							if _, err := f.Write([]byte(
-								fmt.Sprintf("%s\t%s\t%s\tdefaults\t0\t0\n",
-									filesystem, fstabEntry.Mountpoint, fstabEntry.Type))); err != nil {
-								fdevice.Fatal("couldn't write to fstab", err)
-							}
-						}
+						completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, dataset.Fstab)
 					}
 				}()
-
 			}
 
 		case "ext4":
@@ -252,6 +219,45 @@ func (fdevice FakeDevices) create(path, testName string) {
 
 		default:
 			fdevice.Fatalf("unknown type: %s", device.Type)
+		}
+	}
+}
+
+// completeSystemWithFstab ensures the system has required /boot and /etc, and can take a dynamically generated
+// fstab
+func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPath string, entries []FstabEntry) {
+	// We need to ensure that / has at least empty /boot and /etc mountpoint to mount parent
+	// dataset or file system
+	if mountpoint == "/" {
+		for _, p := range []string{"/boot", "/etc"} {
+			os.MkdirAll(filepath.Join(datasetPath, p), os.ModeDir)
+		}
+	}
+	// Generate a fstab if there is some needs as pool and disk names are dynamic
+	fstabPath := filepath.Join(datasetPath, "etc", "fstab")
+	if mountpoint == "/etc" {
+		fstabPath = filepath.Join(datasetPath, "fstab")
+	}
+	for _, fstabEntry := range entries {
+		f, err := os.OpenFile(fstabPath, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660)
+		if err != nil {
+			t.Fatal("couldn't append to fstab", err)
+		}
+		defer f.Close()
+
+		var filesystem string
+		switch fstabEntry.Type {
+		case "zfs":
+			filesystem = testName + "-" + fstabEntry.Filesystem
+		case "ext4":
+			filesystem = filepath.Join(path, fstabEntry.Filesystem+".disk")
+		default:
+			t.Fatalf("invalid filesystem type: %s", fstabEntry.Type)
+		}
+		if _, err := f.Write([]byte(
+			fmt.Sprintf("%s\t%s\t%s\tdefaults\t0\t0\n",
+				filesystem, fstabEntry.Mountpoint, fstabEntry.Type))); err != nil {
+			t.Fatal("couldn't write to fstab", err)
 		}
 	}
 }
