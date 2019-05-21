@@ -182,7 +182,14 @@ func (fdevice FakeDevices) create(path, testName string) {
 								os.Exit(1)
 							}
 							defer d.Close()
-							d.SetUserProperty("org.zsys:creation.test", strconv.FormatInt(s.CreationDate.Unix(), 10))
+
+							// Convert time in current timezone for mock
+							location, err := time.LoadLocation("Local")
+							if err != nil {
+								fdevice.Fatal("couldn't get current timezone", err)
+							}
+							d.SetUserProperty("org.zsys:creation.test", s.CreationDate.In(location).Format("Mon Jan 2 15:04 2006"))
+
 							if s.LastBootedKernel != "" {
 								d.SetUserProperty("org.zsys:last-booted-kernel", s.LastBootedKernel)
 							}
