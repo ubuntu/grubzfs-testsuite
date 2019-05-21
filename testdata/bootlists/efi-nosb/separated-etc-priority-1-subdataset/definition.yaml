@@ -18,7 +18,7 @@ devices:
         # This one has priority
         - name: ROOT/ubuntu/etc
           content:
-            /etc: etc/machine1-19.04
+            /: etc/machine1-19.04
           zsys_bootfs: true
           canmount: on
         - name: etc
