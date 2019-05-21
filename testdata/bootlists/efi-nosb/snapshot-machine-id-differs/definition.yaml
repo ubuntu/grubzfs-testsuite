@@ -17,15 +17,9 @@ devices:
           mountpoint: /
           canmount: on
           snapshots:
-            - name: snap2
-              content:
-                /boot: boot/one-kernel-4.15
-                /etc: etc/machine1-18.10
-              creation_date: 2019-04-29T12:34:56+00:00
-              last_booted_kernel: /boot/vmlinuz-4.15.0-13-generic
             - name: snap1
               content:
-                /boot: boot/three-kernels
-                /etc: etc/machine1-19.04
+                /boot: boot/one-kernel-4.15
+                /etc: etc/machine2-18.10
               creation_date: 2019-05-01T01:23:45+00:00
-              last_booted_kernel: /boot/vmlinuz-5.0.0-13-generic
+              last_booted_kernel: /boot/vmlinuz-4.15.0-13-generic
