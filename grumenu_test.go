@@ -78,21 +78,28 @@ func TestFromZFStoBootlist(t *testing.T) {
 			defer cleanUp()
 
 			devices := newFakeDevices(t, filepath.Join(tc.diskStruct, "definition.yaml"))
-			devices.create(testDir, strings.ReplaceAll(strings.Replace(tc.diskStruct, bootListsDir+"/", "", 1), "/", "_"))
+			systemRootDataset := devices.create(testDir, strings.ReplaceAll(strings.Replace(tc.diskStruct, bootListsDir+"/", "", 1), "/", "_"))
 
 			out := filepath.Join(testDir, "bootlist")
 			path := "PATH=mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
-			securebootEnv := ""
+			var securebootEnv string
 			if tc.secureBootState != "no-mokutil" {
 				path = "PATH=mocks/mokutil:mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
 				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + tc.secureBootState
 			}
+
+			var mockZFSDatasetEnv string
+			if systemRootDataset != "" {
+				mockZFSDatasetEnv = "TEST_MOCKZFS_CURRENT_ROOT_DATASET=" + systemRootDataset
+			}
+
 			env := append(os.Environ(),
 				path,
 				"TEST_POOL_DIR="+testDir,
 				"GRUB_LINUX_ZFS_TEST=bootlist",
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out,
-				securebootEnv)
+				securebootEnv,
+				mockZFSDatasetEnv)
 
 			if err := runGrubMkConfig(t, env, testDir); err != nil {
 				t.Fatal("got error, expected none", err)
@@ -295,7 +302,7 @@ func updateMkConfig(t *testing.T, path, tmpdir string) {
 			strings.ReplaceAll(s.Text(),
 				`sysconfdir="/etc"`,
 				`sysconfdir="`+tmpdir+`/etc"`+
-					"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT")+"\n")...)
+					"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET")+"\n")...)
 	}
 	if err := s.Err(); err != nil {
 		t.Fatalf("can't replace sysconfigdir in %q: %v", path, err)

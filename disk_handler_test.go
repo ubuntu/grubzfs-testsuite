@@ -38,14 +38,15 @@ type FakeDevice struct {
 	ZFS     struct {
 		PoolName string `yaml:"pool_name"`
 		Datasets []struct {
-			Name             string
-			Content          map[string]string
-			ZsysBootfs       bool      `yaml:"zsys_bootfs"`
-			LastUsed         time.Time `yaml:"last_used"`
-			LastBootedKernel string    `yaml:"last_booted_kernel"`
-			Mountpoint       string
-			CanMount         string
-			Snapshots        []struct {
+			Name                string
+			Content             map[string]string
+			IsCurrentSystemRoot bool      `yaml:"is_current_system_root"`
+			ZsysBootfs          bool      `yaml:"zsys_bootfs"`
+			LastUsed            time.Time `yaml:"last_used"`
+			LastBootedKernel    string    `yaml:"last_booted_kernel"`
+			Mountpoint          string
+			CanMount            string
+			Snapshots           []struct {
 				Name             string
 				Content          map[string]string
 				Fstab            []FstabEntry
@@ -71,8 +72,11 @@ func newFakeDevices(t *testing.T, path string) FakeDevices {
 	return devices
 }
 
-// create on disk mock devices as files
-func (fdevice FakeDevices) create(path, testName string) {
+// create on disk mock devices as files and return the main dataset
+// which is set as root, if any
+func (fdevice FakeDevices) create(path, testName string) string {
+	var systemRootDataset string
+
 	for _, device := range fdevice.Devices {
 
 		// Create file on disk
@@ -122,6 +126,9 @@ func (fdevice FakeDevices) create(path, testName string) {
 			for _, dataset := range device.ZFS.Datasets {
 				func() {
 					datasetName := poolName + "/" + dataset.Name
+					if dataset.IsCurrentSystemRoot {
+						systemRootDataset = datasetName
+					}
 					datasetPath := ""
 					shouldMount := false
 					props := make(map[zfs.Prop]zfs.Property)
@@ -228,6 +235,8 @@ func (fdevice FakeDevices) create(path, testName string) {
 			fdevice.Fatalf("unknown type: %s", device.Type)
 		}
 	}
+
+	return systemRootDataset
 }
 
 // completeSystemWithFstab ensures the system has required /boot and /etc, and can take a dynamically generated

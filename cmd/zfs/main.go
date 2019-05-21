@@ -1,13 +1,16 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
 )
 
 const creationCmd = "zfs get -H creation "
+const listCurrentSystemDatasetCmd = "zfs list -H -oname,mounted,mountpoint -t filesystem"
 
 func main() {
 	cmdLine := strings.Join(os.Args, " ")
@@ -19,7 +22,37 @@ func main() {
 
 	cmd := exec.Command("/sbin/zfs", args...)
 	cmd.Stderr = os.Stderr
-	cmd.Stdout = os.Stdout
+
+	outPipe, err := cmd.StdoutPipe()
+	if err != nil {
+		fmt.Println("Can't create stdout pipe", err)
+		os.Exit(2)
+	}
+
+	go func() {
+		var err error
+
+		currentRootDataset := os.Getenv("TEST_MOCKZFS_CURRENT_ROOT_DATASET")
+		if cmdLine == listCurrentSystemDatasetCmd && currentRootDataset != "" {
+			s := bufio.NewScanner(outPipe)
+			for s.Scan() {
+				t := s.Text()
+				if strings.HasPrefix(t, currentRootDataset+"\t") {
+					t = strings.ReplaceAll(t, "\tno\t", "\tyes\t")
+				}
+				fmt.Println(t)
+			}
+			err = s.Err()
+		} else {
+			_, err = io.Copy(os.Stdout, outPipe)
+		}
+
+		if err != nil {
+			fmt.Println("Can't output zfs command", err)
+			os.Exit(2)
+		}
+	}()
+
 	cmd.Stdin = os.Stdin
 	if err := cmd.Run(); err != nil {
 		if exiterr, ok := err.(*exec.ExitError); ok {
