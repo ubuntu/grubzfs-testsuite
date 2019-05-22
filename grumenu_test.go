@@ -120,10 +120,20 @@ func TestFromZFStoBootlist(t *testing.T) {
 func TestMenuMetaData(t *testing.T) {
 	t.Parallel()
 
-	testCases := map[string]struct {
-		bootlist string
-	}{
-		"one zsys": {"bootlists/efi-nosb/onezsys"},
+	type TestCase struct {
+		path string
+	}
+	testCases := make(map[string]TestCase)
+
+	menuMetaDir := "testdata/menumeta"
+	dirs, err := ioutil.ReadDir(menuMetaDir)
+	if err != nil {
+		t.Fatal("couldn't read menumeta directory", err)
+	}
+	for _, d := range dirs {
+		testCases[d.Name()] = TestCase{
+			path: filepath.Join(menuMetaDir, d.Name()),
+		}
 	}
 
 	for name, tc := range testCases {
@@ -133,20 +143,19 @@ func TestMenuMetaData(t *testing.T) {
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
-			basePath := filepath.Join("testdata", tc.bootlist)
 			out := getTempOrReferenceFile(t, *update,
 				filepath.Join(testDir, "menumeta"),
-				filepath.Join(basePath, "menumeta"))
+				filepath.Join(tc.path, "menumeta"))
 			env := append(os.Environ(),
 				"GRUB_LINUX_ZFS_TEST=metamenu",
-				"GRUB_LINUX_ZFS_TEST_INPUT="+filepath.Join(basePath, "bootlist"),
+				"GRUB_LINUX_ZFS_TEST_INPUT="+filepath.Join(tc.path, "bootlist"),
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out)
 
 			if err := runGrubMkConfig(t, env, testDir); err != nil {
 				t.Fatal("got error, expected none", err)
 			}
 
-			assertFileContentAlmostEquals(t, out, filepath.Join(basePath, "menumeta"), "generated and reference files are different.")
+			assertFileContentAlmostEquals(t, out, filepath.Join(tc.path, "menumeta"), "generated and reference files are different.")
 		})
 	}
 }
