@@ -148,12 +148,12 @@ func (fdevice FakeDevices) create(path, testName string) string {
 					defer d.Close()
 					if dataset.ZsysBootfs {
 						d.SetUserProperty("org.zsys:bootfs", "yes")
+						if !dataset.LastUsed.IsZero() {
+							d.SetUserProperty("org.zsys:last-used", strconv.FormatInt(dataset.LastUsed.Unix(), 10))
+						}
 					}
 					if dataset.LastBootedKernel != "" {
 						d.SetUserProperty("org.zsys:last-booted-kernel", dataset.LastBootedKernel)
-					}
-					if !dataset.LastUsed.IsZero() {
-						d.SetUserProperty("org.zsys:last-used", strconv.FormatInt(dataset.LastUsed.Unix(), 10))
 					}
 					if shouldMount {
 						// get potentially inherited mountpoint path
@@ -181,7 +181,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 					for _, s := range dataset.Snapshots {
 						func() {
 							replaceContent(fdevice.T, s.Content, datasetPath)
-							completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, s.Fstab)
+							completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, false, time.Time{}, s.Fstab)
 							props := make(map[zfs.Prop]zfs.Property)
 							d, err := zfs.DatasetSnapshot(datasetName+"@"+s.Name, false, props)
 							if err != nil {
@@ -205,7 +205,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 
 					if shouldMount {
 						replaceContent(fdevice.T, dataset.Content, datasetPath)
-						completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, dataset.Fstab)
+						completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, dataset.ZsysBootfs, dataset.LastUsed, dataset.Fstab)
 					}
 				}()
 			}
@@ -239,9 +239,14 @@ func (fdevice FakeDevices) create(path, testName string) string {
 	return systemRootDataset
 }
 
-// completeSystemWithFstab ensures the system has required /boot and /etc, and can take a dynamically generated
-// fstab
-func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPath string, entries []FstabEntry) {
+// completeSystemWithFstab ensures the system has required /boot and /etc,
+// it can update /etc/machine-id access time for non zsys systems
+// and can take a dynamically generated fstab
+func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPath string, isZsys bool, lastUsed time.Time, entries []FstabEntry) {
+	if mountpoint != "/" && mountpoint != "/etc" {
+		return
+	}
+
 	// We need to ensure that / has at least empty /boot and /etc mountpoint to mount parent
 	// dataset or file system
 	if mountpoint == "/" {
@@ -251,9 +256,12 @@ func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPa
 	}
 	// Generate a fstab if there is some needs as pool and disk names are dynamic
 	fstabPath := filepath.Join(datasetPath, "etc", "fstab")
+	machineIdPath := filepath.Join(datasetPath, "etc", "machine-id")
 	if mountpoint == "/etc" {
 		fstabPath = filepath.Join(datasetPath, "fstab")
+		machineIdPath = filepath.Join(datasetPath, "machine-id")
 	}
+
 	for _, fstabEntry := range entries {
 		f, err := os.OpenFile(fstabPath, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660)
 		if err != nil {
@@ -275,6 +283,22 @@ func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPa
 				filesystem, fstabEntry.Mountpoint, fstabEntry.Type))); err != nil {
 			t.Fatal("couldn't write to fstab", err)
 		}
+	}
+
+	// Change access time on machine-id. If zero, set magic date (2042) for non zsys systems
+	if lastUsed.IsZero() {
+		var err error
+		lastUsed, err = time.Parse("2006", "2042")
+		if err != nil {
+			t.Fatal("couldn't create magic 2042 date", err)
+		}
+	}
+	// on separated /etc, /etc/machine-id doesn't exists
+	if _, err := os.Stat(machineIdPath); os.IsNotExist(err) {
+		return
+	}
+	if err := os.Chtimes(machineIdPath, lastUsed, lastUsed); err != nil {
+		t.Fatal("couldn't change access time for machine-id", err)
 	}
 }
 

@@ -81,10 +81,10 @@ func TestFromZFStoBootlist(t *testing.T) {
 			systemRootDataset := devices.create(testDir, strings.ReplaceAll(strings.Replace(tc.diskStruct, bootListsDir+"/", "", 1), "/", "_"))
 
 			out := filepath.Join(testDir, "bootlist")
-			path := "PATH=mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
+			path := "PATH=mocks/zpool:mocks/zfs:mocks/date:" + os.Getenv("PATH")
 			var securebootEnv string
 			if tc.secureBootState != "no-mokutil" {
-				path = "PATH=mocks/mokutil:mocks/zpool:mocks/zfs:" + os.Getenv("PATH")
+				path = "PATH=mocks/mokutil:mocks/zpool:mocks/zfs:mocks/date:" + os.Getenv("PATH")
 				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + tc.secureBootState
 			}
 
@@ -186,7 +186,7 @@ func ensureBinaryMocks(t *testing.T) {
 	t.Helper()
 
 	compileMocksOnce.Do(func() {
-		for _, mock := range []string{"mokutil", "zfs", "zpool"} {
+		for _, mock := range []string{"mokutil", "zfs", "zpool", "date"} {
 			if _, err := os.Stat(filepath.Join("mocks", mock)); os.IsExist(err) {
 				continue
 			}

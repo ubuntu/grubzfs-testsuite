@@ -10,7 +10,7 @@ import (
 )
 
 const creationCmd = "zfs get -H creation "
-const listCurrentSystemDatasetCmd = "zfs list -H -oname,mounted,mountpoint -t filesystem"
+const listCurrentSystemDatasetCmd = "zfs mount"
 
 func main() {
 	cmdLine := strings.Join(os.Args, " ")
@@ -38,8 +38,8 @@ func main() {
 		s := bufio.NewScanner(outPipe)
 		for s.Scan() {
 			t := s.Text()
-			if strings.HasPrefix(t, currentRootDataset+"\t") {
-				t = strings.ReplaceAll(t, "\tno\t", "\tyes\t")
+			if strings.HasPrefix(t, currentRootDataset+" ") {
+				t = currentRootDataset + " /"
 			}
 			fmt.Println(t)
 		}
