@@ -25,40 +25,43 @@ func main() {
 
 	outPipe, err := cmd.StdoutPipe()
 	if err != nil {
-		fmt.Println("Can't create stdout pipe", err)
+		fmt.Fprintf(os.Stderr, "Can't create stdout pipe: %v", err)
 		os.Exit(2)
 	}
 
-	go func() {
-		var err error
-
-		currentRootDataset := os.Getenv("TEST_MOCKZFS_CURRENT_ROOT_DATASET")
-		if cmdLine == listCurrentSystemDatasetCmd && currentRootDataset != "" {
-			s := bufio.NewScanner(outPipe)
-			for s.Scan() {
-				t := s.Text()
-				if strings.HasPrefix(t, currentRootDataset+"\t") {
-					t = strings.ReplaceAll(t, "\tno\t", "\tyes\t")
-				}
-				fmt.Println(t)
+	if err := cmd.Start(); err != nil {
+		fmt.Fprintf(os.Stderr, "Unexpected error when trying to start zfs: %v", err)
+		os.Exit(2)
+	}
+	currentRootDataset := os.Getenv("TEST_MOCKZFS_CURRENT_ROOT_DATASET")
+	if cmdLine == listCurrentSystemDatasetCmd && currentRootDataset != "" {
+		s := bufio.NewScanner(outPipe)
+		for s.Scan() {
+			t := s.Text()
+			if strings.HasPrefix(t, currentRootDataset+"\t") {
+				t = strings.ReplaceAll(t, "\tno\t", "\tyes\t")
 			}
-			err = s.Err()
-		} else {
-			_, err = io.Copy(os.Stdout, outPipe)
+			fmt.Println(t)
 		}
-
+		err = s.Err()
 		if err != nil {
-			fmt.Println("Can't output zfs command", err)
+			fmt.Fprintf(os.Stderr, "Can't FILTER zfs command: %v", err)
 			os.Exit(2)
 		}
-	}()
+	} else {
+		_, err = io.Copy(os.Stdout, outPipe)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Can't COPY zfs command: %v", err)
+			os.Exit(2)
+		}
+	}
 
 	cmd.Stdin = os.Stdin
-	if err := cmd.Run(); err != nil {
+	if err := cmd.Wait(); err != nil {
 		if exiterr, ok := err.(*exec.ExitError); ok {
 			os.Exit(exiterr.ExitCode())
 		}
-		fmt.Println("Unexpected error when trying to execute zfs", err)
+		fmt.Fprintf(os.Stderr, "Unexpected error when trying to execute zfs: %v", err)
 		os.Exit(2)
 	}
 	os.Exit(0)
