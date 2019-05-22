@@ -1,0 +1,2 @@
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_onezsys-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_onezsys-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	true

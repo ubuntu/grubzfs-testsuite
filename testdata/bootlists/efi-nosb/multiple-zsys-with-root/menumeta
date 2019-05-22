@@ -1,0 +1,6 @@
+22222222222222222222222222222222	yes	main	Ubuntu 18.10	efi-nosb_multiple-zsys-with-root-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic
+22222222222222222222222222222222	yes	advanced	Ubuntu 18.10	efi-nosb_multiple-zsys-with-root-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic	false
+22222222222222222222222222222222	yes	advanced	Ubuntu 18.10	efi-nosb_multiple-zsys-with-root-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-12-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-12-generic	false
+22222222222222222222222222222222	yes	advanced	Ubuntu 18.10	efi-nosb_multiple-zsys-with-root-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-4.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic	true
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_multiple-zsys-with-root-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_multiple-zsys-with-root-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	true
