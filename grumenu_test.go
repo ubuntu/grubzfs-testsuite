@@ -25,42 +25,13 @@ func TestFromZFStoBootlist(t *testing.T) {
 
 	ensureBinaryMocks(t)
 
-	type TestCase struct {
-		diskStruct      string
-		secureBootState string
-	}
-	testCases := make(map[string]TestCase)
-
-	bootListsDir := "testdata/bootlists"
-	dirs, err := ioutil.ReadDir(bootListsDir)
-	if err != nil {
-		t.Fatal("couldn't read bootlists modes", err)
-	}
-	for _, d := range dirs {
-		tcDirs, err := ioutil.ReadDir(filepath.Join(bootListsDir, d.Name()))
-		if err != nil {
-			t.Fatal("couldn't read bootlists test cases", err)
-		}
-
-		for _, tcd := range tcDirs {
-			tcName := filepath.Join(d.Name(), tcd.Name())
-			tcPath := filepath.Join(bootListsDir, tcName)
-			if err != nil {
-				t.Fatal("couldn't read test case", err)
-			}
-
-			testCases[tcName] = TestCase{
-				diskStruct:      tcPath,
-				secureBootState: d.Name(),
-			}
-		}
-	}
-
+	testCases := newTestCases(t)
 	for name, tc := range testCases {
 		tc := tc
 		name := name
 		t.Run(name, func(t *testing.T) {
-			if tc.secureBootState == "no-mokutil" {
+			secureBootState := filepath.Base(filepath.Dir(tc.path))
+			if secureBootState == "no-mokutil" {
 				if !*dangerous {
 					t.Skipf("don't run %q: dangerous is not set", name)
 				}
@@ -77,15 +48,15 @@ func TestFromZFStoBootlist(t *testing.T) {
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
-			devices := newFakeDevices(t, filepath.Join(tc.diskStruct, "definition.yaml"))
-			systemRootDataset := devices.create(testDir, strings.ReplaceAll(strings.Replace(tc.diskStruct, bootListsDir+"/", "", 1), "/", "_"))
+			devices := newFakeDevices(t, filepath.Join(tc.path, "definition.yaml"))
+			systemRootDataset := devices.create(testDir, tc.fullTestName)
 
 			out := filepath.Join(testDir, "bootlist")
 			path := "PATH=mocks/zpool:mocks/zfs:mocks/date:" + os.Getenv("PATH")
 			var securebootEnv string
-			if tc.secureBootState != "no-mokutil" {
+			if secureBootState != "no-mokutil" {
 				path = "PATH=mocks/mokutil:mocks/zpool:mocks/zfs:mocks/date:" + os.Getenv("PATH")
-				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + tc.secureBootState
+				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + secureBootState
 			}
 
 			var mockZFSDatasetEnv string
@@ -105,7 +76,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 				t.Fatal("got error, expected none", err)
 			}
 
-			reference := filepath.Join(tc.diskStruct, "bootlist")
+			reference := filepath.Join(tc.path, "bootlist")
 			if *update {
 				if err := ioutil.WriteFile(reference, []byte(anonymizeTempDirNames(t, out)), 0644); err != nil {
 					t.Fatal("couldn't update reference file", err)
@@ -136,6 +107,7 @@ func TestMenuMetaData(t *testing.T) {
 		}
 	}
 
+	testCases := newTestCases(t)
 	for name, tc := range testCases {
 		tc := tc
 		t.Run(name, func(t *testing.T) {
