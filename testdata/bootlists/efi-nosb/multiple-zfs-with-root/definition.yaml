@@ -11,13 +11,16 @@ devices:
             /boot: boot/one-kernel
             /etc: etc/machine1-19.04
           zsys_bootfs: false
+          last_used: 2019-05-02T16:20:55+00:00
           mountpoint: /
           canmount: on
         - name: ROOT/ubuntu_2
           content:
             /boot: boot/three-kernels
             /etc: etc/machine2-18.10
-          is_current_system_root: true
           zsys_bootfs: false
+          # earlier than above, but current system
+          last_used: 2019-05-01T01:23:34+00:00
+          is_current_system_root: true
           mountpoint: /
           canmount: on

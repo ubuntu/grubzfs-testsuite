@@ -21,6 +21,7 @@ devices:
             /etc: etc/machine1-19.04
           is_current_system_root: true
           zsys_bootfs: false
+          last_used: 2019-05-03T01:23:34+00:00
           mountpoint: /
           canmount: on
         - name: ROOT/ubuntu_3
@@ -37,5 +38,6 @@ devices:
             /boot: boot/three-kernels
             /etc: etc/machine2-18.10
           zsys_bootfs: false
+          last_used: 2018-12-01T04:20:55+00:00
           mountpoint: /
           canmount: on

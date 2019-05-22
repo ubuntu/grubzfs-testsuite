@@ -18,6 +18,7 @@ devices:
           content:
             /etc: etc/machine2-18.10
           zsys_bootfs: false
+          last_used: 2019-05-01T01:23:34+00:00
           mountpoint: /
           canmount: on
   - name: secondary
