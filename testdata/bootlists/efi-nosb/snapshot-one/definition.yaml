@@ -20,6 +20,6 @@ devices:
             - name: snap1
               content:
                 /boot: boot/one-kernel-4.15
-                /etc: etc/machine1-18.10
+                /etc: etc/machine1-19.04
               creation_date: 2019-05-01T01:23:45+00:00
               last_booted_kernel: vmlinuz-4.15.0-13-generic
