@@ -2,5 +2,5 @@
 11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_multiple-zsys-and-zfs-same-boot-pool-rpool/ROOT/ubuntu	secondary.disk	/BOOT/ubuntu@/initrd.img-5.0.0-13-generic	/BOOT/ubuntu@/vmlinuz-5.0.0-13-generic	true
 22222222222222222222222222222222	-	main	Ubuntu 18.10	efi-nosb_multiple-zsys-and-zfs-same-boot-pool-rpool/ROOT/ubuntu_2	secondary.disk	/BOOT/ubuntu_2@/initrd.img-5.0.0-13-generic	/BOOT/ubuntu_2@/vmlinuz-5.0.0-13-generic
 22222222222222222222222222222222	-	advanced	Ubuntu 18.10	efi-nosb_multiple-zsys-and-zfs-same-boot-pool-rpool/ROOT/ubuntu_2	secondary.disk	/BOOT/ubuntu_2@/initrd.img-5.0.0-13-generic	/BOOT/ubuntu_2@/vmlinuz-5.0.0-13-generic	false
-22222222222222222222222222222222	-	advanced	Ubuntu 18.10	efi-nosb_multiple-zsys-and-zfs-same-boot-pool-rpool/ROOT/ubuntu_2	secondary.disk	/BOOT/ubuntu_2@/initrd.img-5.0.0-12-generic	/BOOT/ubuntu_2@/vmlinuz-5.0.0-12-generic	false
+22222222222222222222222222222222	-	advanced	Ubuntu 18.10	efi-nosb_multiple-zsys-and-zfs-same-boot-pool-rpool/ROOT/ubuntu_2	secondary.disk	/BOOT/ubuntu_2@/initrd.img-4.15.0-13-generic	/BOOT/ubuntu_2@/vmlinuz-4.15.0-13-generic	false
 22222222222222222222222222222222	-	advanced	Ubuntu 18.10	efi-nosb_multiple-zsys-and-zfs-same-boot-pool-rpool/ROOT/ubuntu_2	secondary.disk	/BOOT/ubuntu_2@/initrd.img-4.0.0-13-generic	/BOOT/ubuntu_2@/vmlinuz-4.0.0-13-generic	false

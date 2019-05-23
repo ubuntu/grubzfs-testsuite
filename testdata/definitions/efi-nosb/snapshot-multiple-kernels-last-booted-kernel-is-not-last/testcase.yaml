@@ -22,4 +22,4 @@ devices:
                 /boot: boot/three-kernels
                 /etc: etc/machine1-19.04
               creation_date: 2019-05-01T01:23:45+00:00
-              last_booted_kernel: vmlinuz-5.0.0-12-generic
+              last_booted_kernel: vmlinuz-4.15.0-13-generic
