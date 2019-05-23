@@ -1,0 +1,3 @@
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_clone-autozsys-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_clone-autozsys-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	true
+11111111111111111111111111111111	-	history	on 08/05/2020 @ 00:01	efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings	main.disk	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/initrd.img-4.15.0-13-generic	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/vmlinuz-4.15.0-13-generic
