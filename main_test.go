@@ -45,7 +45,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
-			devices := newFakeDevices(t, filepath.Join(tc.path, "definition.yaml"))
+			devices := newFakeDevices(t, filepath.Join(tc.path, "testcase.yaml"))
 			systemRootDataset := devices.create(testDir, tc.fullTestName)
 
 			out := filepath.Join(testDir, "bootlist")
