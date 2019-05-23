@@ -1,0 +1,25 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content:
+            /boot: boot/one-kernel
+            /etc: etc/machine1-19.04
+          zsys_bootfs: false
+          last_used: 2020-09-13T12:26:39+00:00
+          last_booted_kernel: vmlinuz-5.0.0-13-generic
+          mountpoint: /
+          canmount: on
+        - name: ROOT/ubuntu_clone
+          content:
+            /boot: boot/three-kernels
+            /etc: etc/machine1-19.04
+          zsys_bootfs: false
+          last_used: 2020-05-07T22:01:28+00:00
+          mountpoint: /
+          canmount: on

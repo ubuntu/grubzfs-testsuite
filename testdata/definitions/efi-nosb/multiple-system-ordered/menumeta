@@ -1,0 +1,10 @@
+33333333333333333333333333333333	yes	main	Ubuntu 19.10	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu_3	main.disk	/ROOT/ubuntu_3@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic
+33333333333333333333333333333333	yes	advanced	Ubuntu 19.10	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu_3	main.disk	/ROOT/ubuntu_3@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic	true
+11111111111111111111111111111111	-	main	Ubuntu 19.04	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	-	advanced	Ubuntu 19.04	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	false
+11111111111111111111111111111111	-	advanced	Ubuntu 19.04	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic	true
+11111111111111111111111111111111	-	advanced	Ubuntu 19.04	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic	false
+22222222222222222222222222222222	yes	main	Ubuntu 18.10	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic
+22222222222222222222222222222222	yes	advanced	Ubuntu 18.10	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic	false
+22222222222222222222222222222222	yes	advanced	Ubuntu 18.10	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-4.15.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic	false
+22222222222222222222222222222222	yes	advanced	Ubuntu 18.10	efi-nosb_multiple-system-ordered-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-4.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic	true

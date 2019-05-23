@@ -1,0 +1,3 @@
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_snapshot-multiple-kernels-no-last-booted-kernel-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_snapshot-multiple-kernels-no-last-booted-kernel-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	true
+11111111111111111111111111111111	yes	history	snap1 on 08/05/2020 @ 00:01:00	efi-nosb_snapshot-multiple-kernels-no-last-booted-kernel-rpool/ROOT/ubuntu@snap1	main.disk	/ROOT/ubuntu@snap1/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@snap1/boot/vmlinuz-5.0.0-13-generic
