@@ -15,7 +15,7 @@ var update = flag.Bool("update", false, "update golden files")
 
 var zfsToBootlistTestDone = make(chan struct{}, 1)
 
-func TestFromZFStoBootlist(t *testing.T) {
+func TestBootlist(t *testing.T) {
 	defer close(zfsToBootlistTestDone)
 	t.Parallel()
 	zfsToBootlistTestDone <- struct{}{}
@@ -85,7 +85,7 @@ func TestFromZFStoBootlist(t *testing.T) {
 	}
 }
 
-func TestMenuMetaData(t *testing.T) {
+func TestMetaMenu(t *testing.T) {
 	t.Parallel()
 
 	// Block until TestZfsToBootlist has fully ran. Timeout if not started
@@ -107,8 +107,8 @@ func TestMenuMetaData(t *testing.T) {
 			defer cleanUp()
 
 			out := getTempOrReferenceFile(t, *update,
-				filepath.Join(testDir, "menumeta"),
-				filepath.Join(tc.path, "menumeta"))
+				filepath.Join(testDir, "metamenu"),
+				filepath.Join(tc.path, "metamenu"))
 			env := append(os.Environ(),
 				"GRUB_LINUX_ZFS_TEST=metamenu",
 				"GRUB_LINUX_ZFS_TEST_INPUT="+filepath.Join(tc.path, "bootlist"),
@@ -118,7 +118,7 @@ func TestMenuMetaData(t *testing.T) {
 				t.Fatal("got error, expected none", err)
 			}
 
-			assertFileContentAlmostEquals(t, out, filepath.Join(tc.path, "menumeta"), "generated and reference files are different.")
+			assertFileContentAlmostEquals(t, out, filepath.Join(tc.path, "metamenu"), "generated and reference files are different.")
 		})
 	}
 }
