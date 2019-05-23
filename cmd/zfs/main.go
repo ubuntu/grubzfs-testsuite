@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const creationCmd = "zfs get -H creation "
+const creationCmd = "zfs get -pH creation "
 const listCurrentSystemDatasetCmd = "zfs mount"
 
 func main() {

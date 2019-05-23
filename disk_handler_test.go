@@ -195,7 +195,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 							if err != nil {
 								fdevice.Fatal("couldn't get current timezone", err)
 							}
-							d.SetUserProperty("org.zsys:creation.test", s.CreationDate.In(location).Format("Mon Jan 2 15:04 2006"))
+							d.SetUserProperty("org.zsys:creation.test", strconv.FormatInt(s.CreationDate.In(location).Unix(), 10))
 
 							if s.LastBootedKernel != "" {
 								d.SetUserProperty("org.zsys:last-booted-kernel", s.LastBootedKernel)
