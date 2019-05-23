@@ -20,8 +20,12 @@ import (
 var dangerous = flag.Bool("dangerous", false, "execute dangerous tests which may alter the system state")
 var update = flag.Bool("update", false, "update golden files")
 
+var zfsToBootlistTestDone = make(chan struct{}, 1)
+
 func TestFromZFStoBootlist(t *testing.T) {
+	defer close(zfsToBootlistTestDone)
 	t.Parallel()
+	zfsToBootlistTestDone <- struct{}{}
 
 	ensureBinaryMocks(t)
 
@@ -91,20 +95,14 @@ func TestFromZFStoBootlist(t *testing.T) {
 func TestMenuMetaData(t *testing.T) {
 	t.Parallel()
 
-	type TestCase struct {
-		path string
-	}
-	testCases := make(map[string]TestCase)
-
-	menuMetaDir := "testdata/menumeta"
-	dirs, err := ioutil.ReadDir(menuMetaDir)
-	if err != nil {
-		t.Fatal("couldn't read menumeta directory", err)
-	}
-	for _, d := range dirs {
-		testCases[d.Name()] = TestCase{
-			path: filepath.Join(menuMetaDir, d.Name()),
-		}
+	// Block until TestZfsToBootlist has fully ran. Timeout if not started
+	select {
+	case <-zfsToBootlistTestDone:
+		// Testsuite has zfsToBootlist test running
+		// Wait now for the channel to close
+		<-zfsToBootlistTestDone
+	// We waited for long enough for TestZfsToBootlist to start, it's probably filtered with -run
+	case <-time.After(time.Second):
 	}
 
 	testCases := newTestCases(t)
