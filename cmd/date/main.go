@@ -10,9 +10,9 @@ import (
 func main() {
 	cmdLine := strings.Join(os.Args, " ")
 
-	// mock date +%s by returning a "current date" far in the future (2042-01-01)
+	// mock date +%s by returning a "current date" far in the future (2033-05-18T03:33:20+00:00  @2000000000)
 	if cmdLine == "date +%s" {
-		fmt.Println("2272143600")
+		fmt.Println("2000000000")
 		os.Exit(0)
 	}
 

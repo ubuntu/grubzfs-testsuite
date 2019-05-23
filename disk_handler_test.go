@@ -285,13 +285,10 @@ func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPa
 		}
 	}
 
-	// Change access time on machine-id. If zero, set magic date (2042) for non zsys systems
+	// Change access time on machine-id when last_used isn't set.
+	// If zero, set magic date (2033-05-18T03:33:20+00:00 @2000000000) for non zsys systems
 	if lastUsed.IsZero() {
-		var err error
-		lastUsed, err = time.Parse("2006", "2042")
-		if err != nil {
-			t.Fatal("couldn't create magic 2042 date", err)
-		}
+		lastUsed = time.Unix(2000000000, 0)
 	}
 	// on separated /etc, /etc/machine-id doesn't exists
 	if _, err := os.Stat(machineIdPath); os.IsNotExist(err) {
