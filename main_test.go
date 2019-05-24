@@ -59,6 +59,7 @@ func TestBootlist(t *testing.T) {
 
 			env := append(os.Environ(),
 				path,
+				"LC_ALL=C",
 				"TEST_POOL_DIR="+testDir,
 				"GRUB_LINUX_ZFS_TEST=bootlist",
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out,
@@ -98,6 +99,7 @@ func TestMetaMenu(t *testing.T) {
 				filepath.Join(testDir, "metamenu"),
 				filepath.Join(tc.path, "metamenu"))
 			env := append(os.Environ(),
+				"LC_ALL=C",
 				"GRUB_LINUX_ZFS_TEST=metamenu",
 				"GRUB_LINUX_ZFS_TEST_INPUT="+filepath.Join(tc.path, "bootlist"),
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out)
