@@ -1,0 +1,85 @@
+function gfxmode {
+	set gfxpayload="${1}"
+	if [ "${1}" = "keep" ]; then
+		set vt_handoff=vt.handoff=1
+	else
+		set vt_handoff=
+	fi
+}
+if [ "${recordfail}" != 1 ]; then
+  if [ -e ${prefix}/gfxblacklist.txt ]; then
+    if hwmatch ${prefix}/gfxblacklist.txt 3; then
+      if [ ${match} = 0 ]; then
+        set linux_gfx_mode=keep
+      else
+        set linux_gfx_mode=text
+      fi
+    else
+      set linux_gfx_mode=text
+    fi
+  else
+    set linux_gfx_mode=keep
+  fi
+else
+  set linux_gfx_mode=text
+fi
+export linux_gfx_mode
+menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-sb_filterkernel-rpool/ROOT/ubuntu-5.0.0-13-generic.efi.signed' {
+	recordfail
+	load_video
+	gfxmode ${linux_gfx_mode}
+	insmod gzio
+	if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+	insmod part_gpt
+	insmod modfor_main.disk
+	insmod ext2
+	set root='hd0,gpt2'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+	else
+	  search --no-floppy --fs-uuid --set=root UUID-main.disk
+	fi
+	linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic.efi.signed root=ZFS=efi-sb_filterkernel-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+	initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic.efi.signed
+}
+submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-efi-sb_filterkernel-rpool/ROOT/ubuntu' {
+	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic.efi.signed ' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-sb_filterkernel-rpool/ROOT/ubuntu-5.0.0-13-generic.efi.signed' {
+		recordfail
+		load_video
+		gfxmode ${linux_gfx_mode}
+		insmod gzio
+		if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+		insmod part_gpt
+		insmod modfor_main.disk
+		insmod ext2
+		set root='hd0,gpt2'
+		if [ x$feature_platform_search_hint = xy ]; then
+		  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+		else
+		  search --no-floppy --fs-uuid --set=root UUID-main.disk
+		fi
+		echo 'Loading Linux 5.0.0-13-generic.efi.signed ...'
+		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic.efi.signed root=ZFS=efi-sb_filterkernel-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+		echo	'Loading initial ramdisk ...'
+		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic.efi.signed
+	}
+	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic.efi.signed (recovery mode) ' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-sb_filterkernel-rpool/ROOT/ubuntu-5.0.0-13-generic.efi.signed' {
+		recordfail
+		load_video
+		insmod gzio
+		if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+		insmod part_gpt
+		insmod modfor_main.disk
+		insmod ext2
+		set root='hd0,gpt2'
+		if [ x$feature_platform_search_hint = xy ]; then
+		  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+		else
+		  search --no-floppy --fs-uuid --set=root UUID-main.disk
+		fi
+		echo 'Loading Linux 5.0.0-13-generic.efi.signed ...'
+		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic.efi.signed root=ZFS=efi-sb_filterkernel-rpool/ROOT/ubuntu ro recovery nomodeset  
+		echo	'Loading initial ramdisk ...'
+		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic.efi.signed
+	}
+}
