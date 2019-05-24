@@ -43,7 +43,7 @@ menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os
 	initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic.efi.signed
 }
 submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-efi-sb_onezsys-rpool/ROOT/ubuntu' {
-	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic.efi.signed ' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-sb_onezsys-rpool/ROOT/ubuntu-5.0.0-13-generic.efi.signed' {
+	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic.efi.signed' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-sb_onezsys-rpool/ROOT/ubuntu-5.0.0-13-generic.efi.signed' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -63,7 +63,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic.efi.signed
 	}
-	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic.efi.signed (recovery mode) ' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-sb_onezsys-rpool/ROOT/ubuntu-5.0.0-13-generic.efi.signed' {
+	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic.efi.signed (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-sb_onezsys-rpool/ROOT/ubuntu-5.0.0-13-generic.efi.signed' {
 		recordfail
 		load_video
 		insmod gzio
