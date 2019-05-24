@@ -7,10 +7,14 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
-var dangerous = flag.Bool("dangerous", false, "execute dangerous tests which may alter the system state")
-var update = flag.Bool("update", false, "update golden files")
+var (
+	dangerous = flag.Bool("dangerous", false, "execute dangerous tests which may alter the system state")
+	update    = flag.Bool("update", false, "update golden files")
+	slow      = flag.Bool("slow", false, "sleep between tests interacting with zfs kernel module to avoid spamming it")
+)
 
 func TestBootlist(t *testing.T) {
 	t.Parallel()
@@ -78,6 +82,10 @@ func TestBootlist(t *testing.T) {
 			}
 
 			assertFileContentAlmostEquals(t, out, reference, "generated and reference files are different.")
+
+			if *slow {
+				time.Sleep(time.Second)
+			}
 		})
 	}
 }
