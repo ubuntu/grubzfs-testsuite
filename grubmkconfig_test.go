@@ -42,13 +42,20 @@ func updateMkConfig(t *testing.T, path, tmpdir string) {
 	defer src.Close()
 
 	s := bufio.NewScanner(src)
-	var out []byte
+	var text string
 	for s.Scan() {
-		out = append(out, []byte(
-			strings.ReplaceAll(s.Text(),
-				`sysconfdir="/etc"`,
-				`sysconfdir="`+tmpdir+`/etc"`+
-					"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET")+"\n")...)
+		t := s.Text()
+
+		// We need to set grub_probe twice: once in environment (for subprocess) and once in grub_mkconfig directly
+		t = strings.ReplaceAll(t, `sysconfdir="/etc"`, `sysconfdir="`+tmpdir+`/etc"`+
+			"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET LC_ALL grub_probe\n")
+		t = strings.ReplaceAll(t, `grub_probe="${sbindir}/grub-probe"`, "grub_probe=`which grub-probe`")
+
+		if text == "" {
+			text = t
+		} else {
+			text = text + "\n" + t
+		}
 	}
 	if err := s.Err(); err != nil {
 		t.Fatalf("can't replace sysconfigdir in %q: %v", path, err)
@@ -57,7 +64,7 @@ func updateMkConfig(t *testing.T, path, tmpdir string) {
 	if err := src.Truncate(0); err != nil {
 		t.Fatalf("can't truncate %q: %v", src.Name(), err)
 	}
-	if _, err := src.WriteAt(out, 0); err != nil {
+	if _, err := src.WriteAt([]byte(text), 0); err != nil {
 		t.Fatalf("can't write to %q, %v", src.Name(), err)
 	}
 }

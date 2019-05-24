@@ -20,7 +20,7 @@ func ensureBinaryMocks(t *testing.T) {
 	t.Helper()
 
 	compileMocksOnce.Do(func() {
-		for _, mock := range []string{"mokutil", "zfs", "zpool", "date"} {
+		for _, mock := range []string{"mokutil", "zfs", "zpool", "date", "grub-probe"} {
 			if _, err := os.Stat(filepath.Join("mocks", mock)); os.IsExist(err) {
 				continue
 			}
