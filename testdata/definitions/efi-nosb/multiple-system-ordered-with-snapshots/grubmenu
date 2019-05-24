@@ -221,7 +221,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 	}
 }
 submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu' {
-	submenu 'Boot Ubuntu 19.04 on snap2 on 31/12/2019 @ 08:36' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2' {
+	submenu 'Boot Ubuntu 19.04 on snap2 on 12/31/19 @ 08:36' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2' {
 		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2-4.15.0-13-generic' {
 			recordfail
 			load_video
@@ -278,7 +278,7 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			initrd	/ROOT/ubuntu@snap2/boot/initrd.img-4.15.0-13-generic
 		}
 	}
-	submenu 'Boot Ubuntu 19.04 on clone on 24/08/2019 @ 19:11' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone' {
+	submenu 'Boot Ubuntu 19.04 on clone on 08/24/19 @ 19:11' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone' {
 		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone-4.15.0-13-generic' {
 			recordfail
 			load_video
@@ -335,7 +335,7 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			initrd	/ROOT/ubuntu_clone@/boot/initrd.img-4.15.0-13-generic
 		}
 	}
-	submenu 'Boot Ubuntu 19.04 on snap1 on 10/12/2018 @ 13:20' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1' {
+	submenu 'Boot Ubuntu 19.04 on snap1 on 12/10/18 @ 13:20' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1' {
 		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
