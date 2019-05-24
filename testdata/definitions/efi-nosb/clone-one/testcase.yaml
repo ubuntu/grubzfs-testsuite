@@ -20,6 +20,7 @@ devices:
           content:
             /boot: boot/one-kernel-4.15
             /etc: etc/machine1-19.04
+          zsys_bootfs: true
           last_used: 2020-05-07T22:01:28+00:00
           last_booted_kernel: vmlinuz-4.15.0-13-generic
           mountpoint: /

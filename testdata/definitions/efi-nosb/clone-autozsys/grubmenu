@@ -84,8 +84,8 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 	}
 }
 submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu' {
-	submenu 'Boot Ubuntu 19.04 on on 08/05/2020 @ 00:01' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings' {
-		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings-4.15.0-13-generic' {
+	submenu 'Revert Ubuntu 19.04 to on 05/08/20 @ 00:01' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings' {
+		menuentry 'Revert system only' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -103,7 +103,25 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			linux	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings ro  quiet splash ${vt_handoff} 
 			initrd	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'One time boot (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings-4.15.0-13-generic' {
+		menuentry 'Revert system and user data' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings-4.15.0-13-generic' {
+			recordfail
+			load_video
+			gfxmode ${linux_gfx_mode}
+			insmod gzio
+			if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+			insmod part_gpt
+			insmod modfor_main.disk
+			insmod ext2
+			set root='hd0,gpt2'
+			if [ x$feature_platform_search_hint = xy ]; then
+			  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+			else
+			  search --no-floppy --fs-uuid --set=root UUID-main.disk
+			fi
+			linux	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings ro  quiet splash ${vt_handoff} zsys-revert=userdata
+			initrd	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/initrd.img-4.15.0-13-generic
+		}
+		menuentry 'Revert system only (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings-4.15.0-13-generic' {
 			recordfail
 			load_video
 			insmod gzio
@@ -122,10 +140,9 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			echo	'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'Revert system (all intermediate snapshots will be destroyed)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings-4.15.0-13-generic' {
+		menuentry 'Revert system and user data (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings-4.15.0-13-generic' {
 			recordfail
 			load_video
-			gfxmode ${linux_gfx_mode}
 			insmod gzio
 			if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
 			insmod part_gpt
@@ -137,7 +154,9 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings ro  quiet splash ${vt_handoff} rollback=yes
+			echo 'Loading Linux 4.15.0-13-generic ...'
+			linux	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-autozsys-rpool/ROOT/ubuntu_autozsys_somegeneratedstrings ro recovery nomodeset  zsys-revert=userdata
+			echo	'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu_autozsys_somegeneratedstrings@/boot/initrd.img-4.15.0-13-generic
 		}
 	}

@@ -16,7 +16,7 @@ devices:
           last_booted_kernel: vmlinuz-5.0.0-13-generic
           mountpoint: /
           canmount: on
-        # this is a manual user clone from a snapshot
+        # this is a manual user clone from a snapshot. This is non zsys.
         - name: ROOT/clone1
           content:
             /boot: boot/one-kernel-4.15
