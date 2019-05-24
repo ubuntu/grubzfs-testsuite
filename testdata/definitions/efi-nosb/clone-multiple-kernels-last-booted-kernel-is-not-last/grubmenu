@@ -84,7 +84,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 	}
 }
 submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-multiple-kernels-last-booted-kernel-is-not-last-rpool/ROOT/ubuntu' {
-	submenu 'Revert Ubuntu 19.04 to snap1 on 05/08/20 @ 00:01' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-multiple-kernels-last-booted-kernel-is-not-last-rpool/ROOT/ubuntu_snap1' {
+	submenu 'Revert to snap1 on 05/08/20 @ 00:01' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-multiple-kernels-last-booted-kernel-is-not-last-rpool/ROOT/ubuntu_snap1' {
 		menuentry 'Revert system only' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-multiple-kernels-last-booted-kernel-is-not-last-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
 			recordfail
 			load_video

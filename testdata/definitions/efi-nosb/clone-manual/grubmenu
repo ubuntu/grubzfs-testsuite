@@ -84,7 +84,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 	}
 }
 submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-manual-rpool/ROOT/ubuntu' {
-	submenu 'Boot Ubuntu 19.04 on clone1 on 05/08/20 @ 00:01' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-manual-rpool/ROOT/clone1' {
+	submenu 'Boot on clone1 on 05/08/20 @ 00:01' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-manual-rpool/ROOT/clone1' {
 		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-manual-rpool/ROOT/clone1-4.15.0-13-generic' {
 			recordfail
 			load_video
