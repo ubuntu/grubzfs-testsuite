@@ -111,6 +111,46 @@ func TestMetaMenu(t *testing.T) {
 	}
 }
 
+func TestGrubMenu(t *testing.T) {
+	t.Parallel()
+	defer registerTest(t)()
+	waitForTest(t, "TestMetaMenu")
+
+	ensureBinaryMocks(t)
+
+	testCases := newTestCases(t)
+	for name, tc := range testCases {
+		tc := tc
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			testDir, cleanUp := tempDir(t)
+			defer cleanUp()
+
+			out := getTempOrReferenceFile(t, *update,
+				filepath.Join(testDir, "grubmenu"),
+				filepath.Join(tc.path, "grubmenu"))
+			path := "PATH=mocks/grub-probe:" + os.Getenv("PATH")
+			cwd, err := os.Getwd()
+			if err != nil {
+				t.Fatal("couldn't get current directory", err)
+			}
+			env := append(os.Environ(),
+				path,
+				"grub_probe="+filepath.Join(cwd, "mock/grub-probe"),
+				"LC_ALL=C",
+				"GRUB_LINUX_ZFS_TEST=grubmenu",
+				"GRUB_LINUX_ZFS_TEST_INPUT="+filepath.Join(tc.path, "metamenu"),
+				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out)
+
+			if err := runGrubMkConfig(t, env, testDir); err != nil {
+				t.Fatal("got error, expected none", err)
+			}
+
+			assertFileContentAlmostEquals(t, out, filepath.Join(tc.path, "grubmenu"), "generated and reference files are different.")
+		})
+	}
+}
+
 type TestCase struct {
 	path         string
 	fullTestName string
