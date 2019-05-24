@@ -161,6 +161,79 @@ func TestGrubMenu(t *testing.T) {
 	}
 }
 
+// TestGrubMkConfig Runs all the stages of the menu generation
+func TestGrubMkConfig(t *testing.T) {
+	t.Parallel()
+	defer registerTest(t)()
+	waitForTest(t, "TestGrubMenu")
+
+	ensureBinaryMocks(t)
+
+	testCases := newTestCases(t)
+	for name, tc := range testCases {
+		tc := tc
+		t.Run(name, func(t *testing.T) {
+			secureBootState := filepath.Base(filepath.Dir(tc.path))
+			if secureBootState == "no-mokutil" {
+				if !*dangerous {
+					t.Skipf("don't run %q: dangerous is not set", name)
+				}
+
+				// remove mokutil from PATH
+				if _, err := os.Stat("/usr/bin/mokutil"); os.IsExist(err) {
+					if err := os.Rename("/usr/bin/mokutil", "/usr/bin/mokutil.bak"); err != nil {
+						t.Fatal("couldn't rename mokutil to its backup", err)
+					}
+					defer os.Rename("/usr/bin/mokutil.bak", "/usr/bin/mokutil")
+				}
+			}
+
+			testDir, cleanUp := tempDir(t)
+			defer cleanUp()
+
+			devices := newFakeDevices(t, filepath.Join(tc.path, "testcase.yaml"))
+			systemRootDataset := devices.create(testDir, tc.fullTestName)
+
+			path := "PATH=mocks/zpool:mocks/zfs:mocks/date:mocks/grub-probe:" + os.Getenv("PATH")
+			var securebootEnv string
+			if secureBootState != "no-mokutil" {
+				path = "PATH=mocks/mokutil:mocks/zpool:mocks/zfs:mocks/date:mocks/grub-probe:" + os.Getenv("PATH")
+				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + secureBootState
+			}
+
+			var mockZFSDatasetEnv string
+			if systemRootDataset != "" {
+				mockZFSDatasetEnv = "TEST_MOCKZFS_CURRENT_ROOT_DATASET=" + systemRootDataset
+			}
+
+			cwd, err := os.Getwd()
+			if err != nil {
+				t.Fatal("couldn't get current directory", err)
+			}
+			env := append(os.Environ(),
+				path,
+				"LC_ALL=C",
+				"grub_probe="+filepath.Join(cwd, "mock/grub-probe"),
+				"TEST_POOL_DIR="+testDir,
+				securebootEnv,
+				mockZFSDatasetEnv)
+
+			if err := runGrubMkConfig(t, env, testDir); err != nil {
+				t.Fatal("got error, expected none", err)
+			}
+
+			fileteredFPath := filepath.Join(testDir, "grub_15_linux_zfs")
+			filterNonLinuxZfsContent(t, filepath.Join(testDir, "grub.cfg"), fileteredFPath)
+
+			assertFileContentAlmostEquals(t, fileteredFPath, filepath.Join(tc.path, "grubmenu"), "generated and reference files are different.")
+
+			if *slow {
+				time.Sleep(time.Second)
+			}
+		})
+	}
+}
+
 type TestCase struct {
 	path         string
 	fullTestName string
