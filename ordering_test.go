@@ -42,7 +42,7 @@ func waitForTest(t *testing.T, testName string) {
 		<-tw
 	// We waited for long enough for the other tests to register. It will probably stay nil (filtered with -run)
 	// and we can thus start our tests.
-	case <-time.After(10 * time.Millisecond):
+	case <-time.After(100 * time.Millisecond):
 		t.Logf("Timeout reached when waiting for %q", testName)
 	}
 }

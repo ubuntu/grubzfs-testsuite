@@ -32,7 +32,7 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 			`case "$1" in /dev/loop*) set -- /dev/loop00;; esac`,
 	})
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, "fakeroot", grubMkConfig, "-o", filepath.Join(testDir, "grub.cfg"))
 	cmd.Stdout = os.Stdout
