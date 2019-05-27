@@ -18,7 +18,14 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 		copyFile(t, path, filepath.Join(testDir, path))
 	}
 	grubMkConfig := filepath.Join(testDir, "/usr/sbin/grub-mkconfig")
-	updateMkConfig(t, grubMkConfig, testDir)
+	// Update in place sysconfigdir and exports variables in grub-mkconfig so that we target a specific
+	// /etc directory for grub scripts.
+	// We need to set grub_probe twice: once in environment (for subprocess) and once in grub_mkconfig directly
+	updateFile(t, grubMkConfig, map[string]string{
+		`sysconfdir="/etc"`: `sysconfdir="` + testDir + `/etc"` +
+			"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET LC_ALL grub_probe\n",
+		`grub_probe="${sbindir}/grub-probe"`: "grub_probe=`which grub-probe`",
+	})
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -30,9 +37,8 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	return cmd.Run()
 }
 
-// updateMkConfig updates sysconfigdir and exports variables in grub-mkconfig so that we target a specific
-// /etc directory for grub scripts.
-func updateMkConfig(t *testing.T, path, tmpdir string) {
+// updateFile update the file inline by replacing for each element in replace map by what its value.
+func updateFile(t *testing.T, path string, replace map[string]string) {
 	t.Helper()
 
 	src, err := os.OpenFile(path, os.O_RDWR, 0755)
@@ -46,10 +52,9 @@ func updateMkConfig(t *testing.T, path, tmpdir string) {
 	for s.Scan() {
 		t := s.Text()
 
-		// We need to set grub_probe twice: once in environment (for subprocess) and once in grub_mkconfig directly
-		t = strings.ReplaceAll(t, `sysconfdir="/etc"`, `sysconfdir="`+tmpdir+`/etc"`+
-			"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET LC_ALL grub_probe\n")
-		t = strings.ReplaceAll(t, `grub_probe="${sbindir}/grub-probe"`, "grub_probe=`which grub-probe`")
+		for k, v := range replace {
+			t = strings.ReplaceAll(t, k, v)
+		}
 
 		if text == "" {
 			text = t
