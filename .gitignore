@@ -2,3 +2,5 @@ cmd/zfs/zfs
 cmd/zpool/zpool
 cmd/mokutil/mokutil
 mocks/
+
+**/15_linux_zfs
