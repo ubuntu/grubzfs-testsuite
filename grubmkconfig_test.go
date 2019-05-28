@@ -3,6 +3,8 @@ package main_test
 import (
 	"bufio"
 	"context"
+	"flag"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -11,13 +13,35 @@ import (
 	"time"
 )
 
+const defaultLinuxZFS = "/etc/grub.d/15_linux_zfs"
+
+var (
+	linuxZFS = flag.String("linux-zfs", defaultLinuxZFS, "Grub linux ZFS file to test. Can be override with GRUBTESTS_LINUXZFS")
+)
+
+func init() {
+	flag.Parse()
+	linuxZFSOverride, ok := os.LookupEnv("GRUBTESTS_LINUXZFS")
+	if ok {
+		*linuxZFS = linuxZFSOverride
+	}
+	fmt.Println(*linuxZFS)
+}
+
 // runGrubMkConfig setup and runs grubMkConfig.
 func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
-	for _, path := range []string{
-		"etc/grub.d/15_linux_zfs", "/etc/grub.d/00_header", "/etc/default/grub", "/usr/sbin/grub-mkconfig"} {
-		copyFile(t, path, filepath.Join(testDir, path))
+	for src, dst := range map[string]string{
+		*linuxZFS:                 defaultLinuxZFS,
+		"/etc/grub.d/00_header":   "",
+		"/etc/default/grub":       "",
+		"/usr/sbin/grub-mkconfig": "",
+	} {
+		if dst == "" {
+			dst = src
+		}
+		copyFile(t, src, filepath.Join(testDir, dst))
 	}
-	grubMkConfig := filepath.Join(testDir, "/usr/sbin/grub-mkconfig")
+	grubMkConfig := filepath.Join(testDir, "usr", "sbin", "grub-mkconfig")
 	// Update in place sysconfigdir and exports variables in grub-mkconfig so that we target a specific
 	// /etc directory for grub scripts.
 	// We need to set grub_probe twice: once in environment (for subprocess) and once in grub_mkconfig directly
