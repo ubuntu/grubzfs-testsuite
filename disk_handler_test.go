@@ -211,7 +211,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 			}
 
 		case "ext4":
-			go func() {
+			func() {
 				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 				defer cancel()
 				cmd := exec.CommandContext(ctx, "mkfs.ext4", "-q", "-F", p)

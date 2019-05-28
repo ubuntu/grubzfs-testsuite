@@ -48,7 +48,7 @@ func updateFile(t *testing.T, path string, replace map[string]string) {
 
 	src, err := os.OpenFile(path, os.O_RDWR, 0755)
 	if err != nil {
-		t.Fatalf("can't open %q: %v", src.Name(), err)
+		t.Fatalf("can't open %q: %v", path, err)
 	}
 	defer src.Close()
 
