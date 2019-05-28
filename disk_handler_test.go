@@ -92,7 +92,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 		f.Close()
 
 		deviceMountPath := filepath.Join(path, device.Name)
-		if err := os.MkdirAll(deviceMountPath, os.ModeDir); err != nil {
+		if err := os.MkdirAll(deviceMountPath, 0700); err != nil {
 			fdevice.Fatal("couldn't create directory for pool", err)
 		}
 
@@ -251,7 +251,7 @@ func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPa
 	// dataset or file system
 	if mountpoint == "/" {
 		for _, p := range []string{"/boot", "/etc"} {
-			os.MkdirAll(filepath.Join(datasetPath, p), os.ModeDir)
+			os.MkdirAll(filepath.Join(datasetPath, p), 0700)
 		}
 	}
 	// Generate a fstab if there is some needs as pool and disk names are dynamic
