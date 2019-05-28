@@ -4,6 +4,7 @@ import (
 	"flag"
 	"io/ioutil"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -19,6 +20,7 @@ var (
 func TestBootlist(t *testing.T) {
 	t.Parallel()
 	defer registerTest(t)()
+	skipOnZFSPermissionDenied(t)
 
 	ensureBinaryMocks(t)
 
@@ -165,6 +167,7 @@ func TestGrubMenu(t *testing.T) {
 func TestGrubMkConfig(t *testing.T) {
 	t.Parallel()
 	defer registerTest(t)()
+	skipOnZFSPermissionDenied(t)
 	waitForTest(t, "TestGrubMenu")
 
 	ensureBinaryMocks(t)
@@ -268,4 +271,19 @@ func newTestCases(t *testing.T) map[string]TestCase {
 	}
 
 	return testCases
+}
+
+// skipOnZFSPermissionDenied skips the tests if the current user can't create zfs pools, datasets…
+func skipOnZFSPermissionDenied(t *testing.T) {
+	t.Helper()
+
+	u, err := user.Current()
+	if err != nil {
+		t.Fatal("can't get current user", err)
+	}
+
+	// in our default setup, only root users can interact with zfs kernel modules
+	if u.Uid != "0" {
+		t.Skip("skipping, you don't have permissions to interact with system zfs")
+	}
 }
