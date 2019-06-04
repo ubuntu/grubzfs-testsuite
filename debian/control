@@ -1,0 +1,17 @@
+Source: grubzfs-testsuite
+Section: admin
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Build-Depends: debhelper (>= 11)
+Standards-Version: 4.1.3
+Homepage: https://github.com/ubuntu/grubzfs-testsuite
+Vcs-Browser: https://github.com/ubuntu/grubzfs-testsuite
+Vcs-Git: https://github.com/ubuntu/grubzfs-testsuite.git
+
+Package: grubzfs-testsuite
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+Description: Testsuite for grub menu generation on zfs systems
+ This package is used as autopkgtests when uploading new versions of
+ ZFS or grub scripts to generate the grub menu content.
