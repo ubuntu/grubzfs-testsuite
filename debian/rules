@@ -7,3 +7,7 @@
 override_dh_auto_clean:
 	go mod vendor
 	dh_auto_clean
+
+override_dh_install:
+	dh_install
+	find debian/grubzfs-testsuite -type f -name '.git*' -exec rm {} \;
