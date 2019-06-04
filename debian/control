@@ -13,6 +13,11 @@ Package: grubzfs-testsuite
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
+         golang-go (>= 2:1.11~),
+         grub-common,
+         zfsutils-linux,
+         libzfslinux-dev,
+         e2fsprogs,
 Description: Testsuite for grub menu generation on zfs systems
  This package is used as autopkgtests when uploading new versions of
  ZFS or grub scripts to generate the grub menu content.
