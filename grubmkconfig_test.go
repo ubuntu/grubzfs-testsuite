@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"context"
 	"flag"
-	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -25,7 +24,6 @@ func init() {
 	if ok {
 		*linuxZFS = linuxZFSOverride
 	}
-	fmt.Println(*linuxZFS)
 }
 
 // runGrubMkConfig setup and runs grubMkConfig.
@@ -58,7 +56,7 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, "fakeroot", grubMkConfig, "-o", filepath.Join(testDir, "grub.cfg"))
+	cmd := exec.CommandContext(ctx, grubMkConfig, "-o", filepath.Join(testDir, "grub.cfg"))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Env = env
