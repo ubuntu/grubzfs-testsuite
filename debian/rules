@@ -5,7 +5,7 @@
 	dh $@
 
 override_dh_auto_clean:
-	go mod vendor
+	[ -d vendor/ ] || go mod vendor
 	dh_auto_clean
 
 override_dh_install:
