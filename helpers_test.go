@@ -74,6 +74,9 @@ func assertFileContentAlmostEquals(t *testing.T, generatedF, expectedF, msg stri
 	if err != nil {
 		t.Fatal("couldn't open reference file", err)
 	}
+	if _, err := os.Stat(generatedF); string(expected) == "" && os.IsNotExist(err) {
+		return
+	}
 	assert.Equal(t, string(expected), anonymizeTempDirNames(t, generatedF), "generated and reference files are different.")
 }
 
