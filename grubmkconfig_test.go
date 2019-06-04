@@ -80,7 +80,7 @@ func updateFile(t *testing.T, path string, replace map[string]string) {
 		t := s.Text()
 
 		for k, v := range replace {
-			t = strings.ReplaceAll(t, k, v)
+			t = strings.Replace(t, k, v, -1)
 		}
 
 		if text == "" {

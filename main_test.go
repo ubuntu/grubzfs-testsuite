@@ -265,7 +265,7 @@ func newTestCases(t *testing.T) map[string]TestCase {
 
 			testCases[tcName] = TestCase{
 				path:         tcPath,
-				fullTestName: strings.ReplaceAll(strings.Replace(tcPath, bootListsDir+"/", "", 1), "/", "_"),
+				fullTestName: strings.Replace(strings.Replace(tcPath, bootListsDir+"/", "", 1), "/", "_", -1),
 			}
 		}
 	}
