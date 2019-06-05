@@ -1,5 +1,5 @@
 # grubzfs-testsuite
-Integration tests for zfs (zsys/non zsys) grub menu generation (`/etc/grub.d/15_linux_zfs`)
+Integration tests for zfs (zsys/non zsys) grub menu generation (`/etc/grub.d/10_linux_zfs`)
 
 ## Test dependencies
 
@@ -30,9 +30,9 @@ There are 4 types of test:
 
 > Note that tests that don't deal with dataset creation can be executed in parallel.
 
-### Targeting a different 15_linux_zfs file
+### Targeting a different 10_linux_zfs file
 
-By default, the tests are using the installed version of `15_linux_zfs` located in `/etc/grub.d/`. You can target a different file by passing its path to the command line option `-linux-zfs=<path>`.
+By default, the tests are using the installed version of `10_linux_zfs` located in `/etc/grub.d/`. You can target a different file by passing its path to the command line option `-linux-zfs=<path>`.
 
 If you have multiple tests to run, you can export `GRUBTESTS_LINUXZFS=<path>` to avoid setting the flag each for each test. It will take precedence over the command line argument.
 

@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-const defaultLinuxZFS = "/etc/grub.d/15_linux_zfs"
+const defaultLinuxZFS = "/etc/grub.d/10_linux_zfs"
 
 var (
 	linuxZFS = flag.String("linux-zfs", defaultLinuxZFS, "Grub linux ZFS file to test. Can be override with GRUBTESTS_LINUXZFS")
@@ -48,8 +48,8 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 			"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET LC_ALL grub_probe\n",
 		`grub_probe="${sbindir}/grub-probe"`: "grub_probe=`which grub-probe`",
 	})
-	// Update 15_linux_zfs to replace /dev/loopX loop devices by /dev/loop00 when calling prepare_grub_to_access_device.
-	updateFile(t, filepath.Join(testDir, "etc", "grub.d", "15_linux_zfs"), map[string]string{
+	// Update 10_linux_zfs to replace /dev/loopX loop devices by /dev/loop00 when calling prepare_grub_to_access_device.
+	updateFile(t, filepath.Join(testDir, "etc", "grub.d", "10_linux_zfs"), map[string]string{
 		"prepare_grub_to_access_device_cached() {": "prepare_grub_to_access_device_cached() {\n" +
 			`case "$1" in /dev/loop*) set -- /dev/loop00;; esac`,
 	})

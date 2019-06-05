@@ -225,7 +225,7 @@ func TestGrubMkConfig(t *testing.T) {
 				t.Fatal("got error, expected none", err)
 			}
 
-			fileteredFPath := filepath.Join(testDir, "grub_15_linux_zfs")
+			fileteredFPath := filepath.Join(testDir, "grub_10_linux_zfs")
 			filterNonLinuxZfsContent(t, filepath.Join(testDir, "grub.cfg"), fileteredFPath)
 
 			assertFileContentAlmostEquals(t, fileteredFPath, filepath.Join(tc.path, "grubmenu"), "generated and reference files are different.")
