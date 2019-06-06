@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 #export DH_VERBOSE = 1
 
+export GOCACHE=$(shell mktemp -d /tmp/gocache-XXXX)
 export GOFLAGS=-mod=vendor
 
 %:
@@ -18,6 +19,7 @@ override_dh_auto_build:
 	for mock in `ls cmd/`; do \
 		go build -o mocks/$$mock/$$mock cmd/$$mock/*.go; \
 	done
+	rm -rf $(GOCACHE)
 
 override_dh_auto_test:
 	# we only have integration tests for zfs+grub, as autopkgtests
