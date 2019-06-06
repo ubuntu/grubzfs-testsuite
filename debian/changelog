@@ -3,6 +3,8 @@ grubzfs-testsuite (0.2) UNRELEASED; urgency=medium
   * Ship binary test file in libexec to run the testsuite directly against zfs
     and grub in autopkgtests.
   * Make tests compatible with go 1.12
+  * Export with cache and vendor mod to build with vendorized modules.
+  * Build on x86 by fixing go-libzfs binding.
 
  -- Didier Roche <didrocks@ubuntu.com>  Thu, 06 Jun 2019 13:19:25 +0200
 
