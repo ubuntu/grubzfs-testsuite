@@ -59,7 +59,9 @@ func main() {
 	cmd.Stdin = os.Stdin
 	if err := cmd.Wait(); err != nil {
 		if exiterr, ok := err.(*exec.ExitError); ok {
-			os.Exit(exiterr.ExitCode())
+			// FIXME: replace with go 1.12: os.Exit(exiterr.ExitCode())
+			_ = exiterr
+			os.Exit(1)
 		}
 		fmt.Fprintf(os.Stderr, "Unexpected error when trying to execute zfs: %v", err)
 		os.Exit(2)

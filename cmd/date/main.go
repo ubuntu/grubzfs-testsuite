@@ -22,7 +22,9 @@ func main() {
 	cmd.Stdin = os.Stdin
 	if err := cmd.Run(); err != nil {
 		if exiterr, ok := err.(*exec.ExitError); ok {
-			os.Exit(exiterr.ExitCode())
+			// FIXME: replace with go 1.12: os.Exit(exiterr.ExitCode())
+			_ = exiterr
+			os.Exit(1)
 		}
 		fmt.Println("Unexpected error when trying to execute date", err)
 		os.Exit(2)
