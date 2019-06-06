@@ -51,3 +51,10 @@ As of ZFS 0.7, you can't create multiple times pools with the same names. There 
 ### Dangerous mode
 
 Some tests need to move utilities outside of the user's `$PATH` before restoring them. As we are tempering the system, those tests are skipped by default. The command line option `-dangerous` will run them.
+
+## Mock rebuild conditions
+
+We are using mocks (sources are in the `cmd/` directory) and rebuild them each time you run tests. If this directory
+isn't available, we assume there is a `mocks` subdirectory, with one subdirectory for each mocks.
+.
+This is mostly used when building a test binary while not shipping the source in a binary package.

@@ -20,6 +20,13 @@ var compileMocksOnce sync.Once
 // ensureBinayMocks creates our mocks, ensuring we compile them when running go test
 func ensureBinaryMocks(t *testing.T) {
 	t.Helper()
+	// If we don't have mocks source files, we assume there is a mocks/ subdirectory
+	if _, err := os.Stat("cmd/"); os.IsNotExist(err) {
+		if _, err := os.Stat("mocks/"); os.IsNotExist(err) {
+			t.Fatalf("no mocks source and binary directories found (cmd/ or mocks/)")
+		}
+		return
+	}
 
 	compileMocksOnce.Do(func() {
 		for _, mock := range []string{"mokutil", "zfs", "zpool", "date", "grub-probe"} {
