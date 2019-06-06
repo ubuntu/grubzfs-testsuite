@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 #export DH_VERBOSE = 1
 
+export GOFLAGS=-mod=vendor
+
 %:
 	dh $@ --buildsystem=golang --with=golang
 
