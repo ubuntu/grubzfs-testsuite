@@ -2,12 +2,23 @@
 #export DH_VERBOSE = 1
 
 %:
-	dh $@
+	dh $@ --buildsystem=golang --with=golang
 
 override_dh_auto_clean:
 	[ -d vendor/ ] || go mod vendor
+	rm -f grubzfs-tests
+	rm -rf mocks/
 	dh_auto_clean
 
-override_dh_install:
-	dh_install
-	find debian/grubzfs-testsuite -type f -name '.git*' -exec rm {} \;
+override_dh_auto_build:
+	go test -c -o grubzfs-tests
+	mkdir -p mocks
+	for mock in `ls cmd/`; do \
+		go build -o mocks/$$mock/$$mock cmd/$$mock/*.go; \
+	done
+
+override_dh_auto_test:
+	# we only have integration tests for zfs+grub, as autopkgtests
+
+override_dh_auto_install:
+	dh_auto_install -- --no-source

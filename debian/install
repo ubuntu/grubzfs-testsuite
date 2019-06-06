@@ -1,5 +1,3 @@
-*.go usr/share/gocode/src/github.com/ubuntu/grubzfs-testsuite/
-go.* usr/share/gocode/src/github.com/ubuntu/grubzfs-testsuite/
-cmd usr/share/gocode/src/github.com/ubuntu/grubzfs-testsuite/
-testdata usr/share/gocode/src/github.com/ubuntu/grubzfs-testsuite/
-vendor usr/share/gocode/src/github.com/ubuntu/grubzfs-testsuite/
+grubzfs-tests usr/lib/grubzfs-testsuite/
+mocks usr/lib/grubzfs-testsuite/
+testdata usr/lib/grubzfs-testsuite/
