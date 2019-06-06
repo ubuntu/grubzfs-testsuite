@@ -13,6 +13,7 @@ Vcs-Git: https://github.com/ubuntu/grubzfs-testsuite.git
 
 Package: grubzfs-testsuite
 Architecture: any
+Built-Using: ${misc:Built-Using},
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          grub-common,
