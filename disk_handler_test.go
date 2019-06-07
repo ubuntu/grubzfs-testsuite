@@ -313,7 +313,7 @@ func replaceContent(t *testing.T, sources map[string]string, dst string) {
 	}
 
 	for p, src := range sources {
-		if err := copy.Copy(filepath.Join("testdata", "content", src), filepath.Join(dst, p)); err != nil {
+		if err := copy.Copy(filepath.Join(testDataDir, "content", src), filepath.Join(dst, p)); err != nil {
 			t.Fatalf("couldn't copy %q to %q: %v", src, dst, err)
 		}
 	}

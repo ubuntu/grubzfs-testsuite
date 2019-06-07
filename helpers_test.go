@@ -21,8 +21,8 @@ var compileMocksOnce sync.Once
 func ensureBinaryMocks(t *testing.T) {
 	t.Helper()
 	// If we don't have mocks source files, we assume there is a mocks/ subdirectory
-	if _, err := os.Stat("cmd/"); os.IsNotExist(err) {
-		if _, err := os.Stat("mocks/"); os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(filepath.Dir(mockDir), "cmd/")); os.IsNotExist(err) {
+		if _, err := os.Stat(mockDir); os.IsNotExist(err) {
 			t.Fatalf("no mocks source and binary directories found (cmd/ or mocks/)")
 		}
 		return
@@ -30,10 +30,7 @@ func ensureBinaryMocks(t *testing.T) {
 
 	compileMocksOnce.Do(func() {
 		for _, mock := range []string{"mokutil", "zfs", "zpool", "date", "grub-probe"} {
-			if _, err := os.Stat(filepath.Join("mocks", mock)); os.IsExist(err) {
-				continue
-			}
-			cmd := exec.Command("go", "build", "-o", filepath.Join("mocks", mock, mock), "github.com/ubuntu/grubmenugen-zfs-tests/cmd/"+mock)
+			cmd := exec.Command("go", "build", "-o", filepath.Join(mockDir, mock, mock), filepath.Join(filepath.Dir(mockDir), "cmd/", mock, "main.go"))
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {

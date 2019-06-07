@@ -20,6 +20,10 @@ We are checking if user is root for tests dealing with zpool creation.
 # go test
 ```
 
+Alternatively, you can use a test binary (compiled by `go test -c`). The test binary will pick any `datadir` and `mocks`
+(or `cmd/` see "Mock rebuild conditions") in the current directory. If it can't find them, it will pick them relative to
+the test binary directory itself.
+
 ### Types of tests
 
 There are 4 types of test:
