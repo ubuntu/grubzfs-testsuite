@@ -121,6 +121,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 				fdevice.Fatalf("couldn't create pool %q: %v", device.ZFS.PoolName, err)
 			}
 			defer pool.Close()
+			defer pool.Destroy("destroy temporary pool")
 			defer pool.Export(true, "export temporary pool")
 
 			for _, dataset := range device.ZFS.Datasets {
