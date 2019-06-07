@@ -1,0 +1,17 @@
+# We cd /tmp so that we are not in the source directory which has a cmd/ subdirectory, which will trigger
+# mocks building. We also ensure this way we are using the system dataset/ and mocks/ dir.
+Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestBootlist -dangerous
+Restrictions: needs-root, allow-stderr
+Depends: @
+
+Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestMetaMenu
+Restrictions: needs-root, allow-stderr
+Depends: @
+
+Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestGrubMenu
+Restrictions: needs-root, allow-stderr
+Depends: @
+
+Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestGrubMkConfig -dangerous
+Restrictions: needs-root, allow-stderr
+Depends: @
