@@ -157,6 +157,7 @@ func TestMetaMenu(t *testing.T) {
 				filepath.Join(tc.path, "metamenu"))
 			env := append(os.Environ(),
 				"LC_ALL=C",
+				"TZ=Europe/Paris", // we want to ensure user's timezone is taken into account
 				"GRUB_LINUX_ZFS_TEST=metamenu",
 				"GRUB_LINUX_ZFS_TEST_INPUT="+filepath.Join(tc.path, "bootlist"),
 				"GRUB_LINUX_ZFS_TEST_OUTPUT="+out)
@@ -263,6 +264,7 @@ func TestGrubMkConfig(t *testing.T) {
 			env := append(os.Environ(),
 				path,
 				"LC_ALL=C",
+				"TZ=Europe/Paris", // we want to ensure user's timezone is taken into account
 				"grub_probe="+filepath.Join(cwd, "mock/grub-probe"),
 				"TEST_POOL_DIR="+testDir,
 				securebootEnv,
