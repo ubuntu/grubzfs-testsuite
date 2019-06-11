@@ -1,0 +1,2 @@
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_separated-boot-same-pool-samebasedataset-rpool/ROOT/ubuntu	main.disk	/BOOT/ubuntu@/initrd.img-5.0.0-13-generic	/BOOT/ubuntu@/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_separated-boot-same-pool-samebasedataset-rpool/ROOT/ubuntu	main.disk	/BOOT/ubuntu@/initrd.img-5.0.0-13-generic	/BOOT/ubuntu@/vmlinuz-5.0.0-13-generic	true
