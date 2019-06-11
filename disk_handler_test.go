@@ -55,6 +55,7 @@ type FakeDevice struct {
 			}
 			Fstab []FstabEntry
 		}
+		KeepImported bool   `yaml:"keep_imported"`
 		MountPoint   string `yaml:"mounpoint"`
 	}
 }
@@ -127,8 +128,12 @@ func (fdevice FakeDevices) create(path, testName string) string {
 				fdevice.Fatalf("couldn't create pool %q: %v", device.ZFS.PoolName, err)
 			}
 			defer pool.Close()
-			defer pool.Destroy("destroy temporary pool")
-			defer pool.Export(true, "export temporary pool")
+			defer func() {
+				if device.ZFS.KeepImported {
+					return
+				}
+				pool.Export(true, "export temporary pool")
+			}()
 
 			for _, dataset := range device.ZFS.Datasets {
 				func() {
@@ -244,6 +249,50 @@ func (fdevice FakeDevices) create(path, testName string) string {
 	}
 
 	return systemRootDataset
+}
+
+// assertExistingPoolsAndCleanup ensure that pools that were imported before running grub_mkconfig are still
+// imported after the menu generation.
+// Note that as we can't run the tests on system which have a pool (no mount namespace in zfs), we export and destroy
+// all pools for the next tests to start in a preserved state.
+func (fdevice FakeDevices) assertExistingPoolsAndCleanup(testName string) {
+	keepImportedPools := make(map[string]bool)
+	pools, err := zfs.PoolOpenAll()
+	if err != nil && err.Error() != "no error" {
+		fdevice.Fatalf("couldn't open all remaining pools: %v", err)
+	}
+	for _, p := range pools {
+		func() {
+			defer p.Close()
+			defer p.Destroy("destroy temporary pool after test")
+			defer p.Export(true, "export temporary pool after test")
+			name, err := p.Name()
+			if err != nil {
+				fdevice.Fatalf("couldn't aquite pool name: %v", err)
+			}
+			keepImportedPools[name] = true
+		}()
+	}
+
+	for _, device := range fdevice.Devices {
+		switch strings.ToLower(device.Type) {
+		case "zfs":
+			poolName := testName + "-" + device.ZFS.PoolName
+			if device.ZFS.KeepImported {
+				if _, ok := keepImportedPools[poolName]; !ok {
+					fdevice.Errorf("we expected %s to be imported after running grub_mkconfig but it isn't", poolName)
+				}
+			} else {
+				if _, ok := keepImportedPools[poolName]; ok {
+					fdevice.Errorf("we expected %s to NOT be imported after running grub_mkconfig but it is", poolName)
+				}
+			}
+			delete(keepImportedPools, poolName)
+		}
+	}
+	if len(keepImportedPools) > 0 {
+		fdevice.Error("One or more pools are imported but not in the definition list for this tests")
+	}
 }
 
 // completeSystemWithFstab ensures the system has required /boot and /etc,

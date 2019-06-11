@@ -131,6 +131,7 @@ func TestBootlist(t *testing.T) {
 			}
 
 			assertFileContentAlmostEquals(t, out, reference, "generated and reference files are different.")
+			devices.assertExistingPoolsAndCleanup(tc.fullTestName)
 
 			if *slow {
 				time.Sleep(time.Second)
@@ -278,6 +279,7 @@ func TestGrubMkConfig(t *testing.T) {
 			filterNonLinuxZfsContent(t, filepath.Join(testDir, "grub.cfg"), fileteredFPath)
 
 			assertFileContentAlmostEquals(t, fileteredFPath, filepath.Join(tc.path, "grubmenu"), "generated and reference files are different.")
+			devices.assertExistingPoolsAndCleanup(tc.fullTestName)
 
 			if *slow {
 				time.Sleep(time.Second)
