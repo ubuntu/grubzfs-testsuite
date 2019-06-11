@@ -55,6 +55,7 @@ type FakeDevice struct {
 			}
 			Fstab []FstabEntry
 		}
+		MountPoint   string `yaml:"mounpoint"`
 	}
 }
 
@@ -113,8 +114,13 @@ func (fdevice FakeDevices) create(path, testName string) string {
 			props := make(map[zfs.Prop]string)
 			props[zfs.PoolPropAltroot] = deviceMountPath
 			fsprops := make(map[zfs.Prop]string)
-			fsprops[zfs.DatasetPropMountpoint] = "/"
+			mountpoint := "/"
 			fsprops[zfs.DatasetPropCanmount] = "off"
+			if device.ZFS.MountPoint != "" {
+				mountpoint = device.ZFS.MountPoint
+				fsprops[zfs.DatasetPropCanmount] = "on"
+			}
+			fsprops[zfs.DatasetPropMountpoint] = mountpoint
 
 			pool, err := zfs.PoolCreate(poolName, vdev, features, props, fsprops)
 			if err != nil {
