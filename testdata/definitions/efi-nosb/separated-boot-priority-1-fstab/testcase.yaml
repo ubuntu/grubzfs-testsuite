@@ -24,6 +24,13 @@ devices:
             /: boot/one-kernel-4.15
           zsys_bootfs: true
           canmount: on
+        - name: BOOT
+          mountpoint: none
+        - name: BOOT/ubuntu
+          content:
+            /: boot/one-kernel-4.15
+          mountpoint: /boot
+          canmount: on
         - name: boot
           content:
             /: boot/one-kernel-4.15

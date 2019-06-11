@@ -1,0 +1,2 @@
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_separated-boot-priority-4-samebasedataset-rpool/ROOT/ubuntu	main.disk	/BOOT/ubuntu@/initrd.img-4.15.0-13-generic	/BOOT/ubuntu@/vmlinuz-4.15.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_separated-boot-priority-4-samebasedataset-rpool/ROOT/ubuntu	main.disk	/BOOT/ubuntu@/initrd.img-4.15.0-13-generic	/BOOT/ubuntu@/vmlinuz-4.15.0-13-generic	false

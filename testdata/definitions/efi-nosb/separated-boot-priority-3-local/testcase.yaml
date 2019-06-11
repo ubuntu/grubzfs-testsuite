@@ -16,6 +16,13 @@ devices:
           last_booted_kernel: vmlinuz-5.0.0-13-generic
           mountpoint: /
           canmount: on
+        - name: BOOT
+          mountpoint: none
+        - name: BOOT/ubuntu
+          content:
+            /: boot/one-kernel-4.15
+          mountpoint: /boot
+          canmount: on
         - name: boot
           content:
             /: boot/one-kernel-4.15
