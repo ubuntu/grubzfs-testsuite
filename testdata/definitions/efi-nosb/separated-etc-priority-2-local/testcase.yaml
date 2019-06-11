@@ -16,6 +16,13 @@ devices:
           last_booted_kernel: vmlinuz-5.0.0-13-generic
           mountpoint: /
           canmount: on
+        - name: ETCROOT
+          mountpoint: none
+        - name: ETCROOT/ubuntu
+          content:
+            /: etc/machine2-18.10
+          mountpoint: /etc
+          canmount: on
         - name: etc
           content:
             /: etc/machine2-18.10
