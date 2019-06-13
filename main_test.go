@@ -149,7 +149,12 @@ func TestMetaMenu(t *testing.T) {
 	for name, tc := range testCases {
 		tc := tc
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
+			// We need to run subtests sequently for updates so that TestMetaMenu (main method) doesn't exit before
+			// children finish running. We can't use a waitgroup either as parallel subtests only starts running when
+			// parent exited.
+			if !(*update) {
+				t.Parallel()
+			}
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
@@ -183,7 +188,12 @@ func TestGrubMenu(t *testing.T) {
 	for name, tc := range testCases {
 		tc := tc
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
+			// We need to run subtests sequently for updates so that TestMetaMenu (main method) doesn't exit before
+			// children finish running. We can't use a waitgroup either as parallel subtests only starts running when
+			// parent exited.
+			if !(*update) {
+				t.Parallel()
+			}
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
