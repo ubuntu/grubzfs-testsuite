@@ -55,8 +55,7 @@ type FakeDevice struct {
 			}
 			Fstab []FstabEntry
 		}
-		KeepImported bool   `yaml:"keep_imported"`
-		MountPoint   string `yaml:"mounpoint"`
+		KeepImported bool `yaml:"keep_imported"`
 	}
 }
 
@@ -115,13 +114,6 @@ func (fdevice FakeDevices) create(path, testName string) string {
 				props := make(map[zfs.Prop]string)
 				props[zfs.PoolPropAltroot] = deviceMountPath
 				fsprops := make(map[zfs.Prop]string)
-				mountpoint := "/"
-				fsprops[zfs.DatasetPropCanmount] = "off"
-				if device.ZFS.MountPoint != "" {
-					mountpoint = device.ZFS.MountPoint
-					fsprops[zfs.DatasetPropCanmount] = "on"
-				}
-				fsprops[zfs.DatasetPropMountpoint] = mountpoint
 
 				pool, err := zfs.PoolCreate(poolName, vdev, features, props, fsprops)
 				if err != nil {
@@ -138,26 +130,39 @@ func (fdevice FakeDevices) create(path, testName string) string {
 				for _, dataset := range device.ZFS.Datasets {
 					func() {
 						datasetName := poolName + "/" + dataset.Name
+						var datasetPath string
+						var d zfs.Dataset
+						if dataset.Name == "." {
+							datasetName = poolName
+							d, err = zfs.DatasetOpen(datasetName)
+							if err != nil {
+								fdevice.Fatalf("couldn't open dataset %q: %v", datasetName, err)
+							}
+						} else {
+							props := make(map[zfs.Prop]zfs.Property)
+							d, err = zfs.DatasetCreate(datasetName, zfs.DatasetTypeFilesystem, props)
+							if err != nil {
+								fdevice.Fatalf("couldn't create dataset %q: %v", datasetName, err)
+							}
+						}
+						defer d.Close()
+
 						if dataset.IsCurrentSystemRoot {
 							systemRootDataset = datasetName
 						}
-						datasetPath := ""
-						shouldMount := false
-						props := make(map[zfs.Prop]zfs.Property)
+
+						var shouldMount bool
 						if dataset.Mountpoint != "" {
-							props[zfs.DatasetPropMountpoint] = zfs.Property{Value: dataset.Mountpoint}
+							d.SetProperty(zfs.DatasetPropMountpoint, dataset.Mountpoint)
 						}
 						if dataset.CanMount != "" {
-							props[zfs.DatasetPropCanmount] = zfs.Property{Value: dataset.CanMount}
+							d.SetProperty(zfs.DatasetPropCanmount, dataset.CanMount)
 							if dataset.CanMount == "noauto" || dataset.CanMount == "on" {
 								shouldMount = true
 							}
+							d.Unmount(0)
 						}
-						d, err := zfs.DatasetCreate(datasetName, zfs.DatasetTypeFilesystem, props)
-						if err != nil {
-							fdevice.Fatalf("couldn't create dataset %q: %v", datasetName, err)
-						}
-						defer d.Close()
+
 						if dataset.ZsysBootfs {
 							d.SetUserProperty("org.zsys:bootfs", "yes")
 							if !dataset.LastUsed.IsZero() {
