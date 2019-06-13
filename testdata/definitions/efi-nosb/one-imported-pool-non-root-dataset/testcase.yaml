@@ -1,0 +1,17 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool
+      keep_imported: true
+      datasets:
+        - name: .
+          content:
+            /etc: etc/machine1-19.04
+            /boot: boot/one-kernel
+          zsys_bootfs: true
+          last_used: 2020-09-13T12:26:39+00:00
+          last_booted_kernel: vmlinuz-5.0.0-13-generic
+          # mountpoint of root dataset isn't /. It shouldn't be taken into account
+          mountpoint: /boot
+          canmount: on
