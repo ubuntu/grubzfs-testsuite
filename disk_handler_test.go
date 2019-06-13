@@ -259,7 +259,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 func (fdevice FakeDevices) assertExistingPoolsAndCleanup(testName string) {
 	keepImportedPools := make(map[string]bool)
 	pools, err := zfs.PoolOpenAll()
-	if err != nil && err.Error() != "no error" {
+	if err != nil && err.Error() != "no error" && err.Error() != "dataset does not exist" {
 		fdevice.Fatalf("couldn't open all remaining pools: %v", err)
 	}
 	for _, p := range pools {
