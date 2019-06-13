@@ -16,7 +16,7 @@ Architecture: any
 Built-Using: ${misc:Built-Using},
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         grub-common,
+         grub-common (>= 2.02+dfsg1-12ubuntu3~),
          zfsutils-linux,
          e2fsprogs,
 Description: Testsuite for grub menu generation on zfs systems
