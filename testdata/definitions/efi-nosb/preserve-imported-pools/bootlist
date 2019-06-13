@@ -1,0 +1,3 @@
+efi-nosb_preserve-imported-pools-rpool/ROOT/ubuntu	yes	11111111111111111111111111111111	Ubuntu 19.04	1599999999	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	vmlinuz-5.0.0-13-generic
+efi-nosb_preserve-imported-pools-rpool2/ROOT/ubuntu	yes	22222222222222222222222222222222	Ubuntu 18.10	1599999999	secondary.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	vmlinuz-5.0.0-13-generic
+efi-nosb_preserve-imported-pools-rpool3/ROOT/ubuntu	yes	33333333333333333333333333333333	Ubuntu 19.10	1599999999	third.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	vmlinuz-5.0.0-13-generic

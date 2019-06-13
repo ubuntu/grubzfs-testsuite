@@ -1,0 +1,4 @@
+22222222222222222222222222222222	yes	main	Ubuntu 18.10	efi-nosb_two-imported-pools-name-submatch-rpool2/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic
+22222222222222222222222222222222	yes	advanced	Ubuntu 18.10	efi-nosb_two-imported-pools-name-submatch-rpool2/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic	true
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_two-imported-pools-name-submatch-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_two-imported-pools-name-submatch-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	true

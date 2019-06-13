@@ -1,0 +1,36 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      # This pool name is a submatch to rpool2. Ensure the 2 pools are taken into account via their separated alt root
+      pool_name: rpool
+      keep_imported: true
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content:
+            /etc: etc/machine1-19.04
+            /boot: boot/one-kernel
+          zsys_bootfs: true
+          last_used: 2020-09-13T12:26:39+00:00
+          last_booted_kernel: vmlinuz-5.0.0-13-generic
+          mountpoint: /
+          canmount: on
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool2
+      keep_imported: true
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content:
+            /etc: etc/machine2-18.10
+            /boot: boot/one-kernel-4.15
+          zsys_bootfs: true
+          last_used: 2020-09-13T12:26:39+00:00
+          last_booted_kernel: vmlinuz-4.15.0-13-generic
+          mountpoint: /
+          canmount: on

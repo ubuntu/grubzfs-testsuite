@@ -1,0 +1,8 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool
+      keep_imported: true
+      # mountpoint of root dataset isn't /. It shouldn't be taken into account
+      mountpoint: /boot

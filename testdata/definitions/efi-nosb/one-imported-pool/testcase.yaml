@@ -1,0 +1,22 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool
+      # the imported pool will have mountpoints including pool alt-root (not mounted with -N)
+      # we need to take that into account
+      keep_imported: true
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content:
+            /etc: etc/machine1-19.04
+            /boot: boot/one-kernel
+          zsys_bootfs: true
+          last_used: 2020-09-13T12:26:39+00:00
+          last_booted_kernel: vmlinuz-5.0.0-13-generic
+          mountpoint: /
+          canmount: on
+
+# + counting separated boot/ and etc/ on same and different pool
