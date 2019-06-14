@@ -302,7 +302,7 @@ func (fdevice FakeDevices) assertExistingPoolsAndCleanup(testName string) {
 }
 
 // completeSystemWithFstab ensures the system has required /boot and /etc,
-// it can update /etc/machine-id access time for non zsys systems
+// it can update /etc/machine-id and os-release access time for non zsys systems
 // and can take a dynamically generated fstab
 func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPath string, isZsys bool, lastUsed time.Time, entries []FstabEntry) {
 	if mountpoint != "/" && mountpoint != "/etc" {
@@ -319,9 +319,11 @@ func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPa
 	// Generate a fstab if there is some needs as pool and disk names are dynamic
 	fstabPath := filepath.Join(datasetPath, "etc", "fstab")
 	machineIdPath := filepath.Join(datasetPath, "etc", "machine-id")
+	osreleasePath := filepath.Join(datasetPath, "etc", "os-release")
 	if mountpoint == "/etc" {
 		fstabPath = filepath.Join(datasetPath, "fstab")
 		machineIdPath = filepath.Join(datasetPath, "machine-id")
+		osreleasePath = filepath.Join(datasetPath, "os-release")
 	}
 
 	for _, fstabEntry := range entries {
@@ -353,11 +355,16 @@ func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPa
 		lastUsed = time.Unix(2000000000, 0)
 	}
 	// on separated /etc, /etc/machine-id doesn't exists
-	if _, err := os.Stat(machineIdPath); os.IsNotExist(err) {
-		return
+	if _, err := os.Stat(machineIdPath); err == nil {
+		if err := os.Chtimes(machineIdPath, lastUsed, lastUsed); err != nil {
+			t.Fatal("couldn't change access time for machine-id", err)
+		}
 	}
-	if err := os.Chtimes(machineIdPath, lastUsed, lastUsed); err != nil {
-		t.Fatal("couldn't change access time for machine-id", err)
+	// on separated /etc, /etc/os-release doesn't exists
+	if _, err := os.Stat(osreleasePath); err == nil {
+		if err := os.Chtimes(osreleasePath, lastUsed, lastUsed); err != nil {
+			t.Fatal("couldn't change access time for os-release", err)
+		}
 	}
 }
 
