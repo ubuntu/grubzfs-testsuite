@@ -1,0 +1,26 @@
+devices:
+  - name: main
+    type: zfs
+    zfs:
+      pool_name: rpool
+      datasets:
+        - name: ROOT
+          mountpoint: none
+        - name: ROOT/ubuntu
+          content:
+            /boot: boot/one-kernel
+            /etc: etc/machine1-19.04-empty-machine-id
+          zsys_bootfs: false
+          last_used: 2020-09-13T12:26:39+00:00
+          mountpoint: /
+          canmount: on
+        - name: ROOT/ubuntu_2
+          content:
+            /boot: boot/three-kernels
+            /etc: etc/machine2-18.10-empty-machine-id
+          zsys_bootfs: false
+          # earlier than above, but current system
+          last_used: 2020-05-07T22:01:28+00:00
+          is_current_system_root: true
+          mountpoint: /
+          canmount: on
