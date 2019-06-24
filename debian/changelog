@@ -1,3 +1,10 @@
+grubzfs-testsuite (0.3) eoan; urgency=medium
+
+  * Add more tests and fixes as 10_linux_zfs evolved.
+  * Run them as autopkgtests now that grub support is in distro.
+
+ -- Didier Roche <didrocks@ubuntu.com>  Fri, 07 Jun 2019 09:30:25 +0200
+
 grubzfs-testsuite (0.2) eoan; urgency=medium
 
   * Ship binary test file in libexec to run the testsuite directly against zfs
