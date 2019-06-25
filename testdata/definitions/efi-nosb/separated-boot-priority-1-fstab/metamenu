@@ -1,2 +1,2 @@
-11111111111111111111111111111111	yes	main	Ubuntu 19.04	efi-nosb_separated-boot-priority-1-fstab-rpool/ROOT/ubuntu	/dev/loop00	/initrd.img-5.0.0-13-generic	/vmlinuz-5.0.0-13-generic
-11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	efi-nosb_separated-boot-priority-1-fstab-rpool/ROOT/ubuntu	/dev/loop00	/initrd.img-5.0.0-13-generic	/vmlinuz-5.0.0-13-generic	true
+11111111111111111111111111111111	yes	main	Ubuntu 19.04	rpool/ROOT/ubuntu	/dev/loop00	/initrd.img-5.0.0-13-generic	/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	yes	advanced	Ubuntu 19.04	rpool/ROOT/ubuntu	/dev/loop00	/initrd.img-5.0.0-13-generic	/vmlinuz-5.0.0-13-generic	true

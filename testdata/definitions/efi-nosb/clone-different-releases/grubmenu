@@ -24,7 +24,7 @@ else
   set linux_gfx_mode=text
 fi
 export linux_gfx_mode
-menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu-5.0.0-13-generic' {
+menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
 	recordfail
 	load_video
 	gfxmode ${linux_gfx_mode}
@@ -39,11 +39,11 @@ menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os
 	else
 	  search --no-floppy --fs-uuid --set=root UUID-main.disk
 	fi
-	linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_clone-different-releases-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+	linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 	initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 }
-submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu' {
-	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu-5.0.0-13-generic' {
+submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-rpool/ROOT/ubuntu' {
+	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -59,11 +59,11 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_clone-different-releases-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
-	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu-5.0.0-13-generic' {
+	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -78,14 +78,14 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_clone-different-releases-rpool/ROOT/ubuntu ro recovery nomodeset  
+		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
 }
-submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu' {
-	submenu 'Revert to snap1, Ubuntu 18.10 on 05/08/20 @ 00:01' ${menuentry_id_option} 'gnulinux-history-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1' {
-		menuentry 'Revert system only' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
+submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-rpool/ROOT/ubuntu' {
+	submenu 'Revert to snap1, Ubuntu 18.10 on 05/08/20 @ 00:01' ${menuentry_id_option} 'gnulinux-history-rpool/ROOT/ubuntu_snap1' {
+		menuentry 'Revert system only' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -100,10 +100,10 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1 ro  quiet splash ${vt_handoff} 
+			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_snap1 ro  quiet splash ${vt_handoff} 
 			initrd	/ROOT/ubuntu_snap1@/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'Revert system and user data' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
+		menuentry 'Revert system and user data' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -118,10 +118,10 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1 ro  quiet splash ${vt_handoff} zsys-revert=userdata
+			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_snap1 ro  quiet splash ${vt_handoff} zsys-revert=userdata
 			initrd	/ROOT/ubuntu_snap1@/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'Revert system only (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
+		menuentry 'Revert system only (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
 			insmod gzio
@@ -136,11 +136,11 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
 			echo 'Loading Linux 4.15.0-13-generic ...'
-			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1 ro recovery nomodeset  
+			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_snap1 ro recovery nomodeset  
 			echo	'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu_snap1@/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'Revert system and user data (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
+		menuentry 'Revert system and user data (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
 			insmod gzio
@@ -155,7 +155,7 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
 			echo 'Loading Linux 4.15.0-13-generic ...'
-			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_clone-different-releases-rpool/ROOT/ubuntu_snap1 ro recovery nomodeset  zsys-revert=userdata
+			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_snap1 ro recovery nomodeset  zsys-revert=userdata
 			echo	'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu_snap1@/boot/initrd.img-4.15.0-13-generic
 		}

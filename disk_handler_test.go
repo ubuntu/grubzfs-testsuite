@@ -75,7 +75,7 @@ func newFakeDevices(t *testing.T, path string) FakeDevices {
 
 // create on disk mock devices as files and return the main dataset
 // which is set as root, if any
-func (fdevice FakeDevices) create(path, testName string) string {
+func (fdevice FakeDevices) create(path string) string {
 	var systemRootDataset string
 
 	for _, device := range fdevice.Devices {
@@ -99,11 +99,6 @@ func (fdevice FakeDevices) create(path, testName string) string {
 
 			switch strings.ToLower(device.Type) {
 			case "zfs":
-				// WORKAROUND: we need to use dirname of path as creating 2 consecutives pools with similar dataset name
-				// will make the second dataset from the second pool returning as parent pool the first one.
-				// Of course, the resulting mountpoint will be wrong.
-				poolName := testName + "-" + device.ZFS.PoolName
-
 				vdev := zfs.VDevTree{
 					Type:    zfs.VDevTypeFile,
 					Path:    p,
@@ -115,7 +110,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 				props[zfs.PoolPropAltroot] = deviceMountPath
 				fsprops := make(map[zfs.Prop]string)
 
-				pool, err := zfs.PoolCreate(poolName, vdev, features, props, fsprops)
+				pool, err := zfs.PoolCreate(device.ZFS.PoolName, vdev, features, props, fsprops)
 				if err != nil {
 					fdevice.Fatalf("couldn't create pool %q: %v", device.ZFS.PoolName, err)
 				}
@@ -129,12 +124,11 @@ func (fdevice FakeDevices) create(path, testName string) string {
 
 				for _, dataset := range device.ZFS.Datasets {
 					func() {
-						datasetName := poolName + "/" + dataset.Name
+						datasetName := device.ZFS.PoolName + "/" + dataset.Name
 						var datasetPath string
 						var d zfs.Dataset
 						if dataset.Name == "." {
-							datasetName = poolName
-							d, err = zfs.DatasetOpen(datasetName)
+							d, err = zfs.DatasetOpen(device.ZFS.PoolName)
 							if err != nil {
 								fdevice.Fatalf("couldn't open dataset %q: %v", datasetName, err)
 							}
@@ -198,7 +192,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 						for _, s := range dataset.Snapshots {
 							func() {
 								replaceContent(fdevice.T, s.Content, datasetPath)
-								completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, false, time.Time{}, s.Fstab)
+								completeSystemWithFstab(fdevice.T, path, dataset.Mountpoint, datasetPath, false, time.Time{}, s.Fstab)
 								props := make(map[zfs.Prop]zfs.Property)
 								d, err := zfs.DatasetSnapshot(datasetName+"@"+s.Name, false, props)
 								if err != nil {
@@ -222,7 +216,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 
 						if shouldMount {
 							replaceContent(fdevice.T, dataset.Content, datasetPath)
-							completeSystemWithFstab(fdevice.T, testName, path, dataset.Mountpoint, datasetPath, dataset.ZsysBootfs, dataset.LastUsed, dataset.Fstab)
+							completeSystemWithFstab(fdevice.T, path, dataset.Mountpoint, datasetPath, dataset.ZsysBootfs, dataset.LastUsed, dataset.Fstab)
 						}
 					}()
 				}
@@ -261,7 +255,7 @@ func (fdevice FakeDevices) create(path, testName string) string {
 // imported after the menu generation.
 // Note that as we can't run the tests on system which have a pool (no mount namespace in zfs), we export and destroy
 // all pools for the next tests to start in a preserved state.
-func (fdevice FakeDevices) assertExistingPoolsAndCleanup(testName string) {
+func (fdevice FakeDevices) assertExistingPoolsAndCleanup() {
 	keepImportedPools := make(map[string]bool)
 	pools, err := zfs.PoolOpenAll()
 	if err != nil && err.Error() != "no error" && err.Error() != "dataset does not exist" {
@@ -283,17 +277,16 @@ func (fdevice FakeDevices) assertExistingPoolsAndCleanup(testName string) {
 	for _, device := range fdevice.Devices {
 		switch strings.ToLower(device.Type) {
 		case "zfs":
-			poolName := testName + "-" + device.ZFS.PoolName
 			if device.ZFS.KeepImported {
-				if _, ok := keepImportedPools[poolName]; !ok {
-					fdevice.Errorf("we expected %s to be imported after running grub_mkconfig but it isn't", poolName)
+				if _, ok := keepImportedPools[device.ZFS.PoolName]; !ok {
+					fdevice.Errorf("we expected %s to be imported after running grub_mkconfig but it isn't", device.ZFS.PoolName)
 				}
 			} else {
-				if _, ok := keepImportedPools[poolName]; ok {
-					fdevice.Errorf("we expected %s to NOT be imported after running grub_mkconfig but it is", poolName)
+				if _, ok := keepImportedPools[device.ZFS.PoolName]; ok {
+					fdevice.Errorf("we expected %s to NOT be imported after running grub_mkconfig but it is", device.ZFS.PoolName)
 				}
 			}
-			delete(keepImportedPools, poolName)
+			delete(keepImportedPools, device.ZFS.PoolName)
 		}
 	}
 	if len(keepImportedPools) > 0 {
@@ -304,7 +297,7 @@ func (fdevice FakeDevices) assertExistingPoolsAndCleanup(testName string) {
 // completeSystemWithFstab ensures the system has required /boot and /etc,
 // it can update /etc/machine-id and os-release access time for non zsys systems
 // and can take a dynamically generated fstab
-func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPath string, isZsys bool, lastUsed time.Time, entries []FstabEntry) {
+func completeSystemWithFstab(t *testing.T, path, mountpoint, datasetPath string, isZsys bool, lastUsed time.Time, entries []FstabEntry) {
 	if mountpoint != "/" && mountpoint != "/etc" {
 		return
 	}
@@ -336,7 +329,7 @@ func completeSystemWithFstab(t *testing.T, testName, path, mountpoint, datasetPa
 		var filesystem string
 		switch fstabEntry.Type {
 		case "zfs":
-			filesystem = testName + "-" + fstabEntry.Filesystem
+			filesystem = fstabEntry.Filesystem
 		case "ext4":
 			filesystem = filepath.Join(path, fstabEntry.Filesystem+".disk")
 		default:

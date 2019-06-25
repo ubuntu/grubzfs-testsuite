@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 )
@@ -95,7 +94,7 @@ func TestBootlist(t *testing.T) {
 			defer cleanUp()
 
 			devices := newFakeDevices(t, filepath.Join(tc.path, "testcase.yaml"))
-			systemRootDataset := devices.create(testDir, tc.fullTestName)
+			systemRootDataset := devices.create(testDir)
 
 			out := filepath.Join(testDir, "bootlist")
 			path := fmt.Sprintf("PATH=%s/zpool:%s/zfs:%s/date:%s", mockDir, mockDir, mockDir, os.Getenv("PATH"))
@@ -131,7 +130,7 @@ func TestBootlist(t *testing.T) {
 			}
 
 			assertFileContentAlmostEquals(t, out, reference, "generated and reference files are different.")
-			devices.assertExistingPoolsAndCleanup(tc.fullTestName)
+			devices.assertExistingPoolsAndCleanup()
 
 			if *slow {
 				time.Sleep(time.Second)
@@ -254,7 +253,7 @@ func TestGrubMkConfig(t *testing.T) {
 			defer cleanUp()
 
 			devices := newFakeDevices(t, filepath.Join(tc.path, "testcase.yaml"))
-			systemRootDataset := devices.create(testDir, tc.fullTestName)
+			systemRootDataset := devices.create(testDir)
 
 			path := fmt.Sprintf("PATH=%s/zpool:%s/zfs:%s/date:%s/grub-probe:%s", mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
 			var securebootEnv string
@@ -289,7 +288,7 @@ func TestGrubMkConfig(t *testing.T) {
 			filterNonLinuxZfsContent(t, filepath.Join(testDir, "grub.cfg"), fileteredFPath)
 
 			assertFileContentAlmostEquals(t, fileteredFPath, filepath.Join(tc.path, "grubmenu"), "generated and reference files are different.")
-			devices.assertExistingPoolsAndCleanup(tc.fullTestName)
+			devices.assertExistingPoolsAndCleanup()
 
 			if *slow {
 				time.Sleep(time.Second)
@@ -299,8 +298,7 @@ func TestGrubMkConfig(t *testing.T) {
 }
 
 type TestCase struct {
-	path         string
-	fullTestName string
+	path string
 }
 
 func newTestCases(t *testing.T) map[string]TestCase {
@@ -325,8 +323,7 @@ func newTestCases(t *testing.T) map[string]TestCase {
 			}
 
 			testCases[tcName] = TestCase{
-				path:         tcPath,
-				fullTestName: strings.Replace(strings.Replace(tcPath, definitionsDir+"/", "", 1), "/", "_", -1),
+				path: tcPath,
 			}
 		}
 	}

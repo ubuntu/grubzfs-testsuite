@@ -1,1 +1,1 @@
-efi-nosb_separated-etc-priority-3-samebasedataset-rpool/ROOT/ubuntu	yes	11111111111111111111111111111111	Ubuntu 19.04	1599999999	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	vmlinuz-5.0.0-13-generic
+rpool/ROOT/ubuntu	yes	11111111111111111111111111111111	Ubuntu 19.04	1599999999	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	vmlinuz-5.0.0-13-generic

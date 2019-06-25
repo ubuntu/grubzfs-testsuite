@@ -1,1 +1,1 @@
-efi-sb_filterkernel-rpool/ROOT/ubuntu	yes	11111111111111111111111111111111	Ubuntu 19.04	1599999999	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic.efi.signed	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic.efi.signed	vmlinuz-5.0.0-13-generic.efi.signed
+rpool/ROOT/ubuntu	yes	11111111111111111111111111111111	Ubuntu 19.04	1599999999	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic.efi.signed	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic.efi.signed	vmlinuz-5.0.0-13-generic.efi.signed

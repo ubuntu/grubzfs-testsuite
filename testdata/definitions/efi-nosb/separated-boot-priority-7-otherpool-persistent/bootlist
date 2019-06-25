@@ -1,1 +1,1 @@
-efi-nosb_separated-boot-priority-7-otherpool-persistent-rpool/ROOT/ubuntu	yes	11111111111111111111111111111111	Ubuntu 19.04	1599999999	secondary.disk	/boot@/initrd.img-5.0.0-13-generic	/boot@/vmlinuz-5.0.0-13-generic	vmlinuz-5.0.0-13-generic
+rpool/ROOT/ubuntu	yes	11111111111111111111111111111111	Ubuntu 19.04	1599999999	secondary.disk	/boot@/initrd.img-5.0.0-13-generic	/boot@/vmlinuz-5.0.0-13-generic	vmlinuz-5.0.0-13-generic

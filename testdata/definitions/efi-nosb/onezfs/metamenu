@@ -1,2 +1,2 @@
-11111111111111111111111111111111	-	main	Ubuntu 19.04	efi-nosb_onezfs-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
-11111111111111111111111111111111	-	advanced	Ubuntu 19.04	efi-nosb_onezfs-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	false
+11111111111111111111111111111111	-	main	Ubuntu 19.04	rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+11111111111111111111111111111111	-	advanced	Ubuntu 19.04	rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	false

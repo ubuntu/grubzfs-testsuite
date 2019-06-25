@@ -1,6 +1,6 @@
-efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	-	main	Ubuntu 18.10	efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic
-efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	-	advanced	Ubuntu 18.10	efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic	false
-efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	-	advanced	Ubuntu 18.10	efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-4.15.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic	false
-efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	-	advanced	Ubuntu 18.10	efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-4.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic	false
-efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu	-	main	Ubuntu 19.04	efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
-efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu	-	advanced	Ubuntu 19.04	efi-nosb_multiple-zfs-empty-machine-id-rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	false
+rpool/ROOT/ubuntu_2	-	main	Ubuntu 18.10	rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic
+rpool/ROOT/ubuntu_2	-	advanced	Ubuntu 18.10	rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic	false
+rpool/ROOT/ubuntu_2	-	advanced	Ubuntu 18.10	rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-4.15.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic	false
+rpool/ROOT/ubuntu_2	-	advanced	Ubuntu 18.10	rpool/ROOT/ubuntu_2	main.disk	/ROOT/ubuntu_2@/boot/initrd.img-4.0.0-13-generic	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic	false
+rpool/ROOT/ubuntu	-	main	Ubuntu 19.04	rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic
+rpool/ROOT/ubuntu	-	advanced	Ubuntu 19.04	rpool/ROOT/ubuntu	main.disk	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic	false

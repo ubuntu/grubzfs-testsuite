@@ -24,7 +24,7 @@ else
   set linux_gfx_mode=text
 fi
 export linux_gfx_mode
-menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_one-imported-pool-root-dataset-rpool-5.0.0-13-generic' {
+menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool-5.0.0-13-generic' {
 	recordfail
 	load_video
 	gfxmode ${linux_gfx_mode}
@@ -39,11 +39,11 @@ menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os
 	else
 	  search --no-floppy --fs-uuid --set=root UUID-main.disk
 	fi
-	linux	/@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_one-imported-pool-root-dataset-rpool ro  quiet splash ${vt_handoff} 
+	linux	/@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool ro  quiet splash ${vt_handoff} 
 	initrd	/@/boot/initrd.img-5.0.0-13-generic
 }
-submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-efi-nosb_one-imported-pool-root-dataset-rpool' {
-	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_one-imported-pool-root-dataset-rpool-5.0.0-13-generic' {
+submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-rpool' {
+	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool-5.0.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -59,11 +59,11 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_one-imported-pool-root-dataset-rpool ro  quiet splash ${vt_handoff} 
+		linux	/@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/@/boot/initrd.img-5.0.0-13-generic
 	}
-	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_one-imported-pool-root-dataset-rpool-5.0.0-13-generic' {
+	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool-5.0.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -78,7 +78,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_one-imported-pool-root-dataset-rpool ro recovery nomodeset  
+		linux	/@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/@/boot/initrd.img-5.0.0-13-generic
 	}

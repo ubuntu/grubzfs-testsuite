@@ -24,7 +24,7 @@ else
   set linux_gfx_mode=text
 fi
 export linux_gfx_mode
-menuentry 'Ubuntu 19.10' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_3-5.0.0-13-generic' {
+menuentry 'Ubuntu 19.10' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_3-5.0.0-13-generic' {
 	recordfail
 	load_video
 	gfxmode ${linux_gfx_mode}
@@ -39,11 +39,11 @@ menuentry 'Ubuntu 19.10' --class ubuntu --class gnu-linux --class gnu --class os
 	else
 	  search --no-floppy --fs-uuid --set=root UUID-main.disk
 	fi
-	linux	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_3 ro  quiet splash ${vt_handoff} 
+	linux	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_3 ro  quiet splash ${vt_handoff} 
 	initrd	/ROOT/ubuntu_3@/boot/initrd.img-5.0.0-13-generic
 }
-submenu 'Advanced options for Ubuntu 19.10' ${menuentry_id_option} 'gnulinux-advanced-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_3' {
-	menuentry '* Ubuntu 19.10, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_3-5.0.0-13-generic' {
+submenu 'Advanced options for Ubuntu 19.10' ${menuentry_id_option} 'gnulinux-advanced-rpool/ROOT/ubuntu_3' {
+	menuentry '* Ubuntu 19.10, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_3-5.0.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -59,11 +59,11 @@ submenu 'Advanced options for Ubuntu 19.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_3 ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_3 ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_3@/boot/initrd.img-5.0.0-13-generic
 	}
-	menuentry '* Ubuntu 19.10, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_3-5.0.0-13-generic' {
+	menuentry '* Ubuntu 19.10, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_3-5.0.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -78,12 +78,12 @@ submenu 'Advanced options for Ubuntu 19.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_3 ro recovery nomodeset  
+		linux	/ROOT/ubuntu_3@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_3 ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_3@/boot/initrd.img-5.0.0-13-generic
 	}
 }
-menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu-5.0.0-13-generic' {
+menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
 	recordfail
 	load_video
 	gfxmode ${linux_gfx_mode}
@@ -98,11 +98,11 @@ menuentry 'Ubuntu 19.04' --class ubuntu --class gnu-linux --class gnu --class os
 	else
 	  search --no-floppy --fs-uuid --set=root UUID-main.disk
 	fi
-	linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+	linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 	initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 }
-submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu' {
-	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu-5.0.0-13-generic' {
+submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-advanced-rpool/ROOT/ubuntu' {
+	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -118,11 +118,11 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
-	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu-5.0.0-13-generic' {
+	menuentry 'Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -137,11 +137,11 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu ro recovery nomodeset  
+		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
-	menuentry '* Ubuntu 19.04, with Linux 4.15.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu-4.15.0-13-generic' {
+	menuentry '* Ubuntu 19.04, with Linux 4.15.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.15.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -157,11 +157,11 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic
 	}
-	menuentry '* Ubuntu 19.04, with Linux 4.15.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu-4.15.0-13-generic' {
+	menuentry '* Ubuntu 19.04, with Linux 4.15.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.15.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -176,11 +176,11 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu ro recovery nomodeset  
+		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic
 	}
-	menuentry 'Ubuntu 19.04, with Linux 4.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu-4.0.0-13-generic' {
+	menuentry 'Ubuntu 19.04, with Linux 4.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.0.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -196,11 +196,11 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic
 	}
-	menuentry 'Ubuntu 19.04, with Linux 4.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu-4.0.0-13-generic' {
+	menuentry 'Ubuntu 19.04, with Linux 4.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.0.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -215,14 +215,14 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
-		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu ro recovery nomodeset  
+		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic
 	}
 }
-submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu' {
-	submenu 'Boot on snap2 on 12/31/19 @ 08:36' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2' {
-		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2-4.15.0-13-generic' {
+submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-rpool/ROOT/ubuntu' {
+	submenu 'Boot on snap2 on 12/31/19 @ 08:36' ${menuentry_id_option} 'gnulinux-history-rpool/ROOT/ubuntu@snap2' {
+		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu@snap2-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -237,10 +237,10 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu@snap2/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2 ro  quiet splash ${vt_handoff} 
+			linux	/ROOT/ubuntu@snap2/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu@snap2 ro  quiet splash ${vt_handoff} 
 			initrd	/ROOT/ubuntu@snap2/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'One time boot (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2-4.15.0-13-generic' {
+		menuentry 'One time boot (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu@snap2-4.15.0-13-generic' {
 			recordfail
 			load_video
 			insmod gzio
@@ -255,11 +255,11 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
 			echo 'Loading Linux 4.15.0-13-generic ...'
-			linux	/ROOT/ubuntu@snap2/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2 ro recovery nomodeset  
+			linux	/ROOT/ubuntu@snap2/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu@snap2 ro recovery nomodeset  
 			echo	'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu@snap2/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'Revert system (all intermediate snapshots will be destroyed)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2-4.15.0-13-generic' {
+		menuentry 'Revert system (all intermediate snapshots will be destroyed)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu@snap2-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -274,12 +274,12 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu@snap2/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap2 ro  quiet splash ${vt_handoff} rollback=yes
+			linux	/ROOT/ubuntu@snap2/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu@snap2 ro  quiet splash ${vt_handoff} rollback=yes
 			initrd	/ROOT/ubuntu@snap2/boot/initrd.img-4.15.0-13-generic
 		}
 	}
-	submenu 'Boot on clone on 08/24/19 @ 19:11' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone' {
-		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone-4.15.0-13-generic' {
+	submenu 'Boot on clone on 08/24/19 @ 19:11' ${menuentry_id_option} 'gnulinux-history-rpool/ROOT/ubuntu_clone' {
+		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_clone-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -294,10 +294,10 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu_clone@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone ro  quiet splash ${vt_handoff} 
+			linux	/ROOT/ubuntu_clone@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_clone ro  quiet splash ${vt_handoff} 
 			initrd	/ROOT/ubuntu_clone@/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'One time boot (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone-4.15.0-13-generic' {
+		menuentry 'One time boot (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_clone-4.15.0-13-generic' {
 			recordfail
 			load_video
 			insmod gzio
@@ -312,11 +312,11 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
 			echo 'Loading Linux 4.15.0-13-generic ...'
-			linux	/ROOT/ubuntu_clone@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone ro recovery nomodeset  
+			linux	/ROOT/ubuntu_clone@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_clone ro recovery nomodeset  
 			echo	'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu_clone@/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'Revert system (all intermediate snapshots will be destroyed)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone-4.15.0-13-generic' {
+		menuentry 'Revert system (all intermediate snapshots will be destroyed)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_clone-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -331,12 +331,12 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu_clone@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_clone ro  quiet splash ${vt_handoff} rollback=yes
+			linux	/ROOT/ubuntu_clone@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_clone ro  quiet splash ${vt_handoff} rollback=yes
 			initrd	/ROOT/ubuntu_clone@/boot/initrd.img-4.15.0-13-generic
 		}
 	}
-	submenu 'Boot on snap1 on 12/10/18 @ 13:20' ${menuentry_id_option} 'gnulinux-history-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1' {
-		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1-4.15.0-13-generic' {
+	submenu 'Boot on snap1 on 12/10/18 @ 13:20' ${menuentry_id_option} 'gnulinux-history-rpool/ROOT/ubuntu@snap1' {
+		menuentry 'One time boot' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu@snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -351,10 +351,10 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu@snap1/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1 ro  quiet splash ${vt_handoff} 
+			linux	/ROOT/ubuntu@snap1/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu@snap1 ro  quiet splash ${vt_handoff} 
 			initrd	/ROOT/ubuntu@snap1/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'One time boot (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1-4.15.0-13-generic' {
+		menuentry 'One time boot (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu@snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
 			insmod gzio
@@ -369,11 +369,11 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
 			echo 'Loading Linux 4.15.0-13-generic ...'
-			linux	/ROOT/ubuntu@snap1/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1 ro recovery nomodeset  
+			linux	/ROOT/ubuntu@snap1/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu@snap1 ro recovery nomodeset  
 			echo	'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu@snap1/boot/initrd.img-4.15.0-13-generic
 		}
-		menuentry 'Revert system (all intermediate snapshots will be destroyed)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1-4.15.0-13-generic' {
+		menuentry 'Revert system (all intermediate snapshots will be destroyed)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu@snap1-4.15.0-13-generic' {
 			recordfail
 			load_video
 			gfxmode ${linux_gfx_mode}
@@ -388,12 +388,12 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-efi-
 			else
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
-			linux	/ROOT/ubuntu@snap1/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu@snap1 ro  quiet splash ${vt_handoff} rollback=yes
+			linux	/ROOT/ubuntu@snap1/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu@snap1 ro  quiet splash ${vt_handoff} rollback=yes
 			initrd	/ROOT/ubuntu@snap1/boot/initrd.img-4.15.0-13-generic
 		}
 	}
 }
-menuentry 'Ubuntu 18.10' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
+menuentry 'Ubuntu 18.10' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
 	recordfail
 	load_video
 	gfxmode ${linux_gfx_mode}
@@ -408,11 +408,11 @@ menuentry 'Ubuntu 18.10' --class ubuntu --class gnu-linux --class gnu --class os
 	else
 	  search --no-floppy --fs-uuid --set=root UUID-main.disk
 	fi
-	linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
+	linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
 	initrd	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic
 }
-submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-advanced-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2' {
-	menuentry 'Ubuntu 18.10, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
+submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-advanced-rpool/ROOT/ubuntu_2' {
+	menuentry 'Ubuntu 18.10, with Linux 5.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -428,11 +428,11 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic
 	}
-	menuentry 'Ubuntu 18.10, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
+	menuentry 'Ubuntu 18.10, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -447,11 +447,11 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2 ro recovery nomodeset  
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic
 	}
-	menuentry 'Ubuntu 18.10, with Linux 4.15.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2-4.15.0-13-generic' {
+	menuentry 'Ubuntu 18.10, with Linux 4.15.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.15.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -467,11 +467,11 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-4.15.0-13-generic
 	}
-	menuentry 'Ubuntu 18.10, with Linux 4.15.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2-4.15.0-13-generic' {
+	menuentry 'Ubuntu 18.10, with Linux 4.15.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.15.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -486,11 +486,11 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2 ro recovery nomodeset  
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-4.15.0-13-generic
 	}
-	menuentry '* Ubuntu 18.10, with Linux 4.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2-4.0.0-13-generic' {
+	menuentry '* Ubuntu 18.10, with Linux 4.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.0.0-13-generic' {
 		recordfail
 		load_video
 		gfxmode ${linux_gfx_mode}
@@ -506,11 +506,11 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-4.0.0-13-generic
 	}
-	menuentry '* Ubuntu 18.10, with Linux 4.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2-4.0.0-13-generic' {
+	menuentry '* Ubuntu 18.10, with Linux 4.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.0.0-13-generic' {
 		recordfail
 		load_video
 		insmod gzio
@@ -525,7 +525,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic root=ZFS=efi-nosb_multiple-system-ordered-with-snapshots-rpool/ROOT/ubuntu_2 ro recovery nomodeset  
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
 		echo	'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-4.0.0-13-generic
 	}
