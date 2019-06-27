@@ -15,3 +15,16 @@ Depends: @
 Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestGrubMkConfig -dangerous
 Restrictions: needs-root, allow-stderr
 Depends: @
+
+# Rerun partial tests with mawk instead of default gawk
+Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestBootlist -dangerous -awk=/usr/bin/mawk
+Restrictions: needs-root, allow-stderr
+Depends: @
+
+Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestMetaMenu -awk=/usr/bin/mawk
+Restrictions: needs-root, allow-stderr
+Depends: @
+
+Test-Command: cd /tmp && sudo /usr/lib/grubzfs-testsuite/grubzfs-tests -test.v -test.run=TestGrubMenu -awk=/usr/bin/mawk
+Restrictions: needs-root, allow-stderr
+Depends: @
