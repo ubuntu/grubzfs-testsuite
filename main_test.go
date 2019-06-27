@@ -16,6 +16,7 @@ var (
 	dangerous = flag.Bool("dangerous", false, "execute dangerous tests which may alter the system state")
 	update    = flag.Bool("update", false, "update golden files")
 	slow      = flag.Bool("slow", false, "sleep between tests interacting with zfs kernel module to avoid spamming it")
+	awk       = flag.String("awk", "", "select a different awk binary (default to system one)")
 
 	// Test data and mock dir are generally <current test dir>/{testdata;mocks}. However, when we ship a binary
 	// test package, cwd can be != binary dir and the binary (contrary to `go test`) doesn't cd you into the current
@@ -61,6 +62,12 @@ func init() {
 	if !found {
 		log.Fatalf("no mocks source and binary directories found (cmd/ or mocks/)")
 	}
+
+	// Set global variable for awk implementation
+	fmt.Println(*awk)
+	if err := os.Setenv("TEST_AWK_BIN", *awk); err != nil {
+		log.Fatalf("couldn't set mock awk environment variable")
+	}
 }
 
 func TestBootlist(t *testing.T) {
@@ -97,10 +104,10 @@ func TestBootlist(t *testing.T) {
 			systemRootDataset := devices.create(testDir)
 
 			out := filepath.Join(testDir, "bootlist")
-			path := fmt.Sprintf("PATH=%s/zpool:%s/zfs:%s/date:%s", mockDir, mockDir, mockDir, os.Getenv("PATH"))
+			path := fmt.Sprintf("PATH=%s/zpool:%s/zfs:%s/date:%s/awk:%s", mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
 			var securebootEnv string
 			if secureBootState != "no-mokutil" {
-				path = fmt.Sprintf("PATH=%s/mokutil:%s/zpool:%s/zfs:%s/date:%s", mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
+				path = fmt.Sprintf("PATH=%s/mokutil:%s/zpool:%s/zfs:%s/date:%s/awk:%s", mockDir, mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
 				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + secureBootState
 			}
 
@@ -157,10 +164,12 @@ func TestMetaMenu(t *testing.T) {
 			testDir, cleanUp := tempDir(t)
 			defer cleanUp()
 
+			path := fmt.Sprintf("PATH=%s/awk:%s", mockDir, os.Getenv("PATH"))
 			out := getTempOrReferenceFile(t, *update,
 				filepath.Join(testDir, "metamenu"),
 				filepath.Join(tc.path, "metamenu"))
 			env := append(os.Environ(),
+				path,
 				"LC_ALL=C",
 				"TZ=Europe/Paris", // we want to ensure user's timezone is taken into account
 				"GRUB_LINUX_ZFS_TEST=metamenu",
@@ -199,7 +208,7 @@ func TestGrubMenu(t *testing.T) {
 			out := getTempOrReferenceFile(t, *update,
 				filepath.Join(testDir, "grubmenu"),
 				filepath.Join(tc.path, "grubmenu"))
-			path := fmt.Sprintf("PATH=%s/grub-probe:%s", mockDir, os.Getenv("PATH"))
+			path := fmt.Sprintf("PATH=%s/grub-probe:%s/awk:%s", mockDir, mockDir, os.Getenv("PATH"))
 			grubProbeDir, err := filepath.Abs(filepath.Join(mockDir, "grub-probe"))
 			if err != nil {
 				t.Fatal("couldn't get absolute path for mock directory", err)
@@ -255,10 +264,10 @@ func TestGrubMkConfig(t *testing.T) {
 			devices := newFakeDevices(t, filepath.Join(tc.path, "testcase.yaml"))
 			systemRootDataset := devices.create(testDir)
 
-			path := fmt.Sprintf("PATH=%s/zpool:%s/zfs:%s/date:%s/grub-probe:%s", mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
+			path := fmt.Sprintf("PATH=%s/zpool:%s/zfs:%s/date:%s/grub-probe:%s/awk:%s", mockDir, mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
 			var securebootEnv string
 			if secureBootState != "no-mokutil" {
-				path = fmt.Sprintf("PATH=%s/mokutil:%s/zpool:%s/zfs:%s/date:%s/grub-probe:%s", mockDir, mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
+				path = fmt.Sprintf("PATH=%s/mokutil:%s/zpool:%s/zfs:%s/date:%s/grub-probe:%s/awk:%s", mockDir, mockDir, mockDir, mockDir, mockDir, mockDir, os.Getenv("PATH"))
 				securebootEnv = "TEST_MOKUTIL_SECUREBOOT=" + secureBootState
 			}
 

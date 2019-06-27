@@ -45,7 +45,7 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	// We need to set grub_probe twice: once in environment (for subprocess) and once in grub_mkconfig directly
 	updateFile(t, grubMkConfig, map[string]string{
 		`sysconfdir="/etc"`: `sysconfdir="` + testDir + `/etc"` +
-			"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET LC_ALL TZ grub_probe\n",
+			"\nexport GRUB_LINUX_ZFS_TEST GRUB_LINUX_ZFS_TEST_INPUT GRUB_LINUX_ZFS_TEST_OUTPUT TEST_POOL_DIR TEST_MOKUTIL_SECUREBOOT TEST_MOCKZFS_CURRENT_ROOT_DATASET TEST_AWK_BIN LC_ALL TZ grub_probe\n",
 		`grub_probe="${sbindir}/grub-probe"`: "grub_probe=`which grub-probe`",
 	})
 	// Update 10_linux_zfs to replace /dev/loopX loop devices by /dev/loop00 when calling prepare_grub_to_access_device.

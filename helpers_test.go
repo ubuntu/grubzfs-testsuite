@@ -29,7 +29,7 @@ func ensureBinaryMocks(t *testing.T) {
 	}
 
 	compileMocksOnce.Do(func() {
-		for _, mock := range []string{"mokutil", "zfs", "zpool", "date", "grub-probe"} {
+		for _, mock := range []string{"mokutil", "zfs", "zpool", "date", "grub-probe", "awk"} {
 			cmd := exec.Command("go", "build", "-o", filepath.Join(mockDir, mock, mock), filepath.Join(filepath.Dir(mockDir), "cmd/", mock, "main.go"))
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
