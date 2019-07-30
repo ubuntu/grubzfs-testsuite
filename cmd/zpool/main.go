@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-const importCmd = "zpool import -a -N"
+const importCmd = "zpool import -f -a -o cachefile=none -N"
 
 func main() {
 	cmdLine := strings.Join(os.Args, " ")
 	args := os.Args[1:]
 
-	if strings.HasPrefix(cmdLine, importCmd) && len(os.Args) == 4 {
+	if strings.HasPrefix(cmdLine, importCmd) {
 		dir, ok := os.LookupEnv("TEST_POOL_DIR")
 		if !ok {
 			dir = "."
