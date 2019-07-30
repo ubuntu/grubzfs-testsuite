@@ -9,3 +9,6 @@ require (
 	github.com/stretchr/testify v1.3.0
 	gopkg.in/yaml.v2 v2.2.2
 )
+
+// Check https://github.com/bicomsystems/go-libzfs/pull/20
+replace github.com/bicomsystems/go-libzfs => github.com/ubuntu/go-libzfs v0.2.2-0.20190715120733-dfe7058c3c21
