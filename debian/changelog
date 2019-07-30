@@ -1,3 +1,13 @@
+grubzfs-testsuite (0.4) eoan; urgency=medium
+
+  * Allow testing against gawk and mawk
+  * Use our fork of go-libzfs which supports zfs 0.8
+  * Adapt the zpool mock to new grub 10_linux_zfs script
+  * Depends on grub version with mawk support
+  * Refresh vendor/ directory
+
+ -- Didier Roche <didrocks@ubuntu.com>  Tue, 30 Jul 2019 07:54:35 +0200
+
 grubzfs-testsuite (0.3) eoan; urgency=medium
 
   * Add more tests and fixes as 10_linux_zfs evolved.
