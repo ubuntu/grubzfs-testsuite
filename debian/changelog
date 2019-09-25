@@ -1,4 +1,4 @@
-grubzfs-testsuite (0.4.1) UNRELEASED; urgency=medium
+grubzfs-testsuite (0.4.1) eoan; urgency=medium
 
   * Fix lintian issues on copyright
   * Depends on zsys:
