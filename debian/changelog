@@ -1,3 +1,12 @@
+grubzfs-testsuite (0.4.1) UNRELEASED; urgency=medium
+
+  * Fix lintian issues on copyright
+  * Depends on zsys:
+    Generate menu has some temporary zsys checks, add it for our tests to
+    pass for the next grub upload. (LP: #1845333)
+
+ -- Didier Roche <didrocks@ubuntu.com>  Wed, 25 Sep 2019 15:58:44 +0200
+
 grubzfs-testsuite (0.4) eoan; urgency=medium
 
   * Allow testing against gawk and mawk
