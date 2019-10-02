@@ -1,4 +1,4 @@
-grubzfs-testsuite (0.4.3) UNRELEASED; urgency=medium
+grubzfs-testsuite (0.4.3) eoan; urgency=medium
 
   * Refresh tests golden files for latest grub, fixing the case of pure zfs
     snapshots giving additional "}", and as such, creating invalid grub menu.
