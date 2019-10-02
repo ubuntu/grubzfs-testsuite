@@ -160,3 +160,4 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-rpoo
 			initrd	/ROOT/ubuntu@snap1/boot/initrd.img-4.15.0-13-generic
 		}
 	}
+}

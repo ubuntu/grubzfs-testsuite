@@ -220,9 +220,6 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic
 	}
 }
-}
-}
-}
 menuentry 'Ubuntu 18.10' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
 	recordfail
 	load_video
