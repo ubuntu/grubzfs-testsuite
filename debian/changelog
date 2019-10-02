@@ -1,3 +1,10 @@
+grubzfs-testsuite (0.4.3) UNRELEASED; urgency=medium
+
+  * Refresh tests golden files for latest grub, fixing the case of pure zfs
+    snapshots giving additional "}", and as such, creating invalid grub menu.
+
+ -- Didier Roche <didrocks@ubuntu.com>  Wed, 02 Oct 2019 10:04:15 +0200
+
 grubzfs-testsuite (0.4.2) eoan; urgency=medium
 
   * Build-dep on zsys as well to prevent building on s390x.
