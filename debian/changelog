@@ -1,3 +1,10 @@
+grubzfs-testsuite (0.4.4) eoan; urgency=medium
+
+  * Refresh test golden files for latest grub, fixing booting on ubuntu
+    with secure boot taking non .efi.signed kernels (LP: #1847581)
+
+ -- Didier Roche <didrocks@ubuntu.com>  Thu, 10 Oct 2019 11:38:46 +0200
+
 grubzfs-testsuite (0.4.3) eoan; urgency=medium
 
   * Refresh tests golden files for latest grub, fixing the case of pure zfs
