@@ -1,10 +1,10 @@
-grubzfs-testsuite (0.4.5) UNRELEASED; urgency=medium
+grubzfs-testsuite (0.4.5) eoan; urgency=medium
 
   * Move our identifier to com.ubuntu
     As we are not going to own org.zsys, move our identifier under
     com.ubuntu.zsys (LP: #1847711)
 
- -- Didier Roche <didrocks@ubuntu.com>  Fri, 11 Oct 2019 15:51:00 +0200
+ -- Didier Roche <didrocks@ubuntu.com>  Fri, 11 Oct 2019 15:55:19 +0200
 
 grubzfs-testsuite (0.4.4) eoan; urgency=medium
 
