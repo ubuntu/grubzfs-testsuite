@@ -17,7 +17,7 @@ func main() {
 	args := os.Args[1:]
 
 	if strings.HasPrefix(cmdLine, creationCmd) && len(os.Args) == 5 {
-		args[2] = "org.zsys:creation.test"
+		args[2] = "com.ubuntu.zsys:creation.test"
 	}
 
 	cmd := exec.Command("/sbin/zfs", args...)

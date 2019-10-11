@@ -158,13 +158,13 @@ func (fdevice FakeDevices) create(path string) string {
 						}
 
 						if dataset.ZsysBootfs {
-							d.SetUserProperty("org.zsys:bootfs", "yes")
+							d.SetUserProperty("com.ubuntu.zsys:bootfs", "yes")
 							if !dataset.LastUsed.IsZero() {
-								d.SetUserProperty("org.zsys:last-used", strconv.FormatInt(dataset.LastUsed.Unix(), 10))
+								d.SetUserProperty("com.ubuntu.zsys:last-used", strconv.FormatInt(dataset.LastUsed.Unix(), 10))
 							}
 						}
 						if dataset.LastBootedKernel != "" {
-							d.SetUserProperty("org.zsys:last-booted-kernel", dataset.LastBootedKernel)
+							d.SetUserProperty("com.ubuntu.zsys:last-booted-kernel", dataset.LastBootedKernel)
 						}
 						if shouldMount {
 							// get potentially inherited mountpoint path
@@ -206,10 +206,10 @@ func (fdevice FakeDevices) create(path string) string {
 								if err != nil {
 									fdevice.Fatal("couldn't get current timezone", err)
 								}
-								d.SetUserProperty("org.zsys:creation.test", strconv.FormatInt(s.CreationDate.In(location).Unix(), 10))
+								d.SetUserProperty("com.ubuntu.zsys:creation.test", strconv.FormatInt(s.CreationDate.In(location).Unix(), 10))
 
 								if s.LastBootedKernel != "" {
-									d.SetUserProperty("org.zsys:last-booted-kernel", s.LastBootedKernel)
+									d.SetUserProperty("com.ubuntu.zsys:last-booted-kernel", s.LastBootedKernel)
 								}
 							}()
 						}
