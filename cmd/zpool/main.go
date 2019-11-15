@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const importCmd = "zpool import -f -a -o cachefile=none -N"
+const importCmd = "zpool import -f -a"
 
 func main() {
 	cmdLine := strings.Join(os.Args, " ")
