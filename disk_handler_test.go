@@ -32,7 +32,7 @@ type FstabEntry struct {
 }
 
 type FakeDevice struct {
-	Name    string
+	Names   []string
 	Type    string
 	Content map[string]string
 	ZFS     struct {
@@ -81,28 +81,43 @@ func (fdevice FakeDevices) create(path string) string {
 	for _, device := range fdevice.Devices {
 		func() {
 			// Create file on disk
-			p := filepath.Join(path, device.Name+".disk")
-			f, err := os.Create(p)
-			if err != nil {
-				fdevice.Fatal("couldn't create device file on disk", err)
-			}
-			if err = f.Truncate(100 * mB); err != nil {
+			var devPaths []string
+			for _, deviceName := range device.Names {
+				p := filepath.Join(path, deviceName+".disk")
+				f, err := os.Create(p)
+				if err != nil {
+					fdevice.Fatal("couldn't create device file on disk", err)
+				}
+				if err = f.Truncate(100 * mB); err != nil {
+					f.Close()
+					fdevice.Fatal("couldn't initializing device size on disk", err)
+				}
+				devPaths = append(devPaths, p)
 				f.Close()
-				fdevice.Fatal("couldn't initializing device size on disk", err)
 			}
-			f.Close()
 
-			deviceMountPath := filepath.Join(path, device.Name)
+			deviceMountPath := filepath.Join(path, device.Names[0])
 			if err := os.MkdirAll(deviceMountPath, 0700); err != nil {
 				fdevice.Fatal("couldn't create directory for pool", err)
 			}
 
 			switch strings.ToLower(device.Type) {
 			case "zfs":
+				var devs []zfs.VDevTree
+
+				for _, p := range devPaths {
+					devs = append(devs, zfs.VDevTree{
+						Type: zfs.VDevTypeFile,
+						Path: p,
+					})
+				}
+				var t zfs.VDevType = zfs.VDevTypeFile
+				if len(devs) > 1 {
+					t = zfs.VDevTypeMirror
+				}
 				vdev := zfs.VDevTree{
-					Type:    zfs.VDevTypeFile,
-					Path:    p,
-					Devices: []zfs.VDevTree{{Type: zfs.VDevTypeFile, Path: p}},
+					Type:    t,
+					Devices: devs,
 				}
 
 				features := make(map[string]string)
@@ -222,6 +237,10 @@ func (fdevice FakeDevices) create(path string) string {
 				}
 
 			case "ext4":
+				if len(devPaths) > 1 {
+					fdevice.Fatalf("Only one device allowed for ext4. Got %s", device.Names)
+				}
+				p := devPaths[0]
 				func() {
 					ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 					defer cancel()
