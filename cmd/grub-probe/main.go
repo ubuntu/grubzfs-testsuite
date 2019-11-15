@@ -8,6 +8,14 @@ import (
 )
 
 func main() {
+	if len(os.Args) < 2 {
+		// Avoid a panic if no args have been provided and return the same code than the real grub-probe
+		fmt.Fprintln(os.Stderr, `No path or device is specified.
+Usage: grub-probe [OPTION...] [OPTION]... [PATH|DEVICE]
+Try 'grub-probe --help' or 'grub-probe --usage' for more information.`)
+		os.Exit(64)
+	}
+
 	switch os.Args[1] {
 	case "--target=device":
 		cmd := exec.Command("/usr/sbin/grub-probe", os.Args[1:]...)
