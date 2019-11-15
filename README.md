@@ -8,6 +8,7 @@ On Debian and derivatives, the following packages are required (grub and zfs):
 * zfsutils-linux
 * libzfslinux-dev
 * e2fsprogs
+* zsys
 
 Go 1.11 (minimum) is required.
 
