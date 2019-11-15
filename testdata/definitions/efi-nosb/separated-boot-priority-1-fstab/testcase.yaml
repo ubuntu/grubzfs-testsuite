@@ -1,5 +1,6 @@
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool
@@ -37,7 +38,8 @@ devices:
           zsys_bootfs: true
           mountpoint: /boot
           canmount: on
-  - name: secondary
+  - names:
+    - secondary
     type: zfs
     zfs:
       pool_name: bootpool
@@ -56,7 +58,8 @@ devices:
           mountpoint: /boot
           canmount: on
   # This one has priority
-  - name: bootfstab
+  - names:
+    - bootfstab
     type: ext4
     content:
       /: boot/one-kernel

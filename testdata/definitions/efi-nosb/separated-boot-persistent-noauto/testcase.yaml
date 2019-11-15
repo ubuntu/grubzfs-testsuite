@@ -1,5 +1,6 @@
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool

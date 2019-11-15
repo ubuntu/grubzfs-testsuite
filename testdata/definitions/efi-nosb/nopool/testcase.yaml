@@ -1,2 +1,3 @@
 devices:
-  - name: main
+  - names:
+    - main

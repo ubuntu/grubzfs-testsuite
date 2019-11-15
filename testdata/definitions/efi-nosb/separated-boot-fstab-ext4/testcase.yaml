@@ -1,5 +1,6 @@
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool
@@ -18,7 +19,8 @@ devices:
             - filesystem: secondary
               mountpoint: /boot
               type: ext4
-  - name: secondary
+  - names:
+    - secondary
     type: ext4
     content:
       /: boot/one-kernel

@@ -1,5 +1,6 @@
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       # This pool name is a submatch to rpool2. Ensure the 2 pools are taken into account via their separated alt root
@@ -17,7 +18,8 @@ devices:
           last_booted_kernel: vmlinuz-5.0.0-13-generic
           mountpoint: /
           canmount: on
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool2

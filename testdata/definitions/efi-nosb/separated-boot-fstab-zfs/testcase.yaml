@@ -1,5 +1,6 @@
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool
@@ -18,7 +19,8 @@ devices:
             - filesystem: bpool/boot
               mountpoint: /boot
               type: zfs
-  - name: secondary
+  - names:
+    - secondary
     type: zfs
     zfs:
       pool_name: bpool

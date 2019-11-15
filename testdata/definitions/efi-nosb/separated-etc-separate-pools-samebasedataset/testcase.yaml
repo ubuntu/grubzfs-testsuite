@@ -1,7 +1,8 @@
 # We won't find any systems here, as /etc is restricted to the same pool
 # when looking for a matchin base_dataset_name
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool
@@ -16,7 +17,8 @@ devices:
           last_booted_kernel: vmlinuz-5.0.0-13-generic
           mountpoint: /
           canmount: on
-  - name: secondary
+  - names:
+    - secondary
     type: zfs
     zfs:
       pool_name: etcpool

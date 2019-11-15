@@ -1,5 +1,6 @@
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool
@@ -21,7 +22,8 @@ devices:
           zsys_bootfs: true
           mountpoint: /boot
           canmount: on
-  - name: secondary
+  - names:
+    - secondary
     type: zfs
     zfs:
       pool_name: bootpool

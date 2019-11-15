@@ -1,5 +1,6 @@
 devices:
-  - name: main
+  - names:
+    - main
     type: zfs
     zfs:
       pool_name: rpool
@@ -14,7 +15,8 @@ devices:
           last_booted_kernel: vmlinuz-5.0.0-13-generic
           mountpoint: /
           canmount: on
-  - name: secondary
+  - names:
+    - secondary
     type: zfs
     zfs:
       pool_name: bootpool
