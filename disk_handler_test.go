@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -71,6 +72,38 @@ func newFakeDevices(t *testing.T, path string) FakeDevices {
 	}
 
 	return devices
+}
+
+// shuffleFile shuffles chunks of filePath
+// NOTE: There is a risk of flaky test because the pool is closed after the device has been altered.
+// If it's the case revisit the moment this function is called to call it after the defered pool.Close
+func shuffleFile(fdevice FakeDevices, filePath string) {
+	var chunks int64 = 100
+
+	f, err := os.OpenFile(filePath, os.O_RDWR, os.ModeAppend)
+	if err != nil {
+		fdevice.Fatal("Failed to open device file", err)
+	}
+	defer f.Close()
+
+	s, err := f.Stat()
+	if err != nil {
+		fdevice.Fatal("Failed to stat file", err)
+	}
+
+	chunkSize := s.Size() / chunks
+	b := make([]byte, int(chunkSize))
+
+	var i int64
+	for i = 1; i < chunks; i++ {
+		if _, err := f.ReadAt(b, i*chunkSize); err != nil {
+			fdevice.Fatal("Failed to read file", err)
+		}
+		rand.Shuffle(len(b), func(x, y int) { b[x], b[y] = b[y], b[x] })
+		if _, err := f.WriteAt(b, i*chunkSize); err != nil {
+			fdevice.Fatal("Failed to write to file", err)
+		}
+	}
 }
 
 // create on disk mock devices as files and return the main dataset
@@ -234,6 +267,15 @@ func (fdevice FakeDevices) create(path string) string {
 							completeSystemWithFstab(fdevice.T, path, dataset.Mountpoint, datasetPath, dataset.ZsysBootfs, dataset.LastUsed, dataset.Fstab)
 						}
 					}()
+				}
+
+				for _, deviceName := range device.Names {
+					// Device which name is "corrupted" will suffer some randomness and become an invalid pool
+					if deviceName != "corrupted" {
+						continue
+					}
+					p := filepath.Join(path, deviceName+".disk")
+					shuffleFile(fdevice, p)
 				}
 
 			case "ext4":
