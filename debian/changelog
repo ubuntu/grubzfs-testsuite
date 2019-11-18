@@ -1,3 +1,18 @@
+grubzfs-testsuite (0.4.6) UNRELEASED; urgency=medium
+
+  [ Jean-Baptiste Lallement ]
+  [ Didier Roche ]
+  * Test cases for:
+    - Handle the case where grub-probe returns several devices for a single
+      pool (LP: #1848856).
+    - Do not crash on invalid fstab and report the invalid entry.
+      (LP: #1849347)
+    - When a pool fails to import, catch and display the error message and
+      continue with other pools. Import all the pools in readonly mode so we
+      can import other pools with unsupported features (LP: #1848399)
+
+ -- Jean-Baptiste Lallement <jean-baptiste.lallement@ubuntu.com>  Mon, 18 Nov 2019 11:38:20 +0100
+
 grubzfs-testsuite (0.4.5) eoan; urgency=medium
 
   * Move our identifier to com.ubuntu
