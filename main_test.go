@@ -354,3 +354,12 @@ func skipOnZFSPermissionDenied(t *testing.T) {
 		t.Skip("skipping, you don't have permissions to interact with system zfs")
 	}
 }
+
+func TestMain(m *testing.M) {
+	flag.Parse()
+	linuxZFSOverride, ok := os.LookupEnv("GRUBTESTS_LINUXZFS")
+	if ok {
+		*linuxZFS = linuxZFSOverride
+	}
+	os.Exit(m.Run())
+}

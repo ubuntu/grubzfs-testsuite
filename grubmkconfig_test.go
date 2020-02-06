@@ -18,15 +18,6 @@ var (
 	linuxZFS = flag.String("linux-zfs", defaultLinuxZFS, "Grub linux ZFS file to test. Can be override with GRUBTESTS_LINUXZFS")
 )
 
-func init() {
-	testing.Init()
-	flag.Parse()
-	linuxZFSOverride, ok := os.LookupEnv("GRUBTESTS_LINUXZFS")
-	if ok {
-		*linuxZFS = linuxZFSOverride
-	}
-}
-
 // runGrubMkConfig setup and runs grubMkConfig.
 func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	for src, dst := range map[string]string{
