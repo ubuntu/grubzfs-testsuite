@@ -40,6 +40,7 @@ type FakeDevice struct {
 		PoolName string `yaml:"pool_name"`
 		Datasets []struct {
 			Name                string
+			KeepImported        bool `yaml:"keep_imported"`
 			Content             map[string]string
 			IsCurrentSystemRoot bool      `yaml:"is_current_system_root"`
 			ZsysBootfs          bool      `yaml:"zsys_bootfs"`
@@ -233,8 +234,10 @@ func (fdevice FakeDevices) create(path string) string {
 								}
 							}
 
-							defer os.RemoveAll(datasetPath)
-							defer d.UnmountAll(0)
+							if !dataset.KeepImported {
+								defer os.RemoveAll(datasetPath)
+								defer d.UnmountAll(0)
+							}
 						}
 
 						for _, s := range dataset.Snapshots {
