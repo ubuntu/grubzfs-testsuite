@@ -19,6 +19,7 @@ var (
 )
 
 func init() {
+	testing.Init()
 	flag.Parse()
 	linuxZFSOverride, ok := os.LookupEnv("GRUBTESTS_LINUXZFS")
 	if ok {
