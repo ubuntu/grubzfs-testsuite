@@ -1,3 +1,9 @@
+grubzfs-testsuite (0.4.8) focal; urgency=medium
+
+  * Refresh failing tests metadata now that the bug is fixed in grub2
+
+ -- Didier Roche <didrocks@ubuntu.com>  Tue, 18 Feb 2020 09:19:44 +0100
+
 grubzfs-testsuite (0.4.7) focal; urgency=medium
 
   [ Jean-Baptiste Lallement ]
