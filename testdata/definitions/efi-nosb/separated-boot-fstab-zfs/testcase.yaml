@@ -16,14 +16,14 @@ devices:
           mountpoint: /
           canmount: on
           fstab:
-            - filesystem: bpool/boot
+            - filesystem: bootpool/boot
               mountpoint: /boot
               type: zfs
   - names:
     - secondary
     type: zfs
     zfs:
-      pool_name: bpool
+      pool_name: bootpool
       datasets:
         - name: boot
           content:
