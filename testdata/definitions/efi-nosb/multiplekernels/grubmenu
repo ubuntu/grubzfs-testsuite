@@ -60,7 +60,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
 	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
@@ -79,7 +79,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
 	menuentry 'Ubuntu 19.04, with Linux 4.15.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.15.0-13-generic' {
@@ -99,7 +99,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic
 	}
 	menuentry 'Ubuntu 19.04, with Linux 4.15.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.15.0-13-generic' {
@@ -118,7 +118,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic
 	}
 	menuentry 'Ubuntu 19.04, with Linux 4.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.0.0-13-generic' {
@@ -138,7 +138,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic
 	}
 	menuentry 'Ubuntu 19.04, with Linux 4.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-4.0.0-13-generic' {
@@ -157,7 +157,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic
 	}
 }

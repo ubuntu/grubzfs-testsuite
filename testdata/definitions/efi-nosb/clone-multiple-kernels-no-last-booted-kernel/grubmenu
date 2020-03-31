@@ -60,7 +60,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
 	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
@@ -79,7 +79,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
 }
@@ -137,7 +137,7 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-rpoo
 			fi
 			echo 'Loading Linux 5.0.0-13-generic ...'
 			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_snap1 ro recovery nomodeset  
-			echo	'Loading initial ramdisk ...'
+			echo 'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu_snap1@/boot/initrd.img-5.0.0-13-generic
 		}
 		menuentry 'Revert system and user data (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_snap1-5.0.0-13-generic' {
@@ -156,7 +156,7 @@ submenu 'History for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-history-rpoo
 			fi
 			echo 'Loading Linux 5.0.0-13-generic ...'
 			linux	/ROOT/ubuntu_snap1@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_snap1 ro recovery nomodeset  zsys-revert=userdata
-			echo	'Loading initial ramdisk ...'
+			echo 'Loading initial ramdisk ...'
 			initrd	/ROOT/ubuntu_snap1@/boot/initrd.img-5.0.0-13-generic
 		}
 	}

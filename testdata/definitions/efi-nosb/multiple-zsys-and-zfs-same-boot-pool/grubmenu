@@ -60,7 +60,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/BOOT/ubuntu@/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu@/initrd.img-5.0.0-13-generic
 	}
 	menuentry '* Ubuntu 19.04, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu-5.0.0-13-generic' {
@@ -79,7 +79,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/BOOT/ubuntu@/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu@/initrd.img-5.0.0-13-generic
 	}
 }
@@ -119,7 +119,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/BOOT/ubuntu_2@/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu_2@/initrd.img-5.0.0-13-generic
 	}
 	menuentry 'Ubuntu 18.10, with Linux 5.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
@@ -138,7 +138,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 5.0.0-13-generic ...'
 		linux	/BOOT/ubuntu_2@/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu_2@/initrd.img-5.0.0-13-generic
 	}
 	menuentry 'Ubuntu 18.10, with Linux 4.15.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.15.0-13-generic' {
@@ -158,7 +158,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
 		linux	/BOOT/ubuntu_2@/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu_2@/initrd.img-4.15.0-13-generic
 	}
 	menuentry 'Ubuntu 18.10, with Linux 4.15.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.15.0-13-generic' {
@@ -177,7 +177,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.15.0-13-generic ...'
 		linux	/BOOT/ubuntu_2@/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu_2@/initrd.img-4.15.0-13-generic
 	}
 	menuentry 'Ubuntu 18.10, with Linux 4.0.0-13-generic' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.0.0-13-generic' {
@@ -197,7 +197,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
 		linux	/BOOT/ubuntu_2@/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro  quiet splash ${vt_handoff} 
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu_2@/initrd.img-4.0.0-13-generic
 	}
 	menuentry 'Ubuntu 18.10, with Linux 4.0.0-13-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-4.0.0-13-generic' {
@@ -216,7 +216,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		fi
 		echo 'Loading Linux 4.0.0-13-generic ...'
 		linux	/BOOT/ubuntu_2@/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
-		echo	'Loading initial ramdisk ...'
+		echo 'Loading initial ramdisk ...'
 		initrd	/BOOT/ubuntu_2@/initrd.img-4.0.0-13-generic
 	}
 }
