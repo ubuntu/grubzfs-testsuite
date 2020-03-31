@@ -43,7 +43,7 @@ func runGrubMkConfig(t *testing.T, env []string, testDir string) error {
 	// Update 10_linux_zfs to replace /dev/loopX loop devices by /dev/loop00 when calling prepare_grub_to_access_device.
 	updateFile(t, filepath.Join(testDir, "etc", "grub.d", "10_linux_zfs"), map[string]string{
 		"prepare_grub_to_access_device_cached() {": "prepare_grub_to_access_device_cached() {\n" +
-			`case "$1" in /dev/loop*) set -- /dev/loop00;; esac`,
+			`case "$1" in /dev/loop*) set -- /dev/loop00 $2;; esac`,
 	})
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
