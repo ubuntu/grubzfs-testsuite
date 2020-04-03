@@ -1,3 +1,19 @@
+grubzfs-testsuite (0.4.9) UNRELEASED; urgency=medium
+
+  [ Jean-Baptiste Lallement ]
+  [ Didier Roche ]
+  * Adapt to grub zfs generator in 2.04-1ubuntu23 (speedup improvements):
+    (LP: #1869885)
+    - rename the tests case to avoid using bpool
+    - added new tests for separated bpool handling: bpool is now a fast track
+      code path in our zfs script for our default layout.
+    - fix intercall in prepare_grub_to_access_device_cached that has now a new
+      parameter for submenu_level.
+    - refresh for correct tab alignement.
+    - update the Breaks: to correct version.
+
+ -- Didier Roche <didrocks@ubuntu.com>  Fri, 03 Apr 2020 15:50:39 +0200
+
 grubzfs-testsuite (0.4.8) focal; urgency=medium
 
   * Refresh failing tests metadata now that the bug is fixed in grub2
