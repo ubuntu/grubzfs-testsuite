@@ -24,6 +24,102 @@ else
   set linux_gfx_mode=text
 fi
 export linux_gfx_mode
+function zsyshistorymenu {
+	# $1: root dataset (eg rpool/ROOT/ubuntu_2zhm07@autozsys_k56fr6)
+	# $2: boot device id (eg 411f29ce1557bfed)
+	# $3: initrd (eg /BOOT/ubuntu_2zhm07@autozsys_k56fr6/initrd.img-5.4.0-21-generic)
+	# $4: kernel (eg /BOOT/ubuntu_2zhm07@autozsys_k56fr6/vmlinuz-5.4.0-21-generic)
+	# $5: kernel_version (eg 5.4.0-21-generic)
+
+	set root_dataset="${1}"
+	set boot_device="${2}"
+	set initrd="${3}"
+	set kernel="${4}"
+	set kversion="${5}"
+
+	menuentry 'Revert system only' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-${root_dataset}-${kversion}' {
+		recordfail
+		load_video
+		gfxmode ${linux_gfx_mode}
+		insmod gzio
+		if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+		if [ ${boot_device} = main.disk ]; then
+			insmod part_gpt
+			insmod modfor_main.disk
+			insmod ext2
+			set root='hd0,gpt2'
+			if [ x$feature_platform_search_hint = xy ]; then
+			  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+			else
+			  search --no-floppy --fs-uuid --set=root UUID-main.disk
+			fi
+		fi
+		linux	${kernel} root=ZFS=${root_dataset} ro  quiet splash ${vt_handoff} 
+		initrd	${initrd}
+	}
+	menuentry 'Revert system and user data' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-${root_dataset}-${kversion}' {
+		recordfail
+		load_video
+		gfxmode ${linux_gfx_mode}
+		insmod gzio
+		if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+		if [ ${boot_device} = main.disk ]; then
+			insmod part_gpt
+			insmod modfor_main.disk
+			insmod ext2
+			set root='hd0,gpt2'
+			if [ x$feature_platform_search_hint = xy ]; then
+			  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+			else
+			  search --no-floppy --fs-uuid --set=root UUID-main.disk
+			fi
+		fi
+		linux	${kernel} root=ZFS=${root_dataset} ro  quiet splash ${vt_handoff} zsys-revert=userdata
+		initrd	${initrd}
+	}
+	menuentry 'Revert system only (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-${root_dataset}-${kversion}' {
+		recordfail
+		load_video
+		insmod gzio
+		if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+		if [ ${boot_device} = main.disk ]; then
+			insmod part_gpt
+			insmod modfor_main.disk
+			insmod ext2
+			set root='hd0,gpt2'
+			if [ x$feature_platform_search_hint = xy ]; then
+			  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+			else
+			  search --no-floppy --fs-uuid --set=root UUID-main.disk
+			fi
+		fi
+		echo 'Loading Linux ${kversion} ...'
+		linux	${kernel} root=ZFS=${root_dataset} ro recovery nomodeset  
+		echo 'Loading initial ramdisk ...'
+		initrd	${initrd}
+	}
+	menuentry 'Revert system and user data (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-${root_dataset}-${kversion}' {
+		recordfail
+		load_video
+		gfxmode ${linux_gfx_mode}
+		insmod gzio
+		if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
+		if [ ${boot_device} = main.disk ]; then
+			insmod part_gpt
+			insmod modfor_main.disk
+			insmod ext2
+			set root='hd0,gpt2'
+			if [ x$feature_platform_search_hint = xy ]; then
+			  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 UUID-main.disk
+			else
+			  search --no-floppy --fs-uuid --set=root UUID-main.disk
+			fi
+		fi
+		linux	${kernel} root=ZFS=${root_dataset} ro  quiet splash ${vt_handoff} zsys-revert=userdata
+		initrd	${initrd}
+	}
+}
+
 menuentry 'Ubuntu 18.10' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-rpool/ROOT/ubuntu_2-5.0.0-13-generic' {
 	recordfail
 	load_video
