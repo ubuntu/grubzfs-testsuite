@@ -93,7 +93,7 @@ function zsyshistorymenu {
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
 		fi
-		echo 'Loading Linux ${kversion} ...'
+		echo Loading Linux ${kversion} ...
 		linux	${kernel} root=ZFS=${root_dataset} ro recovery nomodeset  
 		echo 'Loading initial ramdisk ...'
 		initrd	${initrd}
@@ -101,7 +101,6 @@ function zsyshistorymenu {
 	menuentry 'Revert system and user data (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os ${menuentry_id_option} 'gnulinux-${root_dataset}-${kversion}' {
 		recordfail
 		load_video
-		gfxmode ${linux_gfx_mode}
 		insmod gzio
 		if [ "${grub_platform}" = xen ]; then insmod xzio; insmod lzopio; fi
 		if [ ${boot_device} = main.disk ]; then
@@ -115,7 +114,9 @@ function zsyshistorymenu {
 			  search --no-floppy --fs-uuid --set=root UUID-main.disk
 			fi
 		fi
-		linux	${kernel} root=ZFS=${root_dataset} ro  quiet splash ${vt_handoff} zsys-revert=userdata
+		echo Loading Linux ${kversion} ...
+		linux	${kernel} root=ZFS=${root_dataset} ro recovery nomodeset  zsys-revert=userdata
+		echo 'Loading initial ramdisk ...'
 		initrd	${initrd}
 	}
 }
@@ -154,7 +155,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		else
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
-		echo 'Loading Linux 5.0.0-13-generic ...'
+		echo Loading Linux 5.0.0-13-generic ...
 		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
@@ -173,7 +174,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		else
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
-		echo 'Loading Linux 5.0.0-13-generic ...'
+		echo Loading Linux 5.0.0-13-generic ...
 		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
@@ -193,7 +194,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		else
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
-		echo 'Loading Linux 4.15.0-13-generic ...'
+		echo Loading Linux 4.15.0-13-generic ...
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic
@@ -212,7 +213,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		else
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
-		echo 'Loading Linux 4.15.0-13-generic ...'
+		echo Loading Linux 4.15.0-13-generic ...
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.15.0-13-generic
@@ -232,7 +233,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		else
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
-		echo 'Loading Linux 4.0.0-13-generic ...'
+		echo Loading Linux 4.0.0-13-generic ...
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro  quiet splash ${vt_handoff} 
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic
@@ -251,7 +252,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		else
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
-		echo 'Loading Linux 4.0.0-13-generic ...'
+		echo Loading Linux 4.0.0-13-generic ...
 		linux	/ROOT/ubuntu@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-4.0.0-13-generic
