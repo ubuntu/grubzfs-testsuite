@@ -1,3 +1,13 @@
+grubzfs-testsuite (0.4.10) UNRELEASED; urgency=medium
+
+  [ Jean-Baptiste Lallement ]
+  [ Didier Roche ]
+  * Adapt to grub zfs generator in 2.04-1ubuntu25 (history speedup
+    improvements).
+  * New test case for multiple devices.
+
+ -- Didier Roche <didrocks@ubuntu.com>  Mon, 13 Apr 2020 15:52:17 +0200
+
 grubzfs-testsuite (0.4.9) focal; urgency=medium
 
   [ Jean-Baptiste Lallement ]
