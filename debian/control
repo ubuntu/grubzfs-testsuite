@@ -17,7 +17,7 @@ Architecture: any
 Built-Using: ${misc:Built-Using},
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         grub-common (>= 2.04-1ubuntu23~),
+         grub-common (>= 2.04-1ubuntu25~),
          zfsutils-linux,
          e2fsprogs,
          zsys,
