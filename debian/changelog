@@ -2,7 +2,7 @@ grubzfs-testsuite (0.4.11) groovy; urgency=medium
 
   * Update for grub dis_ucode_ldr change
 
- -- Julian Andres Klode <juliank@ubuntu.com>  Wed, 12 Aug 2020 10:38:52 +0200
+ -- Julian Andres Klode <juliank@ubuntu.com>  Wed, 12 Aug 2020 10:40:40 +0200
 
 grubzfs-testsuite (0.4.10) focal; urgency=medium
 
