@@ -94,7 +94,7 @@ function zsyshistorymenu {
 			fi
 		fi
 		echo Loading Linux ${kversion} ...
-		linux	${kernel} root=ZFS=${root_dataset} ro recovery nomodeset  
+		linux	${kernel} root=ZFS=${root_dataset} ro recovery nomodeset dis_ucode_ldr  
 		echo 'Loading initial ramdisk ...'
 		initrd	${initrd}
 	}
@@ -115,7 +115,7 @@ function zsyshistorymenu {
 			fi
 		fi
 		echo Loading Linux ${kversion} ...
-		linux	${kernel} root=ZFS=${root_dataset} ro recovery nomodeset  zsys-revert=userdata
+		linux	${kernel} root=ZFS=${root_dataset} ro recovery nomodeset dis_ucode_ldr  zsys-revert=userdata
 		echo 'Loading initial ramdisk ...'
 		initrd	${initrd}
 	}
@@ -175,7 +175,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo Loading Linux 5.0.0-13-generic ...
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset dis_ucode_ldr  
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-5.0.0-13-generic
 	}
@@ -214,7 +214,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo Loading Linux 4.15.0-13-generic ...
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.15.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset dis_ucode_ldr  
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-4.15.0-13-generic
 	}
@@ -253,7 +253,7 @@ submenu 'Advanced options for Ubuntu 18.10' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo Loading Linux 4.0.0-13-generic ...
-		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset  
+		linux	/ROOT/ubuntu_2@/boot/vmlinuz-4.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu_2 ro recovery nomodeset dis_ucode_ldr  
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu_2@/boot/initrd.img-4.0.0-13-generic
 	}
@@ -312,7 +312,7 @@ submenu 'Advanced options for Ubuntu 19.04' ${menuentry_id_option} 'gnulinux-adv
 		  search --no-floppy --fs-uuid --set=root UUID-main.disk
 		fi
 		echo Loading Linux 5.0.0-13-generic ...
-		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset  
+		linux	/ROOT/ubuntu@/boot/vmlinuz-5.0.0-13-generic root=ZFS=rpool/ROOT/ubuntu ro recovery nomodeset dis_ucode_ldr  
 		echo 'Loading initial ramdisk ...'
 		initrd	/ROOT/ubuntu@/boot/initrd.img-5.0.0-13-generic
 	}
