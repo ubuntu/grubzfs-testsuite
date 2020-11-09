@@ -1,3 +1,12 @@
+grubzfs-testsuite (0.4.12) hirsute; urgency=medium
+
+  [ Jean-Baptiste Lallement ]
+  [ Didier Roche ]
+  * Added test cases to cover snapshot names with spaces or dashes
+    (LP: #1898177, #1903524)
+
+ -- Jean-Baptiste Lallement <jean-baptiste.lallement@ubuntu.com>  Mon, 09 Nov 2020 17:19:14 +0100
+
 grubzfs-testsuite (0.4.11) groovy; urgency=medium
 
   * Update for grub dis_ucode_ldr change
