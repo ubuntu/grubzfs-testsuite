@@ -1,5 +1,7 @@
 bou.ke/monkey v1.0.1 h1:zEMLInw9xvNakzUUPjfS4Ds6jYPqCFx3m7bRmG5NH2U=
 bou.ke/monkey v1.0.1/go.mod h1:FgHuK96Rv2Nlf+0u1OOVDpCMdsWyOFmeeketDHE7LIg=
+github.com/bicomsystems/go-libzfs v0.3.4-0.20210120103208-f957d22f5c47 h1:Z5A4xYh+tbYAJD1AQRVAX0e9pPprHAgSso1+Qv3w6HM=
+github.com/bicomsystems/go-libzfs v0.3.4-0.20210120103208-f957d22f5c47/go.mod h1:/ABUjxseIy72AxJV8ROgSfeZ5YA8/ZSp1mMzfDKi0Mw=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/otiai10/copy v1.0.1 h1:gtBjD8aq4nychvRZ2CyJvFWAw0aja+VHazDdruZKGZA=
