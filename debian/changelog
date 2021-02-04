@@ -1,3 +1,9 @@
+grubzfs-testsuite (0.4.13) hirsute; urgency=medium
+
+  * Switch to upstream branch of go-libzfs with 2.0.x support.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 04 Feb 2021 16:01:52 +0000
+
 grubzfs-testsuite (0.4.12) hirsute; urgency=medium
 
   [ Jean-Baptiste Lallement ]
