@@ -1,3 +1,12 @@
+grubzfs-testsuite (0.4.15) hirsute; urgency=medium
+
+  [ Jean-Baptiste Lallement ]
+  [ Didier Roche ]
+  * Added test cases to cover snapshot names with spaces or dashes
+    (LP: #1898177, #1903524)
+
+ -- Jean-Baptiste Lallement <jean-baptiste.lallement@ubuntu.com>  Mon, 08 Feb 2021 11:05:58 +0100
+
 grubzfs-testsuite (0.4.14) hirsute; urgency=medium
 
   * Revert "Add testcases to cover names with spaces and dashes", as
