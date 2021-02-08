@@ -235,6 +235,7 @@ func TestGrubMkConfig(t *testing.T) {
 	t.Parallel()
 	defer registerTest(t)()
 	skipOnZFSPermissionDenied(t)
+	waitForTest(t, "TestBootlist")
 	waitForTest(t, "TestGrubMenu")
 
 	ensureBinaryMocks(t)
