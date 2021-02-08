@@ -1,3 +1,10 @@
+grubzfs-testsuite (0.4.14) hirsute; urgency=medium
+
+  * Revert "Add testcases to cover names with spaces and dashes", as
+    matching grub upload is not in hirsute.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 05 Feb 2021 19:18:25 +0000
+
 grubzfs-testsuite (0.4.13) hirsute; urgency=medium
 
   * Switch to upstream branch of go-libzfs with 2.0.x support.
